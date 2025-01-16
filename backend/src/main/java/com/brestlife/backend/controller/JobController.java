@@ -31,10 +31,10 @@ public class JobController {
         return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Endpoint : GET /api/jobs/{name}
-    @GetMapping("/{name}")
-    public ResponseEntity<Job> getJobByName(@PathVariable String name) {
-        Optional<Job> job = jobService.getJobByCompanyName(name);
+    // Endpoint : GET /api/jobs/{companyName}
+    @GetMapping("/{companyName}")
+    public ResponseEntity<Job> getJobByCompanyName(@PathVariable String companyName) {
+        Optional<Job> job = jobService.getJobByCompanyName(companyName);
         return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 

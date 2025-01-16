@@ -36,7 +36,7 @@ public class JobService {
 
     //Vérifier si un emploi existe avec un nom donné
     public boolean existsByName(String name) {
-        return jobRepository.existsByName(name);
+        return jobRepository.existsByCompanyName(name);
     }
 
     //Créer ou mettre à jour un emploi
