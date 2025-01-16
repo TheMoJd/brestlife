@@ -1,6 +1,6 @@
 package com.brestlife.backend.service;
 
-import com.brestlife.backend.model.Place;
+import com.brestlife.backend.entity.Place;
 import com.brestlife.backend.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

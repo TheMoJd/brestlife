@@ -1,4 +1,4 @@
-package com.brestlife.backend.model.enums;
+package com.brestlife.backend.entity.enums;
 
 public enum CategoryType {
     PLACE,

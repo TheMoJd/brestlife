@@ -1,6 +1,6 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.model.Place;
+import com.brestlife.backend.entity.Place;
 import com.brestlife.backend.service.PlaceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

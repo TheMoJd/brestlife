@@ -1,6 +1,6 @@
-package com.brestlife.backend.model;
+package com.brestlife.backend.entity;
 
-import com.brestlife.backend.model.enums.Role;
+import com.brestlife.backend.entity.enums.Role;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 

@@ -1,8 +1,7 @@
-package com.brestlife.backend.model;
+package com.brestlife.backend.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import com.brestlife.backend.model.Category;
 
 @Entity
 @Table(name = "places")

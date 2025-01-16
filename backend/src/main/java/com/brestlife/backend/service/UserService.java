@@ -1,7 +1,7 @@
 package com.brestlife.backend.service;
 
 
-import com.brestlife.backend.model.User;
+import com.brestlife.backend.entity.User;
 import com.brestlife.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

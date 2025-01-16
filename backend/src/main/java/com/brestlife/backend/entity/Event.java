@@ -1,4 +1,4 @@
-package com.brestlife.backend.model;
+package com.brestlife.backend.entity;
 
 import jakarta.persistence.*;
 

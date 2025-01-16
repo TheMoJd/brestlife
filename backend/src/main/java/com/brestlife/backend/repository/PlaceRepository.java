@@ -1,6 +1,6 @@
 package com.brestlife.backend.repository;
 
-import com.brestlife.backend.model.Place;
+import com.brestlife.backend.entity.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

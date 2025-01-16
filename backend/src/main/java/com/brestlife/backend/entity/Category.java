@@ -1,6 +1,6 @@
-package com.brestlife.backend.model;
+package com.brestlife.backend.entity;
 
-import com.brestlife.backend.model.enums.CategoryType;
+import com.brestlife.backend.entity.enums.CategoryType;
 import jakarta.persistence.*;
 
 @Entity
