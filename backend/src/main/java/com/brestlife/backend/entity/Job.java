@@ -1,4 +1,4 @@
-package com.brestlife.backend.model;
+package com.brestlife.backend.entity;
 
 
 import jakarta.persistence.*;
@@ -46,5 +46,9 @@ public class Job {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
+    }
+
+    public String getCompanyName() {
+        return companyName;
     }
 }
