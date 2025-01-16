@@ -21,6 +21,10 @@ public class Category {
     @Column(name = "created_at", nullable = false, updatable = false)
     private java.time.LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private User createdBy;
+
     @PrePersist
     protected void onCreate() {
         createdAt = java.time.LocalDateTime.now();
