@@ -118,7 +118,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <inputSpec>../openapi.yaml</inputSpec>
                             <output>${project.build.directory}/generated-sources/swagger</output>
                             <language>jaxrs-jersey</language>
                             <modelPackage>com.brestlife.dto</modelPackage>
