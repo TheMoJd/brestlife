@@ -34,7 +34,7 @@ public class JobController {
     // Endpoint : GET /api/jobs/{name}
     @GetMapping("/{name}")
     public ResponseEntity<Job> getJobByName(@PathVariable String name) {
-        Optional<Job> job = jobService.getJobByName(name);
+        Optional<Job> job = jobService.getJobByCompanyName(name);
         return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
