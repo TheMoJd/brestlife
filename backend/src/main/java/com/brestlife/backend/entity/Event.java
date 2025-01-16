@@ -44,4 +44,8 @@ public class Event {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    public String getTitle() {
+        return title;
+    }
 }

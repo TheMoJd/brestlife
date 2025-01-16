@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Integer> {
-    Optional<Job> findByCompanyName(String name);
-    boolean existsByName(String name);
+    Optional<Job> findByCompanyName(String companyName);
+    boolean existsByCompanyName(String companyName);
 
 }
