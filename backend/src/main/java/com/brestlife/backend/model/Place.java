@@ -39,4 +39,8 @@ public class Place {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
+
+    public String getName() {
+        return name;
+    }
 }
