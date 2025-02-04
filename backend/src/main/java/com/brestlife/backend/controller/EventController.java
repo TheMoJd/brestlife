@@ -32,7 +32,7 @@ public class EventController {
     }
 
     // Endpoint : GET /api/events/{title}
-    @GetMapping("/{title}")
+    @GetMapping("/title/{title}")
     public ResponseEntity<Event> getEventByTitle(@PathVariable String title) {
         Optional<Event> event = eventService.getEventByTitle(title);
         return event.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
