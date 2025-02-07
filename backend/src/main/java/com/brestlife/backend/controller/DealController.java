@@ -1,7 +1,9 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.entity.Deal;
+import com.brestlife.backend.entity.DealEntity;
+import com.brestlife.backend.mapper.DealMapper;
 import com.brestlife.backend.service.DealService;
+import com.brestlife.generate.dto.Deal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class DealController {
 
     private final DealService dealService;
+    private final DealMapper dealMapper = DealMapper.INSTANCE;
 
     public DealController(DealService dealService) {
         this.dealService = dealService;
@@ -20,32 +23,32 @@ public class DealController {
 
     // Endpoint : GET /api/deals
     @GetMapping
-    public List<Deal> getAllDeals() {
+    public List<DealEntity> getAllDeals() {
         return dealService.getAllDeals();
     }
 
     // Endpoint : GET /api/deals/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<Deal> getDealById(@PathVariable Integer id) {
-        Optional<Deal> deal = dealService.getDealById(id);
+    public ResponseEntity<DealEntity> getDealById(@PathVariable Integer id) {
+        Optional<DealEntity> deal = dealService.getDealById(id);
         return deal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint : GET /api/deals/{title}
     @GetMapping("/{title}")
-    public ResponseEntity<Deal> getDealByTitle(@PathVariable String title) {
-        Optional<Deal> deal = dealService.getDealByTitle(title);
+    public ResponseEntity<DealEntity> getDealByTitle(@PathVariable String title) {
+        Optional<DealEntity> deal = dealService.getDealByTitle(title);
         return deal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint : POST /api/deals
     @PostMapping
-    public ResponseEntity<Deal> createDeal(@RequestBody Deal deal) {
-        if (dealService.existsByTitle(deal.getTitle())) {
+    public ResponseEntity<DealEntity> createDeal(@RequestBody DealEntity dealEntity) {
+        if (dealService.existsByTitle(dealEntity.getTitle())) {
             return ResponseEntity.badRequest().body(null); // Titre déjà utilisé
         }
-        Deal savedDeal = dealService.saveDeal(deal);
-        return ResponseEntity.ok(savedDeal);
+        DealEntity savedDealEntity = dealService.saveDeal(dealEntity);
+        return ResponseEntity.ok(savedDealEntity);
     }
 
     // Endpoint : DELETE /api/deals/{id}

@@ -1,0 +1,7 @@
+```
+mvn clean
+```
+
+```
+mvn compile
+```

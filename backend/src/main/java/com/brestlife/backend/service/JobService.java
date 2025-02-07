@@ -1,6 +1,6 @@
 package com.brestlife.backend.service;
 
-import com.brestlife.backend.entity.Job;
+import com.brestlife.backend.entity.JobEntity;
 import com.brestlife.backend.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,17 +20,17 @@ public class JobService {
     }
 
     //Récupérer tous les emplois
-    public List<Job> getAllJobs() {
+    public List<JobEntity> getAllJobs() {
         return jobRepository.findAll();
     }
 
     //Récupérer un emploi par ID
-    public Optional<Job> getJobById(Integer id) {
+    public Optional<JobEntity> getJobById(Integer id) {
         return jobRepository.findById(id);
     }
 
     //Récupérer un emploi par nom de l'entreprise
-    public Optional<Job> getJobByCompanyName(String companyName) {
+    public Optional<JobEntity> getJobByCompanyName(String companyName) {
         return jobRepository.findByCompanyName(companyName);
     }
 
@@ -40,7 +40,7 @@ public class JobService {
     }
 
     //Créer ou mettre à jour un emploi
-    public Job saveJob(Job job) {
+    public JobEntity saveJob(JobEntity job) {
         return jobRepository.save(job);
     }
 

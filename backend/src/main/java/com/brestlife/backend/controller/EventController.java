@@ -1,6 +1,8 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.entity.Event;
+import com.brestlife.backend.entity.EventEntity;
+import com.brestlife.backend.mapper.DealMapper;
+import com.brestlife.backend.mapper.EventMapper;
 import com.brestlife.backend.service.EventService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.Optional;
 public class EventController {
 
     private final EventService eventService;
+    private final EventMapper eventMapper = EventMapper.INSTANCE;
 
     public EventController(EventService eventService) {
         this.eventService = eventService;
@@ -20,32 +23,32 @@ public class EventController {
 
     // Endpoint : GET /api/events
     @GetMapping
-    public List<Event> getAllEvents() {
+    public List<EventEntity> getAllEvents() {
         return eventService.getAllEvents();
     }
 
     // Endpoint : GET /api/events/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<Event> getEventById(@PathVariable Integer id) {
-        Optional<Event> event = eventService.getEventById(id);
+    public ResponseEntity<EventEntity> getEventById(@PathVariable Integer id) {
+        Optional<EventEntity> event = eventService.getEventById(id);
         return event.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint : GET /api/events/{title}
     @GetMapping("/title/{title}")
-    public ResponseEntity<Event> getEventByTitle(@PathVariable String title) {
-        Optional<Event> event = eventService.getEventByTitle(title);
+    public ResponseEntity<EventEntity> getEventByTitle(@PathVariable String title) {
+        Optional<EventEntity> event = eventService.getEventByTitle(title);
         return event.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint : POST /api/events
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
-        if (eventService.existsByTitle(event.getTitle())) {
+    public ResponseEntity<EventEntity> createEvent(@RequestBody EventEntity eventEntity) {
+        if (eventService.existsByTitle(eventEntity.getTitle())) {
             return ResponseEntity.badRequest().body(null); // Titre déjà utilisé
         }
-        Event savedEvent = eventService.saveEvent(event);
-        return ResponseEntity.ok(savedEvent);
+        EventEntity savedEventEntity = eventService.saveEvent(eventEntity);
+        return ResponseEntity.ok(savedEventEntity);
     }
 
     // Endpoint : DELETE /api/events/{id}

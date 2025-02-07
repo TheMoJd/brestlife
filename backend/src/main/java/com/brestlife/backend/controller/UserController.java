@@ -1,7 +1,9 @@
 package com.brestlife.backend.controller;
 
 
-import com.brestlife.backend.entity.User;
+import com.brestlife.backend.entity.UserEntity;
+import com.brestlife.backend.mapper.DealMapper;
+import com.brestlife.backend.mapper.UserMapper;
 import com.brestlife.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -21,25 +24,25 @@ public class UserController {
 
     // Endpoint : GET /api/users
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserEntity> getAllUsers() {
         return userService.getAllUsers();
     }
 
     // Endpoint : GET /api/users/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-        Optional<User> user = userService.getUserById(id);
+    public ResponseEntity<UserEntity> getUserById(@PathVariable Integer id) {
+        Optional<UserEntity> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Endpoint : POST /api/users
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        if (userService.existsByEmail(user.getEmail())) {
+    public ResponseEntity<UserEntity> createUser(@RequestBody UserEntity userEntity) {
+        if (userService.existsByEmail(userEntity.getEmail())) {
             return ResponseEntity.badRequest().body(null); // Email déjà utilisé
         }
-        User savedUser = userService.saveUser(user);
-        return ResponseEntity.ok(savedUser);
+        UserEntity savedUserEntity = userService.saveUser(userEntity);
+        return ResponseEntity.ok(savedUserEntity);
     }
 
     // Endpoint : DELETE /api/users/{id}

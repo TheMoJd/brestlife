@@ -2,10 +2,14 @@ package com.brestlife.backend.entity;
 
 import com.brestlife.backend.entity.enums.CategoryType;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "categories")
-public class Category {
+@Data
+public class CategoryEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +27,7 @@ public class Category {
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    private User createdBy;
+    private UserEntity createdBy;
 
     @PrePersist
     protected void onCreate() {

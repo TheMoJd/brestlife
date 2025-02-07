@@ -1,6 +1,6 @@
 package com.brestlife.backend.service;
 
-import com.brestlife.backend.entity.Event;
+import com.brestlife.backend.entity.EventEntity;
 import com.brestlife.backend.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,23 +19,23 @@ public class EventService {
     }
 
     //Récupérer tous les événements
-    public List<Event> getAllEvents() {
+    public List<EventEntity> getAllEvents() {
         return eventRepository.findAll();
     }
 
     //Récupérer un événement par ID
-    public Optional<Event> getEventById(Integer id) {
+    public Optional<EventEntity> getEventById(Integer id) {
         return Optional.ofNullable(eventRepository.findById(id).orElse(null));
     }
 
     //Récupérer un événement par titre
-    public Optional<Event> getEventByTitle(String title) {
+    public Optional<EventEntity> getEventByTitle(String title) {
         return Optional.ofNullable(eventRepository.findByTitle(title).orElse(null));
     }
 
     //Créer ou mettre à jour un événement
-    public Event saveEvent(Event event) {
-        return eventRepository.save(event);
+    public EventEntity saveEvent(EventEntity eventEntity) {
+        return eventRepository.save(eventEntity);
     }
 
     //Supprimer un événement par ID

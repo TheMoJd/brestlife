@@ -1,7 +1,7 @@
 package com.brestlife.backend.service;
 
 
-import com.brestlife.backend.entity.User;
+import com.brestlife.backend.entity.UserEntity;
 import com.brestlife.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,23 +21,23 @@ public class UserService {
     }
 
     // Récupérer tous les utilisateurs
-    public List<User> getAllUsers() {
+    public List<UserEntity> getAllUsers() {
         return userRepository.findAll();
     }
 
     // Récupérer un utilisateur par ID
-    public Optional<User> getUserById(Integer id) {
+    public Optional<UserEntity> getUserById(Integer id) {
         return userRepository.findById(id);
     }
 
     // Récupérer un utilisateur par email
-    public Optional<User> getUserByEmail(String email) {
+    public Optional<UserEntity> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     // Créer ou mettre à jour un utilisateur
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public UserEntity saveUser(UserEntity userEntity) {
+        return userRepository.save(userEntity);
     }
 
     // Supprimer un utilisateur par ID
