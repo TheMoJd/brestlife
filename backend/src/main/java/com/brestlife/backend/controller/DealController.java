@@ -43,7 +43,9 @@ public class DealController {
 
     // Endpoint : POST /api/deals
     @PostMapping
-    public ResponseEntity<DealEntity> createDeal(@RequestBody DealEntity dealEntity) {
+    public ResponseEntity<DealEntity> createDeal(@RequestBody Deal deal) {
+        DealEntity dealEntity = dealMapper.toEntity(deal);
+
         if (dealService.existsByTitle(dealEntity.getTitle())) {
             return ResponseEntity.badRequest().body(null); // Titre déjà utilisé
         }

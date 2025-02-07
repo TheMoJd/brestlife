@@ -1,8 +1,6 @@
 package com.brestlife.backend.controller;
 
-
 import com.brestlife.backend.entity.UserEntity;
-import com.brestlife.backend.mapper.DealMapper;
 import com.brestlife.backend.mapper.UserMapper;
 import com.brestlife.backend.service.UserService;
 import org.springframework.http.ResponseEntity;
