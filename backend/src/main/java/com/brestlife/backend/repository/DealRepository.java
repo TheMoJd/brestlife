@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface DealRepository extends JpaRepository<DealEntity, Integer> {
     Optional<DealEntity> findByTitle(String title);
+
     boolean existsByTitle(String title);
 }

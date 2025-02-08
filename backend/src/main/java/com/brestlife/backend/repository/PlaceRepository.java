@@ -9,8 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface PlaceRepository extends JpaRepository<PlaceEntity, Integer> {
-    List<PlaceEntity> findAll();
-    Optional<PlaceEntity> findById(Integer id);
     Optional<PlaceEntity> findByName(String name);
+
     boolean existsByName(String name);
 }
