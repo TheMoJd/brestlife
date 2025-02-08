@@ -2,6 +2,7 @@ package com.brestlife.backend.service;
 
 import com.brestlife.backend.entity.EventEntity;
 import com.brestlife.backend.repository.EventRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +51,23 @@ public class EventService {
     //Vérifier si un événement existe avec un titre donné
     public boolean existsByTitle(String title) {
         return eventRepository.existsByTitle(title);
+    }
+
+    public boolean existsById(Integer id) {
+        return eventRepository.existsById(id);
+    }
+
+    public EventEntity updateEventById(Integer id, EventEntity eventEntity) {
+        return eventRepository.findById(id).map(existingEvent -> {
+            existingEvent.setTitle(eventEntity.getTitle());
+            existingEvent.setDescription(eventEntity.getDescription());
+            existingEvent.setCategoryEntity(eventEntity.getCategoryEntity());
+            existingEvent.setDate(eventEntity.getDate());
+            existingEvent.setLocation(eventEntity.getLocation());
+            existingEvent.setPrice(eventEntity.getPrice());
+            existingEvent.setImageUrl(eventEntity.getImageUrl());
+
+            return eventRepository.save(existingEvent);
+        }).orElseThrow(() -> new EntityNotFoundException("Event with ID " + id + " not found"));
     }
 }

@@ -52,4 +52,31 @@ public class JobService {
             throw new IllegalArgumentException("Job not found with id: " + id);
         }
     }
+
+    public boolean existsById(Integer id) {
+        return jobRepository.existsById(id);
+    }
+
+    public JobEntity updateJobById(Integer id, JobEntity jobEntity) {
+        Optional<JobEntity> existingJobOpt = jobRepository.findById(id);
+        if (existingJobOpt.isEmpty()) {
+            throw new RuntimeException("Job not found with ID: " + id);
+        }
+
+        JobEntity existingJob = existingJobOpt.get();
+
+        // Mise à jour des champs
+        existingJob.setTitle(jobEntity.getTitle());
+        existingJob.setDescription(jobEntity.getDescription());
+        existingJob.setCompanyName(jobEntity.getCompanyName());
+        existingJob.setLocation(jobEntity.getLocation());
+        existingJob.setCategoryEntity(jobEntity.getCategoryEntity());
+        existingJob.setDuration(jobEntity.getDuration());
+        existingJob.setStartDate(jobEntity.getStartDate());
+        existingJob.setEndDate(jobEntity.getEndDate());
+        existingJob.setContactEmail(jobEntity.getContactEmail());
+
+        // Sauvegarde et retour de l'entité mise à jour
+        return jobRepository.save(existingJob);
+    }
 }

@@ -6,6 +6,20 @@ servers:
   - url: http://localhost:8080
     description: SpringBoot REST API
 paths:
+  /health:
+    get:
+      summary: "Check API health status"
+      operationId: "healthCheck"
+      tags:
+        - health
+      responses:
+        200:
+          description: "API is up and running"
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
   /users:
     get:
       summary: "List all users"

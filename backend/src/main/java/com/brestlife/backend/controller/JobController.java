@@ -1,65 +1,65 @@
 package com.brestlife.backend.controller;
 
 import com.brestlife.backend.entity.JobEntity;
-import com.brestlife.backend.mapper.DealMapper;
 import com.brestlife.backend.mapper.JobMapper;
 import com.brestlife.backend.service.JobService;
+import com.brestlife.generate.api.JobsApi;
+import com.brestlife.generate.dto.Job;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/jobs")
-public class JobController {
+public class JobController implements JobsApi {
 
     private final JobService jobService;
     private final JobMapper jobMapper = JobMapper.INSTANCE;
 
+    @Autowired
     public JobController(JobService jobService) {
         this.jobService = jobService;
     }
 
-    // Endpoint : GET /api/jobs
-    @GetMapping
-    public List<JobEntity> getAllJobs() {
-        return jobService.getAllJobs();
+    @Override
+    public ResponseEntity<Job> createJob(Job job) {
+        JobEntity jobEntity = jobMapper.toEntity(job);
+        JobEntity savedJobEntity = jobService.saveJob(jobEntity);
+        return ResponseEntity.ok(jobMapper.toDto(savedJobEntity));
     }
 
-    // Endpoint : GET /api/jobs/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<JobEntity> getJobById(@PathVariable Integer id) {
-        Optional<JobEntity> job = jobService.getJobById(id);
-        return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint : GET /api/jobs/{companyName}
-    @GetMapping("/{companyName}")
-    public ResponseEntity<JobEntity> getJobByCompanyName(@PathVariable String companyName) {
-        Optional<JobEntity> job = jobService.getJobByCompanyName(companyName);
-        return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint : POST /api/jobs
-    @PostMapping
-    public ResponseEntity<JobEntity> createJob(@RequestBody JobEntity job) {
-        if (jobService.existsByName(job.getCompanyName())) {
-            return ResponseEntity.badRequest().body(null); // Nom déjà utilisé
-        }
-        JobEntity savedJob = jobService.saveJob(job);
-        return ResponseEntity.ok(savedJob);
-    }
-
-    // Endpoint : DELETE /api/jobs/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteJobById(@PathVariable Integer id) {
-        try {
-            jobService.deleteJobById(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+    @Override
+    public ResponseEntity<Void> deleteJobById(Integer id) {
+        if (!jobService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        jobService.deleteJobById(id);
+        return ResponseEntity.noContent().build();
     }
 
+    @Override
+    public ResponseEntity<Job> getJobById(Integer id) {
+        Optional<JobEntity> jobEntity = jobService.getJobById(id);
+        return jobEntity.map(entity -> ResponseEntity.ok(jobMapper.toDto(entity)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public ResponseEntity<List<Job>> listJobs() {
+        List<JobEntity> jobEntities = jobService.getAllJobs();
+        List<Job> jobs = jobEntities.stream()
+                .map(jobMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(jobs);
+    }
+
+    @Override
+    public ResponseEntity<Job> updateJobById(Integer id, Job job) {
+        JobEntity jobEntity = jobMapper.toEntity(job);
+        JobEntity updatedJobEntity = jobService.updateJobById(id, jobEntity);
+        return ResponseEntity.ok(jobMapper.toDto(updatedJobEntity));
+    }
 }

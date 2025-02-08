@@ -1,10 +1,8 @@
 package com.brestlife.backend.entity;
 
-import com.brestlife.backend.entity.enums.CategoryType;
+import com.brestlife.generate.dto.Category;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "categories")
@@ -20,7 +18,7 @@ public class CategoryEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CategoryType type; // ENUM : 'PLACE', 'JOB', 'EVENT'
+    private Category.TypeEnum type;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private java.time.LocalDateTime createdAt;

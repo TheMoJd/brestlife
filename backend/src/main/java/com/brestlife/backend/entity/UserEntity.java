@@ -1,11 +1,9 @@
 package com.brestlife.backend.entity;
 
-import com.brestlife.backend.entity.enums.Role;
+import com.brestlife.generate.dto.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +28,7 @@ public class UserEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Role role; // ENUM : 'student', 'admin', 'company'
+    private User.RoleEnum role;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
