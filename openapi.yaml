@@ -30,7 +30,7 @@ paths:
         200:
           description: "A list of users."
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: array
                 items:
@@ -50,7 +50,7 @@ paths:
         200:
           description: "User created"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/User"
   /users/{id}:
@@ -70,7 +70,7 @@ paths:
         200:
           description: "User found"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/User"
     put:
@@ -95,7 +95,7 @@ paths:
         200:
           description: "User updated"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/User"
 
@@ -124,7 +124,7 @@ paths:
         200:
           description: "A list of places."
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: array
                 items:
@@ -144,7 +144,7 @@ paths:
         200:
           description: "Place created"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Place"
   /places/{id}:
@@ -164,7 +164,7 @@ paths:
         200:
           description: "Place found"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Place"
     put:
@@ -189,7 +189,7 @@ paths:
         200:
           description: "Place updated"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Place"
 
@@ -218,7 +218,7 @@ paths:
         200:
           description: "A list of jobs."
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: array
                 items:
@@ -238,7 +238,7 @@ paths:
         200:
           description: "Job created"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Job"
   /jobs/{id}:
@@ -258,7 +258,7 @@ paths:
         200:
           description: "Job found"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Job"
     put:
@@ -283,7 +283,7 @@ paths:
         200:
           description: "Job updated"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Job"
     delete:
@@ -312,7 +312,7 @@ paths:
         200:
           description: "A list of events."
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: array
                 items:
@@ -332,7 +332,7 @@ paths:
         200:
           description: "Event created"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Event"
   /events/{id}:
@@ -352,7 +352,7 @@ paths:
         200:
           description: "Event found"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Event"
     put:
@@ -377,7 +377,7 @@ paths:
         200:
           description: "Event updated"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Event"
     delete:
@@ -406,7 +406,7 @@ paths:
         200:
           description: "A list of deals."
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: array
                 items:
@@ -426,7 +426,7 @@ paths:
         200:
           description: "Deal created"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Deal"
   /deals/{id}:
@@ -446,7 +446,7 @@ paths:
         200:
           description: "Deal found"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Deal"
     put:
@@ -471,7 +471,7 @@ paths:
         200:
           description: "Deal updated"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/Deal"
     delete:
