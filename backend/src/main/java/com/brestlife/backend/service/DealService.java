@@ -71,7 +71,7 @@ public class DealService {
         existingDeal.setTitle(dealEntity.getTitle());
         existingDeal.setDescription(dealEntity.getDescription());
         existingDeal.setLink(dealEntity.getLink());
-        existingDeal.setCategoryEntity(dealEntity.getCategoryEntity());
+        existingDeal.setCategory(dealEntity.getCategory());
 
         // Sauvegarder les modifications
         return dealRepository.save(existingDeal);

@@ -61,7 +61,7 @@ public class EventService {
         return eventRepository.findById(id).map(existingEvent -> {
             existingEvent.setTitle(eventEntity.getTitle());
             existingEvent.setDescription(eventEntity.getDescription());
-            existingEvent.setCategoryEntity(eventEntity.getCategoryEntity());
+            existingEvent.setCategory(eventEntity.getCategory());
             existingEvent.setDate(eventEntity.getDate());
             existingEvent.setLocation(eventEntity.getLocation());
             existingEvent.setPrice(eventEntity.getPrice());

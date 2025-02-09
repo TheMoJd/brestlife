@@ -25,7 +25,7 @@ public class EventEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
     @Column(nullable = false)
     private LocalDateTime date;

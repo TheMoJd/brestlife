@@ -22,7 +22,7 @@ public class PlaceEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
     @Column(nullable = false, length = 255)
     private String address;

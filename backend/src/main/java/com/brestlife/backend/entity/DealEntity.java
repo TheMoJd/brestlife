@@ -25,7 +25,7 @@ public class DealEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
     @ManyToOne
     @JoinColumn(name = "created_by", nullable = false)

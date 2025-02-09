@@ -30,7 +30,7 @@ public class JobEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private CategoryEntity categoryEntity;
+    private CategoryEntity category;
 
     @Column(length = 50)
     private String duration;

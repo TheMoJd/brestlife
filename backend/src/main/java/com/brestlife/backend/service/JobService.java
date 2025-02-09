@@ -70,7 +70,7 @@ public class JobService {
         existingJob.setDescription(jobEntity.getDescription());
         existingJob.setCompanyName(jobEntity.getCompanyName());
         existingJob.setLocation(jobEntity.getLocation());
-        existingJob.setCategoryEntity(jobEntity.getCategoryEntity());
+        existingJob.setCategory(jobEntity.getCategory());
         existingJob.setDuration(jobEntity.getDuration());
         existingJob.setStartDate(jobEntity.getStartDate());
         existingJob.setEndDate(jobEntity.getEndDate());

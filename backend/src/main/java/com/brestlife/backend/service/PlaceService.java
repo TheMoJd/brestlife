@@ -67,7 +67,7 @@ public class PlaceService {
         PlaceEntity existingPlace = existingPlaceOpt.get();
         existingPlace.setName(placeEntity.getName());
         existingPlace.setDescription(placeEntity.getDescription());
-        existingPlace.setCategoryEntity(placeEntity.getCategoryEntity());
+        existingPlace.setCategory(placeEntity.getCategory());
         existingPlace.setAddress(placeEntity.getAddress());
         existingPlace.setLatitude(placeEntity.getLatitude());
         existingPlace.setLongitude(placeEntity.getLongitude());
