@@ -58,7 +58,6 @@ export function DiscoveryPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <h1 className="text-3xl font-bold">Découverte</h1>
         
-        {/* Search and Filters */}
         <div className="mt-4 md:mt-0 flex flex-wrap gap-4">
           <div className="relative">
             <input
@@ -91,7 +90,6 @@ export function DiscoveryPage() {
         </div>
       </div>
 
-      {/* Places Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPlaces.map((place) => (
           <div key={place.id} className="bg-white rounded-lg shadow-md overflow-hidden">
