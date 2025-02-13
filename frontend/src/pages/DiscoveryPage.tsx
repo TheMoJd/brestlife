@@ -1,7 +1,8 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { Search, MapPin } from 'lucide-react';
 import { Place } from '../gen/openapi';
 import { listPlaces } from '../gen/openapi';
+import { useSearchFilter } from '../hooks/useSearchFilter';
 
 export function DiscoveryPage() {
   const [filters, setFilters] = useState({
@@ -11,7 +12,7 @@ export function DiscoveryPage() {
   const [places, setPlaces] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  //const [priceFilter, setPriceFilter] = useState('');
 
   // Récupération des lieux
   useEffect(() => {
@@ -34,13 +35,18 @@ export function DiscoveryPage() {
     loadPlaces();
   }, []);
 
-  // Filtrage des lieux en fonction de la recherche
-  const filteredPlaces = useMemo(() => {
-    if (!searchQuery) return places;
-    return places.filter((place) =>
-      place.name?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [places, searchQuery]);
+  const {filteredItems: filteredPlaces, searchQuery, setSearchQuery} = useSearchFilter(places, ['name']);
+
+  // // Filtrage par prix
+  // const finalPlaces = filteredPlaces.filter((place) =>
+  //   priceFilter === ''
+  //     ? true
+  //     : priceFilter === 'gratuit'
+  //     ? !place.price || place.price === 0
+  //     : place.price && place.price > 0
+  // );
+
+
 
   if (loading) {
     return <div className="text-center text-gray-500 py-10">Chargement...</div>;
