@@ -1,18 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Search, MapPin } from 'lucide-react';
 import { Place } from '../gen/openapi';
 import { listPlaces } from '../gen/openapi';
 import { useSearchFilter } from '../hooks/useSearchFilter';
 
 export function DiscoveryPage() {
-  const [filters, setFilters] = useState({
-    price: ''
-  });
-
   const [places, setPlaces] = useState<Place[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  //const [priceFilter, setPriceFilter] = useState('');
+  const [filters, setFilters] = useState({ price: '' });
 
   // Récupération des lieux
   useEffect(() => {
@@ -35,18 +31,18 @@ export function DiscoveryPage() {
     loadPlaces();
   }, []);
 
-  const {filteredItems: filteredPlaces, searchQuery, setSearchQuery} = useSearchFilter(places, ['name']);
+  // Utilisation du hook de recherche (recherche par nom)
+  const { filteredItems: searchedPlaces, searchQuery, setSearchQuery } = useSearchFilter(places, ['name']);
 
-  // // Filtrage par prix
-  // const finalPlaces = filteredPlaces.filter((place) =>
-  //   priceFilter === ''
-  //     ? true
-  //     : priceFilter === 'gratuit'
-  //     ? !place.price || place.price === 0
-  //     : place.price && place.price > 0
-  // );
-
-
+  // Filtrage par prix
+  const filteredPlaces = useMemo(() => {
+    return searchedPlaces.filter((place) => {
+      if (filters.price === '') return true;
+      if (filters.price === 'gratuit' && (!place.price || place.price === 0)) return true;
+      if (filters.price === 'payant' && place.price && place.price > 0) return true;
+      return false;
+    });
+  }, [searchedPlaces, filters.price]);
 
   if (loading) {
     return <div className="text-center text-gray-500 py-10">Chargement...</div>;
@@ -55,12 +51,6 @@ export function DiscoveryPage() {
   if (error) {
     return <div className="text-center text-red-500 py-10">{error}</div>;
   }
-
-  // const filteredPlaces = places.filter(place => {
-  //   if (filters.type && place.type !== filters.type) return false;
-  //   if (filters.price && place.price !== filters.price) return false;
-  //   return true;
-  // });
 
   return (
     <div className="py-8">
@@ -79,6 +69,8 @@ export function DiscoveryPage() {
             />
             <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
           </div>
+
+          {/* Filtrage par prix */}
           <select
             value={filters.price}
             onChange={(e) => setFilters(f => ({ ...f, price: e.target.value }))}
@@ -104,6 +96,13 @@ export function DiscoveryPage() {
               <div className="p-6">
                 <div className="flex justify-between items-start mb-2">
                   <h2 className="text-xl font-semibold">{place.name}</h2>
+                  <span
+                    className={`px-2 py-1 rounded text-sm ${
+                      place.price && place.price > 0 ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                    }`}
+                  >
+                    {place.price && place.price > 0 ? `${place.price}€` : 'Gratuit'}
+                  </span>
                 </div>
                 <p className="text-gray-600 mb-4">{place.description}</p>
                 <div className="flex items-center text-gray-500 mb-4">
