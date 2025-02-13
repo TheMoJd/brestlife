@@ -66,7 +66,6 @@ export function DealsPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <h1 className="text-3xl font-bold">Bon plans</h1>
         
-        {/* Search and Filters */}
         <div className="mt-4 md:mt-0 flex flex-wrap gap-4">
           <div className="relative">
             <input
@@ -101,7 +100,6 @@ export function DealsPage() {
         </div>
       </div>
 
-      {/* Deals Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredDeals.map((deal) => (
           <div key={deal.id} className="bg-white rounded-lg shadow-md p-6">

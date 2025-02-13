@@ -13,14 +13,15 @@ import { Footer } from './sections/Footer';
 import { NavBar } from './sections/NavBar';
 
 function App() {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const navItems = [
-    { path: '/', name: 'Accueil', icon: <Home className="w-5 h-5" /> },
-    { path: '/decouverte', name: 'Découverte', icon: <Compass className="w-5 h-5" /> },
-    { path: '/emplois', name: 'Offres emplois', icon: <Briefcase className="w-5 h-5" /> },
-    { path: '/evenements', name: 'Événements', icon: <Calendar className="w-5 h-5" /> },
-    { path: '/bons-plans', name: 'Bon plans', icon: <Tag className="w-5 h-5" /> },
-  ];
+    const navItems = [
+        {path: '/', name: 'Accueil', icon: <Home className="w-5 h-5"/>},
+        {path: '/decouverte', name: 'Découverte', icon: <Compass className="w-5 h-5"/>},
+        {path: '/emplois', name: 'Offres emplois', icon: <Briefcase className="w-5 h-5"/>},
+        {path: '/evenements', name: 'Événements', icon: <Calendar className="w-5 h-5"/>},
+        {path: '/bons-plans', name: 'Bon plans', icon: <Tag className="w-5 h-5"/>},
+    ];
 
   return (
     <Router>
