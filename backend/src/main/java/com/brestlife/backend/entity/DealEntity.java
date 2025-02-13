@@ -23,6 +23,21 @@ public class DealEntity {
     @Column(length = 255)
     private String link;
 
+    @Column
+    private Double oldPrice;
+
+    @Column
+    private Double newPrice;
+
+    @Column
+    private LocalDateTime dateEnd;
+
+    @Column
+    private String company;
+
+    @Column
+    private String reserve;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;

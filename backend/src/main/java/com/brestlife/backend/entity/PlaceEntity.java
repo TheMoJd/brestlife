@@ -34,6 +34,9 @@ public class PlaceEntity {
     @Column(name = "image_url", length = 255)
     private String imageUrl;
 
+    @Column
+    private Double price;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
