@@ -1,38 +1,35 @@
 package com.brestlife.backend.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "events")
-public class Event {
+@Table(name = "places")
+@Data
+public class PlaceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 200)
-    private String title;
+    @Column(nullable = false, length = 150)
+    private String name;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
-
-    @Column(nullable = false)
-    private LocalDateTime date;
+    private CategoryEntity category;
 
     @Column(nullable = false, length = 255)
-    private String location;
+    private String address;
 
-    private Double price;
+    private Double latitude;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by")
-    private User createdBy;
+    private Double longitude;
 
     @Column(name = "image_url", length = 255)
     private String imageUrl;
@@ -40,12 +37,12 @@ public class Event {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private UserEntity createdBy;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-    }
-
-    public String getTitle() {
-        return title;
     }
 }

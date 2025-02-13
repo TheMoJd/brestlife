@@ -1,56 +1,77 @@
 package com.brestlife.backend.controller;
 
-
-import com.brestlife.backend.entity.User;
+import com.brestlife.backend.entity.UserEntity;
+import com.brestlife.backend.mapper.UserMapper;
 import com.brestlife.backend.service.UserService;
+import com.brestlife.generate.api.UsersApi;
+import com.brestlife.generate.dto.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+public class UserController implements UsersApi {
 
     private final UserService userService;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
-    // Endpoint : GET /api/users
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
+    @Override
+    public ResponseEntity<User> createUser(User user) {
+        UserEntity userEntity = userMapper.toEntity(user);
 
-    // Endpoint : GET /api/users/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-        Optional<User> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint : POST /api/users
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        if (userService.existsByEmail(user.getEmail())) {
-            return ResponseEntity.badRequest().body(null); // Email déjà utilisé
+        // Check if email already exists
+        if (userService.existsByEmail(userEntity.getEmail())) {
+            return ResponseEntity.badRequest().body(null);
         }
-        User savedUser = userService.saveUser(user);
-        return ResponseEntity.ok(savedUser);
+
+        UserEntity savedUserEntity = userService.saveUser(userEntity);
+        return ResponseEntity.ok(userMapper.toDto(savedUserEntity));
     }
 
-    // Endpoint : DELETE /api/users/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable Integer id) {
-        try {
-            userService.deleteUserById(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+    @Override
+    public ResponseEntity<List<User>> listUsers() {
+        List<UserEntity> userEntities = userService.getAllUsers();
+        List<User> users = userEntities.stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteUserById(Integer id) {
+        if (!userService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
+        userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<User> getUserById(Integer id) {
+        return userService.getUserById(id)
+                .map(userEntity -> ResponseEntity.ok(userMapper.toDto(userEntity)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public ResponseEntity<User> updateUserById(Integer id, User user) {
+        if (!userService.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        UserEntity userEntity = userMapper.toEntity(user);
+        userEntity.setId(id);
+        UserEntity updatedUser = userService.updateUser(userEntity);
+
+        return ResponseEntity.ok(userMapper.toDto(updatedUser));
     }
 }
-

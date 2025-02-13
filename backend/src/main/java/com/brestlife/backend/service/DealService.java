@@ -1,7 +1,8 @@
 package com.brestlife.backend.service;
 
-import com.brestlife.backend.entity.Deal;
+import com.brestlife.backend.entity.DealEntity;
 import com.brestlife.backend.repository.DealRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,17 +20,17 @@ public class DealService {
     }
 
     //Récupérer tous les deals
-    public List<Deal> getAllDeals() {
+    public List<DealEntity> getAllDeals() {
         return dealRepository.findAll();
     }
 
     //Réupérer un deal par ID
-    public Optional<Deal> getDealById(Integer id) {
+    public Optional<DealEntity> getDealById(Integer id) {
         return dealRepository.findById(id);
     }
 
     //Récupérer un deal par titre
-    public Optional<Deal> getDealByTitle(String title) {
+    public Optional<DealEntity> getDealByTitle(String title) {
         return dealRepository.findByTitle(title);
     }
 
@@ -39,8 +40,8 @@ public class DealService {
     }
 
     //Créer ou mettre à jour un deal
-    public Deal saveDeal(Deal deal) {
-        return dealRepository.save(deal);
+    public DealEntity saveDeal(DealEntity dealEntity) {
+        return dealRepository.save(dealEntity);
     }
 
     //Supprimer un deal par ID
@@ -50,5 +51,29 @@ public class DealService {
         } else {
             throw new IllegalArgumentException("Deal not found with id: " + id);
         }
+    }
+
+
+    public boolean existsById(Integer id) {
+        return dealRepository.existsById(id);
+    }
+
+    public DealEntity updateDealById(Integer id, DealEntity dealEntity) {
+        Optional<DealEntity> existingDealOptional = dealRepository.findById(id);
+
+        if (existingDealOptional.isEmpty()) {
+            throw new EntityNotFoundException("Deal with ID " + id + " not found");
+        }
+
+        DealEntity existingDeal = existingDealOptional.get();
+
+        // Mettre à jour les champs modifiables
+        existingDeal.setTitle(dealEntity.getTitle());
+        existingDeal.setDescription(dealEntity.getDescription());
+        existingDeal.setLink(dealEntity.getLink());
+        existingDeal.setCategory(dealEntity.getCategory());
+
+        // Sauvegarder les modifications
+        return dealRepository.save(existingDeal);
     }
 }

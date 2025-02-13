@@ -2,13 +2,15 @@ package com.brestlife.backend.entity;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "jobs")
-public class Job {
+@Data
+public class JobEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +30,7 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    private CategoryEntity category;
 
     @Column(length = 50)
     private String duration;
@@ -45,14 +47,10 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "created_by")
-    private User createdBy;
+    private UserEntity createdBy;
 
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-    }
-
-    public String getCompanyName() {
-        return companyName;
     }
 }

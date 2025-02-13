@@ -1,6 +1,6 @@
 package com.brestlife.backend.service;
 
-import com.brestlife.backend.entity.Place;
+import com.brestlife.backend.entity.PlaceEntity;
 import com.brestlife.backend.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,23 +20,23 @@ public class PlaceService {
     }
 
     //Récupérer tous les lieux
-    public List<Place> getAllPlaces() {
+    public List<PlaceEntity> getAllPlaces() {
         return placeRepository.findAll();
     }
 
     //Récupérer un lieu par ID
-    public Optional<Place> getPlaceById(Integer id) {
+    public Optional<PlaceEntity> getPlaceById(Integer id) {
         return placeRepository.findById(id);
     }
 
     //Récupérer un lieu par nom
-    public Optional<Place> getPlaceByName(String name) {
+    public Optional<PlaceEntity> getPlaceByName(String name) {
         return placeRepository.findByName(name);
     }
 
     //Créer ou mettre à jour un lieu
-    public Place savePlace(Place place) {
-        return placeRepository.save(place);
+    public PlaceEntity savePlace(PlaceEntity placeEntity) {
+        return placeRepository.save(placeEntity);
     }
 
     //Supprimer un lieu par ID
@@ -51,5 +51,28 @@ public class PlaceService {
     //Vérifier si un lieu existe avec un nom donné
     public boolean existsByName(String name) {
         return placeRepository.existsByName(name);
+    }
+
+    public boolean existsById(Integer id) {
+        return placeRepository.existsById(id);
+    }
+
+    public PlaceEntity updatePlaceById(Integer id, PlaceEntity placeEntity) {
+        Optional<PlaceEntity> existingPlaceOpt = placeRepository.findById(id);
+
+        if (existingPlaceOpt.isEmpty()) {
+            throw new RuntimeException("Place with ID " + id + " not found");
+        }
+
+        PlaceEntity existingPlace = existingPlaceOpt.get();
+        existingPlace.setName(placeEntity.getName());
+        existingPlace.setDescription(placeEntity.getDescription());
+        existingPlace.setCategory(placeEntity.getCategory());
+        existingPlace.setAddress(placeEntity.getAddress());
+        existingPlace.setLatitude(placeEntity.getLatitude());
+        existingPlace.setLongitude(placeEntity.getLongitude());
+        existingPlace.setImageUrl(placeEntity.getImageUrl());
+
+        return placeRepository.save(existingPlace);
     }
 }

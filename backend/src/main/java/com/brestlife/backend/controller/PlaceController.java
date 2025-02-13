@@ -1,61 +1,66 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.entity.Place;
+import com.brestlife.backend.entity.PlaceEntity;
+import com.brestlife.backend.mapper.PlaceMapper;
 import com.brestlife.backend.service.PlaceService;
+import com.brestlife.generate.api.PlacesApi;
+import com.brestlife.generate.dto.Place;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/places")
-public class PlaceController {
+public class PlaceController implements PlacesApi {
 
     private final PlaceService placeService;
+    private final PlaceMapper placeMapper = PlaceMapper.INSTANCE;
 
+    @Autowired
     public PlaceController(PlaceService placeService) {
         this.placeService = placeService;
     }
 
-    // Endpoint : GET /api/places
-    @GetMapping
-    public List<Place> getAllPlaces() {
-        return placeService.getAllPlaces();
+    @Override
+    public ResponseEntity<Place> createPlace(Place place) {
+        PlaceEntity placeEntity = placeMapper.toEntity(place);
+        PlaceEntity savedPlaceEntity = placeService.savePlace(placeEntity);
+        return ResponseEntity.ok(placeMapper.toDto(savedPlaceEntity));
     }
 
-    // Endpoint : GET /api/places/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<Place> getPlaceById(@PathVariable Integer id) {
-        Optional<Place> place = placeService.getPlaceById(id);
-        return place.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint : GET /api/places/{name}
-    @GetMapping("/{name}")
-    public ResponseEntity<Place> getPlaceByName(@PathVariable String name) {
-        Optional<Place> place = placeService.getPlaceByName(name);
-        return place.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint : POST /api/places
-    @PostMapping
-    public ResponseEntity<Place> createPlace(@RequestBody Place place) {
-        if (placeService.existsByName(place.getName())) {
-            return ResponseEntity.badRequest().body(null); // Nom déjà utilisé
-        }
-        Place savedPlace = placeService.savePlace(place);
-        return ResponseEntity.ok(savedPlace);
-    }
-
-    // Endpoint : DELETE /api/places/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlaceById(@PathVariable Integer id) {
-        try {
-            placeService.deletePlaceById(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+    @Override
+    public ResponseEntity<Void> deletePlaceById(Integer id) {
+        if (!placeService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
+        placeService.deletePlaceById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Place> getPlaceById(Integer id) {
+        Optional<PlaceEntity> placeEntity = placeService.getPlaceById(id);
+        return placeEntity.map(entity -> ResponseEntity.ok(placeMapper.toDto(entity)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public ResponseEntity<List<Place>> listPlaces() {
+        List<PlaceEntity> placeEntities = placeService.getAllPlaces();
+        List<Place> places = placeEntities.stream()
+                .map(placeMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(places);
+    }
+
+    @Override
+    public ResponseEntity<Place> updatePlaceById(Integer id, Place place) {
+        PlaceEntity placeEntity = placeMapper.toEntity(place);
+        PlaceEntity updatedPlaceEntity = placeService.updatePlaceById(id, placeEntity);
+        return ResponseEntity.ok(placeMapper.toDto(updatedPlaceEntity));
     }
 }

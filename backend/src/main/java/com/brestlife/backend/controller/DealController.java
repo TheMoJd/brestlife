@@ -1,7 +1,11 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.entity.Deal;
+import com.brestlife.backend.entity.DealEntity;
+import com.brestlife.backend.mapper.DealMapper;
 import com.brestlife.backend.service.DealService;
+import com.brestlife.generate.api.DealsApi;
+import com.brestlife.generate.dto.Deal;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,53 +13,55 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/deals")
-public class DealController {
+public class DealController implements DealsApi {
 
     private final DealService dealService;
+    private final DealMapper dealMapper = DealMapper.INSTANCE;
 
+    @Autowired
     public DealController(DealService dealService) {
         this.dealService = dealService;
     }
 
-    // Endpoint : GET /api/deals
-    @GetMapping
-    public List<Deal> getAllDeals() {
-        return dealService.getAllDeals();
+    @Override
+    public ResponseEntity<Deal> createDeal(Deal deal) {
+        DealEntity dealEntity = dealMapper.toEntity(deal);
+        DealEntity savedDealEntity = dealService.saveDeal(dealEntity);
+
+        return ResponseEntity.ok(dealMapper.toDto(savedDealEntity));
     }
 
-    // Endpoint : GET /api/deals/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<Deal> getDealById(@PathVariable Integer id) {
-        Optional<Deal> deal = dealService.getDealById(id);
-        return deal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint : GET /api/deals/{title}
-    @GetMapping("/{title}")
-    public ResponseEntity<Deal> getDealByTitle(@PathVariable String title) {
-        Optional<Deal> deal = dealService.getDealByTitle(title);
-        return deal.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Endpoint : POST /api/deals
-    @PostMapping
-    public ResponseEntity<Deal> createDeal(@RequestBody Deal deal) {
-        if (dealService.existsByTitle(deal.getTitle())) {
-            return ResponseEntity.badRequest().body(null); // Titre déjà utilisé
-        }
-        Deal savedDeal = dealService.saveDeal(deal);
-        return ResponseEntity.ok(savedDeal);
-    }
-
-    // Endpoint : DELETE /api/deals/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDealById(@PathVariable Integer id) {
-        try {
-            dealService.deleteDealById(id);
-            return ResponseEntity.noContent().build();
-        } catch (IllegalArgumentException e) {
+    @Override
+    public ResponseEntity<Void> deleteDealById(Integer id) {
+        if (!dealService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+
+        dealService.deleteDealById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Deal> getDealById(Integer id) {
+        Optional<DealEntity> dealEntity = dealService.getDealById(id);
+        return dealEntity.map(value -> ResponseEntity.ok(dealMapper.toDto(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public ResponseEntity<List<Deal>> listDeals() {
+        List<DealEntity> dealEntities = dealService.getAllDeals();
+        List<Deal> deals = dealEntities.stream()
+                .map(dealMapper::toDto)
+                .collect(java.util.stream.Collectors.toList());
+        return ResponseEntity.ok(deals);
+    }
+
+    @Override
+    public ResponseEntity<Deal> updateDealById(Integer id, Deal deal) {
+        DealEntity dealEntity = dealMapper.toEntity(deal);
+        DealEntity updatedDealEntity = dealService.updateDealById(id, dealEntity);
+
+        return ResponseEntity.ok(dealMapper.toDto(updatedDealEntity));
     }
 }
