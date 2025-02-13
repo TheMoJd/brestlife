@@ -559,6 +559,9 @@ components:
         createdAt:
           type: string
           format: date-time
+        price:
+          type: number
+          format: double
         createdBy:
           $ref: "#/components/schemas/User"
     Job:
@@ -630,6 +633,19 @@ components:
         description:
           type: string
         link:
+          type: string
+        old_price:
+          type: number
+          format: double
+        new_price:
+          type: number
+          format: double
+        date_end:
+          type: string
+          format: date-time
+        company:
+          type: string
+        reserve:
           type: string
         category:
           $ref: "#/components/schemas/Category"
