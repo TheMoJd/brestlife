@@ -521,7 +521,7 @@ components:
         id:
           type: integer
           format: int32
-        name:
+        subCategory:
           type: string
         type:
           type: string
@@ -529,6 +529,7 @@ components:
             - PLACE
             - JOB
             - EVENT
+            - DEAL
         createdAt:
           type: string
           format: date-time
