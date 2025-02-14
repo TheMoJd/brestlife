@@ -81,9 +81,18 @@ export function DealsPage() {
                   {deal.category?.name}
                 </span>
                                 <h2 className="text-xl font-semibold">{deal.title}</h2>
-                                <p className="text-gray-600">{deal.description}</p>
+                                <p className="text-gray-600">{deal.company}</p>
                             </div>
-                            <span className="text-2xl font-bold text-green-600">{deal.title}</span>
+                            <div className="flex items-center space-x-2">
+                                {deal.old_price && (
+                                    <span className="text-gray-500 text-sm line-through">
+            {new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR'}).format(deal.old_price)}
+        </span>
+                                )}
+                                <span className="text-2xl font-bold text-green-600">
+        {new Intl.NumberFormat('fr-FR', {style: 'currency', currency: 'EUR'}).format(deal.new_price)}
+    </span>
+                            </div>
                         </div>
 
                         <p className="text-gray-600 mb-4">{deal.description}</p>
@@ -91,16 +100,22 @@ export function DealsPage() {
                         <div className="space-y-2 text-sm text-gray-500 mb-4">
                             <div className="flex items-center">
                                 <MapPin className="w-4 h-4 mr-2"/>
-                                {deal.link}
+                                {deal.id}
                             </div>
                             <div className="flex items-center">
                                 <Tag className="w-4 h-4 mr-2"/>
-                                Valable jusqu'au {deal.id}
+                                {deal.date_end
+                                    ? `Valable jusqu'au ${new Intl.DateTimeFormat('fr-FR', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                    }).format(new Date(deal.date_end))}`
+                                    : "À durée indéterminée"}
                             </div>
                         </div>
 
                         <div className="border-t pt-4 mt-4">
-                            <p className="text-sm text-gray-500">{deal.id}</p>
+                            <p className="text-sm text-gray-500">{deal.reserve}</p>
                         </div>
 
                         <button
