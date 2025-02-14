@@ -36,12 +36,6 @@ export default function LoginPage() {
           <h2 className="text-center text-3xl font-extrabold text-gray-900">
             Connexion à votre compte
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Vous n'avez pas encore de compte ?{' '}
-            <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500">
-              Créez-en un gratuitement
-            </Link>
-          </p>
         </div>
 
         {errorMessage && (
