@@ -28,6 +28,7 @@ export type Place = {
     longitude?: number;
     imageUrl?: string;
     createdAt?: string;
+    price?: number;
     createdBy?: User;
 };
 
@@ -64,6 +65,11 @@ export type Deal = {
     title?: string;
     description?: string;
     link?: string;
+    old_price?: number;
+    new_price?: number;
+    date_end?: string;
+    company?: string;
+    reserve?: string;
     category?: Category;
     createdBy?: User;
     createdAt?: string;
