@@ -12,8 +12,8 @@ export type User = {
 
 export type Category = {
     id?: number;
-    name?: string;
-    type?: 'PLACE' | 'JOB' | 'EVENT';
+    subCategory?: string;
+    type?: 'PLACE' | 'JOB' | 'EVENT' | 'DEAL';
     createdAt?: string;
     createdBy?: User;
 };
