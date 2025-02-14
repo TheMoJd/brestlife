@@ -14,7 +14,7 @@ public class CategoryEntity {
     private Integer id;
 
     @Column(nullable = false, unique = true, length = 100)
-    private String name;
+    private String subCategory;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
