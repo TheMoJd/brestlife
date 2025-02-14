@@ -77,7 +77,7 @@ export function DealsPage() {
                         <div className="flex justify-between items-start mb-4">
                             <div>
                 <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm mb-2">
-                  {deal.category?.name}
+                  {deal.category?.subCategory}
                 </span>
                                 <h2 className="text-xl font-semibold">{deal.title}</h2>
                                 <p className="text-gray-600">{deal.company}</p>
