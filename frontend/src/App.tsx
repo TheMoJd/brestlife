@@ -11,6 +11,8 @@ import EventsPage from './pages/EventsPage';
 import DealsPage from './pages/DealsPage';
 import { Footer } from './sections/Footer';
 import { NavBar } from './sections/NavBar';
+import LoginPage from './pages/LoginPage';
+import { AuthProvider } from './contexts/AuthProvider';
 
 function App() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,6 +26,7 @@ function App() {
     ];
 
   return (
+    <AuthProvider>
     <Router>
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <NavBar navItems={navItems} />
@@ -36,12 +39,16 @@ function App() {
               <Route path="/emplois" element={<JobsPage />} />
               <Route path="/evenements" element={<EventsPage />} />
               <Route path="/bons-plans" element={<DealsPage />} />
+              <Route path="/login" element={<LoginPage />} />
+
             </Routes>
           </div>
         </main>
         <Footer navItems={navItems}/>
       </div>
     </Router>
+    </AuthProvider>
+
   );
 }
 
