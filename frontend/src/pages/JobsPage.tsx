@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Search, Building2, Calendar, MapPin } from 'lucide-react';
 import { listJobs } from '../gen/openapi';
 import { Job } from '../gen/openapi';
@@ -53,16 +53,6 @@ export function JobsPage() {
   if (error) {
     return <div className="text-center text-red-500 py-10">{error}</div>;
   }
-  // const [filters, setFilters] = useState({
-  //   type: '',
-  //   location: ''
-  // });
-
-  // const filteredJobs = jobs.filter(job => {
-  //   if (filters.type && job.type !== filters.type) return false;
-  //   if (filters.location && !job.location.includes(filters.location)) return false;
-  //   return true;
-  // });
 
   return (
     <div className="py-8">
@@ -93,16 +83,6 @@ export function JobsPage() {
             <option value="Stage">Stage</option>
           </select>}
           
-          {/* <select
-            value={filters.location}
-            onChange={(e) => setFilters(f => ({ ...f, location: e.target.value }))}
-            className="px-4 py-2 border rounded-lg"
-          >
-            <option value="">Toutes les zones</option>
-            <option value="Centre">Centre</option>
-            <option value="Port">Port</option>
-            <option value="Technopôle">Technopôle</option>
-          </select> */}
         </div>
           
       </div>
