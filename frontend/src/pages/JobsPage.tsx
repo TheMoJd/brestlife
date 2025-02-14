@@ -1,57 +1,68 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Search, Building2, Calendar, MapPin } from 'lucide-react';
+import { listJobs } from '../gen/openapi';
+import { Job } from '../gen/openapi';
+import { useSearchFilter } from '../hooks/useSearchFilter';
 
-type Job = {
-  id: number;
-  title: string;
-  company: string;
-  type: string;
-  location: string;
-  startDate: string;
-  description: string;
-};
-
-const jobs: Job[] = [
-  {
-    id: 1,
-    title: 'Développeur Full Stack',
-    company: 'Tech Océan',
-    type: 'CDI',
-    location: 'Brest - Technopôle',
-    startDate: 'Dès que possible',
-    description: 'Nous recherchons un développeur full stack pour rejoindre notre équipe...'
-  },
-  {
-    id: 2,
-    title: 'Stage Marketing Digital',
-    company: 'StartUp Brestoise',
-    type: 'Stage',
-    location: 'Brest - Centre',
-    startDate: 'Septembre 2024',
-    description: 'Stage de 6 mois en marketing digital et communication...'
-  },
-  {
-    id: 3,
-    title: 'Commercial B2B',
-    company: 'Marine Solutions',
-    type: 'CDD',
-    location: 'Brest - Port',
-    startDate: 'Juillet 2024',
-    description: 'Poste de commercial pour développer notre portefeuille clients...'
-  }
-];
 
 export function JobsPage() {
-  const [filters, setFilters] = useState({
-    type: '',
-    location: ''
-  });
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  const [filters, setFilters] = useState({ typeOfContract: ''});
 
-  const filteredJobs = jobs.filter(job => {
-    if (filters.type && job.type !== filters.type) return false;
-    if (filters.location && !job.location.includes(filters.location)) return false;
-    return true;
-  });
+  useEffect(() => {
+    async function loadJobs() {
+      try {
+        setLoading(true);
+        const response = await listJobs();
+        if (response.data) {
+          setJobs(response.data);
+        } else {
+          setError('Échec du chargement des offres d\'emploi.');
+        }
+      } catch (err) {
+        setError('Échec du chargement des offres d\'emploi.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadJobs();
+  }, []);
+
+  // Utilisation du hook de recherche (recherche par nom)
+  const { filteredItems: searchedJobs, searchQuery, setSearchQuery } = useSearchFilter(jobs, ['title']);
+  
+    // Filtrage par prix
+  const filteredJobs = useMemo(() => {
+    return searchedJobs.filter((job) => {
+      if (filters.typeOfContract === '') return true;
+      if (filters.typeOfContract === 'CDI') return job.category?.name === 'CDI';
+      if (filters.typeOfContract === 'CDD') return job.category?.name === 'CDD';
+      if (filters.typeOfContract === 'Stage') return job.category?.name === 'Stage';
+      return false;
+    });
+  }, [searchedJobs, filters.typeOfContract]);
+
+  if (loading) {
+    return <div className="text-center text-gray-500 py-10">Chargement...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center text-red-500 py-10">{error}</div>;
+  }
+  // const [filters, setFilters] = useState({
+  //   type: '',
+  //   location: ''
+  // });
+
+  // const filteredJobs = jobs.filter(job => {
+  //   if (filters.type && job.type !== filters.type) return false;
+  //   if (filters.location && !job.location.includes(filters.location)) return false;
+  //   return true;
+  // });
 
   return (
     <div className="py-8">
@@ -60,17 +71,19 @@ export function JobsPage() {
         
         {/* Search and Filters */}
         <div className="mt-4 md:mt-0 flex flex-wrap gap-4">
-          <div className="relative">
+          <div className="relative w-full md:w-auto">
             <input
               type="text"
-              placeholder="Rechercher un poste..."
-              className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Rechercher un lieu..."
+              className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full"
             />
             <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
           </div>
           
-          <select
-            value={filters.type}
+          { <select
+            value={filters.typeOfContract}
             onChange={(e) => setFilters(f => ({ ...f, type: e.target.value }))}
             className="px-4 py-2 border rounded-lg"
           >
@@ -78,9 +91,9 @@ export function JobsPage() {
             <option value="CDI">CDI</option>
             <option value="CDD">CDD</option>
             <option value="Stage">Stage</option>
-          </select>
+          </select>}
           
-          <select
+          {/* <select
             value={filters.location}
             onChange={(e) => setFilters(f => ({ ...f, location: e.target.value }))}
             className="px-4 py-2 border rounded-lg"
@@ -89,25 +102,26 @@ export function JobsPage() {
             <option value="Centre">Centre</option>
             <option value="Port">Port</option>
             <option value="Technopôle">Technopôle</option>
-          </select>
+          </select> */}
         </div>
+          
       </div>
 
       {/* Jobs List */}
       <div className="space-y-6">
-        {filteredJobs.map((job) => (
+        {searchedJobs.map((job) => (
           <div key={job.id} className="bg-white rounded-lg shadow-md p-6">
             <div className="flex flex-col md:flex-row justify-between md:items-center mb-4">
               <div>
                 <h2 className="text-xl font-semibold mb-2">{job.title}</h2>
                 <div className="flex items-center text-gray-600 mb-2">
                   <Building2 className="w-4 h-4 mr-2" />
-                  <span>{job.company}</span>
+                  <span>{job.companyName}</span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
                 <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                  {job.type}
+                  {job.category?.name}
                 </span>
               </div>
             </div>
