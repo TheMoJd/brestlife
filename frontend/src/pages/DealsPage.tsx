@@ -2,7 +2,6 @@ import {Search, Tag, MapPin, ExternalLink} from 'lucide-react';
 import {Deal, listDeals} from "../gen/openapi";
 import {useEffect, useState} from "react";
 
-
 export function DealsPage() {
     const [filters, setFilters] = useState({
         category: '',
