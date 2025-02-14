@@ -10,7 +10,7 @@ export function JobsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
-  const [filters, setFilters] = useState({ typeOfContract: ''});
+  const [filters, setFilters] = useState({ duration: ''});
 
   useEffect(() => {
     async function loadJobs() {
@@ -38,14 +38,14 @@ export function JobsPage() {
     // Filtrage par prix
   const filteredJobs = useMemo(() => {
     return searchedJobs.filter((job) => {
-      if (filters.typeOfContract === '') return true;
-      if (filters.typeOfContract === 'CDI') return job.category?.name === 'CDI';
-      if (filters.typeOfContract === 'CDD') return job.category?.name === 'CDD';
-      if (filters.typeOfContract === 'Stage') return job.category?.name === 'Stage';
+      if (filters.duration === '') return true;
+      if (filters.duration === 'CDI') return job.duration === 'CDI';
+      if (filters.duration === 'CDD') return job.duration === 'CDD';
+      if (filters.duration === 'Stage') return job.duration === 'Stage';
       return false;
     });
-  }, [searchedJobs, filters.typeOfContract]);
-
+  }, [searchedJobs, filters.duration]);
+  console.log(filteredJobs);
   if (loading) {
     return <div className="text-center text-gray-500 py-10">Chargement...</div>;
   }
@@ -73,8 +73,8 @@ export function JobsPage() {
           </div>
           
           { <select
-            value={filters.typeOfContract}
-            onChange={(e) => setFilters(f => ({ ...f, type: e.target.value }))}
+            value={filters.duration}
+            onChange={(e) => setFilters(f => ({ ...f, duration: e.target.value }))}
             className="px-4 py-2 border rounded-lg"
           >
             <option value="">Tous les types</option>
@@ -89,7 +89,7 @@ export function JobsPage() {
 
       {/* Jobs List */}
       <div className="space-y-6">
-        {searchedJobs.map((job) => (
+        {filteredJobs.map((job) => (
           <div key={job.id} className="bg-white rounded-lg shadow-md p-6">
             <div className="flex flex-col md:flex-row justify-between md:items-center mb-4">
               <div>
@@ -101,7 +101,7 @@ export function JobsPage() {
               </div>
               <div className="flex flex-wrap gap-2 mt-2 md:mt-0">
                 <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                  {job.category?.name}
+                  {job.duration}
                 </span>
               </div>
             </div>
