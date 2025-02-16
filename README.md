@@ -1,6 +1,6 @@
 # Cahier des charges
 
-# Présentation de l’équipe
+## Présentation de l’équipe
 
 - **Mathurin Hauville**
     - BDD, Back-end
@@ -9,18 +9,20 @@
 - **Gatien Bertin**
     - BDD, Front-end
 
-# Commandes
+## Configuration de l'environnement de développement
 
-Lancer la base de données
+### Base de données
+
+Lancer la base de données :
 
 ```bash
 make db_up
 ```
 
-Restaurer la dernière sauvegarde
+Restaurer la dernière sauvegarde :
 
 ```bash
-make resore
+make restore
 ```
 
 Exporter la base de données
