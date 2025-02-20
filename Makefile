@@ -30,5 +30,5 @@ dump:
 	docker compose -f compose-postgres.yml exec postgres sh -c 'pg_dump -U ${POSTGRES_USER} -d ${POSTGRES_DB} > /backups/dump.sql'
 
 # Restore the database from the file backups/dump.sql
-restore: clear_db
+restore: db_clean
 	docker compose -f compose-postgres.yml exec postgres sh -c 'psql -U $$POSTGRES_USER -d $$POSTGRES_DB < /backups/dump.sql'
