@@ -1,0 +1,16 @@
+node_modules
+.git
+.github
+.gitignore
+.idea
+.DS_Store
+Makefile
+*.md
+compose-postgres.yml
+*/dist
+*/.output
+*/build
+*/target
+*Dockerfile*
+.dockerignore
+backups
