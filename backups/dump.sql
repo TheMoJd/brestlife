@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
--- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped from database version 17.3 (Debian 17.3-1.pgdg120+1)
+-- Dumped by pg_dump version 17.3 (Debian 17.3-1.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,22 +16,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: dev
---
-
--- *not* creating schema, since initdb creates it
-
-
-ALTER SCHEMA public OWNER TO dev;
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: dev
---
-
-COMMENT ON SCHEMA public IS '';
-
 
 SET default_tablespace = '';
 
@@ -118,7 +102,8 @@ CREATE TABLE public.events (
     price double precision,
     title character varying(200) NOT NULL,
     category_id integer NOT NULL,
-    created_by integer
+    created_by integer,
+    summary text
 );
 
 
@@ -283,9 +268,9 @@ COPY public.deals (id, created_at, description, link, title, updated_at, categor
 -- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: dev
 --
 
-COPY public.events (id, created_at, date, description, image_url, location, price, title, category_id, created_by) FROM stdin;
-1	2025-02-09 11:46:10	2025-02-15 19:00:00	Concert de jazz avec des artistes locaux.	/img/concert.jpg	Salle de Concert de Brest	20	Concert de Jazz	1	1
-2	2025-02-10 12:00:00	2025-02-16 10:00:00	Conférence sur l'intelligence artificielle.	/img/conference.jpg	Université de Brest	10	Conférence IA	1	3
+COPY public.events (id, created_at, date, description, image_url, location, price, title, category_id, created_by, summary) FROM stdin;
+1	2025-02-09 11:46:10	2025-02-15 19:00:00	Venez découvrir un concert de jazz exceptionnel mettant en avant des artistes locaux talentueux. Ce concert unique se déroulera dans une ambiance chaleureuse et conviviale, où chaque artiste aura l'opportunité de montrer son talent à travers une série de compositions originales et des reprises classiques du jazz. Le concert commencera à 19h00 et sera suivi d'une session de questions-réponses avec les musiciens. Ne manquez pas cette soirée musicale inoubliable.	/img/concert.jpg	Salle de Concert de Brest	20	Concert de Jazz	1	1	Concert de jazz avec des artistes locaux.
+2	2025-02-10 12:00:00	2025-02-16 10:00:00	Rejoignez-nous pour une conférence captivante sur l'intelligence artificielle, où des experts du domaine partageront leurs connaissances sur les dernières avancées technologiques. Cette conférence abordera des sujets variés allant des algorithmes d'apprentissage automatique aux implications éthiques de l'IA dans la société. L'événement aura lieu dans l'auditorium principal de l'Université de Brest, avec une session de networking à la fin pour échanger avec les conférenciers et les autres participants. Ne manquez pas cette occasion unique de comprendre les enjeux actuels de l'IA.	/img/conference.jpg	Université de Brest	10	Conférence IA	1	3	Conférence sur l'intelligence artificielle.
 \.
 
 
@@ -496,13 +481,6 @@ ALTER TABLE ONLY public.events
 
 ALTER TABLE ONLY public.deals
     ADD CONSTRAINT fkpnyh4swmor0cfhfjaefm5o9gh FOREIGN KEY (category_id) REFERENCES public.categories(id);
-
-
---
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dev
---
-
-REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 
 
 --
