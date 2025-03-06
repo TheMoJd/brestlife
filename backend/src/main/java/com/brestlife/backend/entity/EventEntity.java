@@ -20,6 +20,9 @@ public class EventEntity {
     @Column(nullable = false, length = 200)
     private String title;
 
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String summary;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 

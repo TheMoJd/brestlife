@@ -13,8 +13,8 @@ public class CategoryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true, length = 100)
-    private String name;
+    @Column(nullable = false, unique = true, length = 100, name = "sub_category")
+    private String subCategory;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
