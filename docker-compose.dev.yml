@@ -1,0 +1,65 @@
+# Fichier de configuration pour le développement
+# Permet de tester l'application en local avant de mettre en production
+
+services:
+
+  # Base de données PostgreSQL
+  db:
+    image: postgres:latest
+    container_name: db
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+
+  #  API Spring Boot
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    ports:
+      - "8082:8080"
+#    env_file:
+#      - backend/.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE=db
+      - SPRING_DATASOURCE_PORT=5432
+      - SPRING_DATASOURCE_DBNAME=brestlife
+      - SPRING_DATASOURCE_USERNAME=dev
+      - SPRING_DATASOURCE_PASSWORD=dev
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  # Frontend React
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: frontend
+    restart: unless-stopped
+    ports:
+      - "5175:5173"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
