@@ -10,11 +10,11 @@ RUN mvn package -DskipTests
 
 FROM amazoncorretto:21-alpine AS runtime
 
-ENV SPRING_DATASOURCE=localhost
-ENV SPRING_DATASOURCE_PORT=5432
-ENV SPRING_DATASOURCE_DB=postgres
-ENV SPRING_DATASOURCE_USERNAME=postgres
-ENV SPRING_DATASOURCE_PASSWORD=postgres
+RUN --mount=type=secret,id=datasource,env=SPRING_DATASOURCE \
+    --mount=type=secret,id=datasource_port,env=SPRING_DATASOURCE_PORT \
+    --mount=type=secret,id=datasource_db,env=SPRING_DATASOURCE_DB \
+    --mount=type=secret,id=datasource_username,env=SPRING_DATASOURCE_USERNAME \
+    --mount=type=secret,id=datasource_password,env=SPRING_DATASOURCE_PASSWORD \
 
 WORKDIR /app/backend
 COPY --from=build /app/backend/target/*.jar app.jar

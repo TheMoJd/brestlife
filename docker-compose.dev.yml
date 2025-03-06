@@ -22,22 +22,24 @@ services:
 
   #  API Spring Boot
   backend:
+    env_file:
+      - backend/.env
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE=db
     build:
       context: .
       dockerfile: backend.Dockerfile
+      secrets:
+        - datasource=db
+        - datasource_port=5432
+        - datasource_dbname=brestlife
+        - datasource_username=dev
+        - datasource_password=dev
     container_name: backend
     restart: unless-stopped
     ports:
       - "8082:8080"
-#    env_file:
-#      - backend/.env
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - SPRING_DATASOURCE=db
-      - SPRING_DATASOURCE_PORT=5432
-      - SPRING_DATASOURCE_DBNAME=brestlife
-      - SPRING_DATASOURCE_USERNAME=dev
-      - SPRING_DATASOURCE_PASSWORD=dev
     depends_on:
       - db
     networks:

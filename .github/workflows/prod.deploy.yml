@@ -1,0 +1,65 @@
+name: Build and deploy to prod
+
+on:
+  push:
+    branches:
+      - feature/deployment
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      actions: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Login to GitHub Packages
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare metadata for backend
+        id: meta_backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend-test
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: backend.Dockerfile
+          push: true
+          tags: ${{ steps.meta_backend.outputs.tags }}
+          platforms: linux/amd64
+          secrets: |
+            datasource=${{ secrets.DB_SOURCE }}
+            datasource_port=${{ secrets.DB_PORT }}
+            datasource_dbname=${{ secrets.DB_NAME }}
+            datasource_username=${{ secrets.DB_USER }}
+            datasource_password=${{ secrets.DB_PASS }}
+
+#      - name: Deploy the new images
+#        uses: appleboy/ssh-action@master
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USER }}
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+#          script: |
+#            make -C stacks/prod deploy
