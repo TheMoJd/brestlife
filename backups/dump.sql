@@ -251,6 +251,9 @@ COPY public.categories (id, created_at, sub_category, type, created_by) FROM std
 3	2025-02-11 13:45:00	Restaurant	PLACE	2
 4	2025-02-12 14:50:00	Technologie	JOB	3
 5	2025-02-13 15:20:00	Shopping	DEAL	3
+7	2025-03-06 15:13:46	CDD	JOB	1
+8	2025-03-06 15:14:09	Stage	JOB	1
+9	2025-03-06 15:15:18	CDI	JOB	1
 \.
 
 
@@ -279,8 +282,8 @@ COPY public.events (id, created_at, date, description, image_url, location, pric
 --
 
 COPY public.jobs (id, company_name, contact_email, created_at, description, duration, end_date, location, start_date, title, category_id, created_by) FROM stdin;
-1	TechInnov	contact@techinnov.com	2025-02-11 13:45:00	Développeur full-stack avec expérience en React et Node.js.	CDI	2025-12-31	Brest	2025-03-01	Développeur Full-Stack	4	3
-2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Serveur pour service du soir.	CDD	2025-06-30	Brest	2025-03-01	Serveur	3	2
+2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Serveur pour service du soir.	CDD	2025-06-30	Brest	2025-03-01	Serveur	7	2
+1	TechInnov	contact@techinnov.com	2025-02-11 13:45:00	Développeur full-stack avec expérience en React et Node.js.	CDI	2025-12-31	Brest	2025-03-01	Développeur Full-Stack	8	3
 \.
 
 
@@ -309,7 +312,7 @@ COPY public.users (id, name, email, password, created_at, role, updated_at) FROM
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 5, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 9, true);
 
 
 --
