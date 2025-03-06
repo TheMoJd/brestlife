@@ -543,6 +543,8 @@ components:
           format: int32
         name:
           type: string
+        summary:
+          type: string
         description:
           type: string
         category:
