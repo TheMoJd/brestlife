@@ -34,7 +34,6 @@
         <postgresql.version>42.7.5</postgresql.version>
         <lombok.version>1.18.36</lombok.version>
         <lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
-        <dotenv.version>3.1.0</dotenv.version>
         <swagger.annotations.version>2.2.28</swagger.annotations.version>
         <jakarta.annotations.version>3.0.0</jakarta.annotations.version>
         <javax.validation.version>2.0.1.Final</javax.validation.version>
@@ -94,13 +93,6 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/io.github.cdimascio/dotenv-java -->
-        <dependency>
-            <groupId>io.github.cdimascio</groupId>
-            <artifactId>dotenv-java</artifactId>
-            <version>${dotenv.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations-jakarta -->
