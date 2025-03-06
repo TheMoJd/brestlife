@@ -50,6 +50,7 @@ export type Job = {
 export type Event = {
     id?: number;
     title?: string;
+    summary?: string;
     description?: string;
     category?: Category;
     date?: string;

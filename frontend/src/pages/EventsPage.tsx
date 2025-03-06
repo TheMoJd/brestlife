@@ -10,6 +10,7 @@ export function EventsPage() {
     const [error, setError] = useState<string | null>(null);
     const [filters, setFilters] = useState({ category: '', price: [0, 100] });
     const [showPriceFilter, setShowPriceFilter] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -140,12 +141,15 @@ export function EventsPage() {
                                         {event.price && event.price > 0 ? `${event.price}€` : 'Gratuit'}
                                     </span>
                                 </div>
-                                <p className="text-gray-600 mb-4">{event.description}</p>
+                                <p className="text-gray-600 mb-4">{event.summary}</p>
                                 <div className="flex items-center text-gray-500 mb-4">
                                     <MapPin className="w-4 h-4 mr-2" />
                                     <span className="text-sm">{event.location || 'évènement inconnu'}</span>
                                 </div>
-                                <button className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                <button
+                                    className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                                    onClick={() => setSelectedEvent(event)}
+                                >
                                     En savoir plus
                                 </button>
                             </div>
@@ -155,6 +159,42 @@ export function EventsPage() {
                     <p className="text-center text-gray-500 col-span-full">Aucun évènement trouvé.</p>
                 )}
             </div>
+
+            {selectedEvent && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                        <h2 className="text-2xl font-bold mb-4">{selectedEvent.title}</h2>
+                        <img
+                            src={selectedEvent.imageUrl || 'https://via.placeholder.com/300'}
+                            alt={selectedEvent.title}
+                            className="w-full h-48 object-cover mb-4"
+                        />
+                        <div className="flex justify-between items-start mb-2">
+                            <h2 className="text-xl font-semibold">{selectedEvent.title}</h2>
+                            <span
+                                className={`px-2 py-1 rounded text-sm ${
+                                    selectedEvent.price && selectedEvent.price > 0 ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                                }`}
+                            >
+                                        {selectedEvent.price && selectedEvent.price > 0 ? `${selectedEvent.price}€` : 'Gratuit'}
+                                    </span>
+                        </div>
+                        <p className="text-gray-600 mb-4">{selectedEvent.description}</p>
+                        <div className="flex items-center text-gray-500 mb-4">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            <span className="text-sm">{selectedEvent.location || 'évènement inconnu'}</span>
+                        </div>
+                        <div className="flex justify-end">
+                            <button
+                                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                                onClick={() => setSelectedEvent(null)}
+                            >
+                                Fermer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
