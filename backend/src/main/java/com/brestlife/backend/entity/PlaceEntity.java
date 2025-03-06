@@ -17,6 +17,9 @@ public class PlaceEntity {
     @Column(nullable = false, length = 150)
     private String name;
 
+    @Column(nullable = true, length = 200)
+    private String summary;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 

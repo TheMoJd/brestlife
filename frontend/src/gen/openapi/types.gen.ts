@@ -21,6 +21,7 @@ export type Category = {
 export type Place = {
     id?: number;
     name?: string;
+    summary?: string;
     description?: string;
     category?: Category;
     address?: string;
