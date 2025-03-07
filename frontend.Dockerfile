@@ -6,9 +6,6 @@ COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install --frozen-lockfile
 
 COPY frontend ./
-RUN rm .env
-
-RUN ls -la
 
 RUN npm run build  # Génère le build de production
 

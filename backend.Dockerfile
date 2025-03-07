@@ -6,7 +6,6 @@ COPY backend/pom.xml ./
 RUN mvn dependency:go-offline
 
 COPY backend ./
-RUN ls -la
 
 RUN mvn package -DskipTests
 
