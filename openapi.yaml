@@ -575,6 +575,8 @@ components:
           format: int32
         title:
           type: string
+        summary:
+          type: string
         description:
           type: string
         companyName:

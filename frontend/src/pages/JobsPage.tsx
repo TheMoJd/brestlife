@@ -8,6 +8,7 @@ import { useSearchFilter } from '../hooks/useSearchFilter';
 export function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const [error, setError] = useState<string | null>(null);
   
   const [filters, setFilters] = useState({ duration: ''});
@@ -106,7 +107,7 @@ export function JobsPage() {
               </div>
             </div>
             
-            <p className="text-gray-600 mb-4">{job.description}</p>
+            <p className="text-gray-600 mb-4">{job.summary || 'Résumé non disponible'}</p>
             
             <div className="flex flex-wrap gap-4 text-sm text-gray-500">
               <div className="flex items-center">
@@ -123,13 +124,49 @@ export function JobsPage() {
               <button className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
                 Postuler
               </button>
-              <button className="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors">
+              <button className="flex-1 border border-blue-600 text-blue-600 py-2 px-4 rounded-lg hover:bg-blue-50 transition-colors"
+              onClick={() => setSelectedJob(job)}>
                 En savoir plus
               </button>
             </div>
           </div>
         ))}
       </div>
+      {selectedJob && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+              <h2 className="text-2xl font-bold mb-4">{selectedJob.title}</h2>
+              <div className="flex justify-between items-start mb-2">
+                <h2 className="text-xl font-semibold">{selectedJob.companyName}</h2>
+                <span
+                    className={`px-2 py-1 rounded text-sm bg-blue-100 text-blue-800`}
+                >
+                    {selectedJob.duration}
+                </span>
+              </div>
+              <p className="text-gray-600 mb-4">{selectedJob.description}</p>
+              <div className="flex items-center text-gray-500 mb-4">
+                <MapPin className="w-4 h-4 mr-2" />
+                <span className="text-sm">{selectedJob.location || 'évènement inconnu'}</span>
+              </div>
+              <div className="flex items-center text-gray-500 mb-4">
+                <Calendar className="w-4 h-4 mr-2" />
+                <span className="text-sm">{selectedJob.startDate} - {selectedJob.endDate}</span>
+              </div>
+              <div className="flex justify-end">
+                <button className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors mr-4">
+                  Postuler
+                </button>
+                <button
+                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                    onClick={() => setSelectedJob(null)}
+                >
+                  Fermer
+                </button>
+              </div>
+            </div>
+          </div>
+      )}
     </div>
   );
 }
