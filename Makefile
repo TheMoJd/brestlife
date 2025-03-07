@@ -38,3 +38,15 @@ backend_up:
 
 frontend_up:
 	docker compose -f docker-compose.dev.yml up -d frontend --build
+
+push_backend:
+	docker buildx build --push \
+	  --platform linux/amd64 \
+	  --file backend.Dockerfile \
+	  -t ghcr.io/mathurinhauville/brestlife-backend:main .
+
+push_frontend:
+	docker buildx build --push \
+	  --platform linux/amd64 \
+	  --file frontend.Dockerfile \
+	  -t ghcr.io/mathurinhauville/brestlife-frontend:main .
