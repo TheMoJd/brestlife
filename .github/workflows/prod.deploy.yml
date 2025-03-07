@@ -33,7 +33,7 @@ jobs:
         id: meta_backend
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend-test
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
           tags: |
             type=ref,event=branch
             type=ref,event=pr
@@ -47,19 +47,33 @@ jobs:
           push: true
           tags: ${{ steps.meta_backend.outputs.tags }}
           platforms: linux/amd64
-          secrets: |
-            datasource=${{ secrets.DB_SOURCE }}
-            datasource_port=${{ secrets.DB_PORT }}
-            datasource_dbname=${{ secrets.DB_NAME }}
-            datasource_username=${{ secrets.DB_USER }}
-            datasource_password=${{ secrets.DB_PASS }}
 
-#      - name: Deploy the new images
-#        uses: appleboy/ssh-action@master
-#        with:
-#          host: ${{ secrets.SSH_HOST }}
-#          username: ${{ secrets.SSH_USER }}
-#          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-#          script: |
-#            make -C stacks/prod deploy
+      - name: Prepare metadata for frontend
+        id: meta_frontend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: frontend.Dockerfile
+          push: true
+          tags: ${{ steps.meta_frontend.outputs.tags }}
+          platforms: linux/amd64
+
+      - name: Deploy the new images
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            docker service update brestlife_prod_frontend
+            docker service update brestlife_prod_backend

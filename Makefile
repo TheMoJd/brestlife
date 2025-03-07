@@ -41,12 +41,16 @@ frontend_up:
 
 push_backend:
 	docker buildx build --push \
+	  --no-cache \
+	  --progress=plain \
 	  --platform linux/amd64 \
 	  --file backend.Dockerfile \
-	  -t ghcr.io/mathurinhauville/brestlife-backend:main .
+	  -t ghcr.io/TheMoJd/brestlife-backend:main .
 
 push_frontend:
 	docker buildx build --push \
+	  --no-cache \
+	  --progress=plain \
 	  --platform linux/amd64 \
 	  --file frontend.Dockerfile \
-	  -t ghcr.io/mathurinhauville/brestlife-frontend:main .
+	  -t ghcr.io/TheMoJd/brestlife-frontend:main .
