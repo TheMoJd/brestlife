@@ -12,8 +12,8 @@ export type User = {
 
 export type Category = {
     id?: number;
-    subCategory?: string;
-    type?: 'PLACE' | 'JOB' | 'EVENT' | 'DEAL';
+    name?: string;
+    type?: 'PLACE' | 'JOB' | 'EVENT';
     createdAt?: string;
     createdBy?: User;
 };
@@ -21,7 +21,6 @@ export type Category = {
 export type Place = {
     id?: number;
     name?: string;
-    summary?: string;
     description?: string;
     category?: Category;
     address?: string;
@@ -51,7 +50,6 @@ export type Job = {
 export type Event = {
     id?: number;
     title?: string;
-    summary?: string;
     description?: string;
     category?: Category;
     date?: string;
@@ -117,6 +115,7 @@ export type AuthenticateUserResponses = {
      */
     200: {
         token?: string;
+        user?: User;
     };
 };
 

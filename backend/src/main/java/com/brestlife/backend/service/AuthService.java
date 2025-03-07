@@ -28,9 +28,17 @@ public class AuthService {
             // Vérification du mot de passe en clair (⚠️ Peu sécurisé, à remplacer par un hash)
             if (request.getPassword().equals(user.getPassword())) {
                 // Simuler un token JWT (à remplacer par une vraie gestion JWT)
-                //String token = "fake-jwt-token-" + user.getId();
                 String token = "fake-jwt-token-" + user.getId();
-                return Optional.of(new AuthenticateUser200Response().token(token));
+                // Mapper UserEntity vers DTO User
+                User userDto = new User()
+                        .id(user.getId().intValue())
+                        .name(user.getName())
+                        .email(user.getEmail())
+                        .role(user.getRole())
+                        .createdAt(user.getCreatedAt())
+                        .updatedAt(user.getUpdatedAt());
+
+                return Optional.of(new AuthenticateUser200Response().token(token).user(userDto));
             }
         }
         return Optional.empty();

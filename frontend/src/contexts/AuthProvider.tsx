@@ -1,63 +1,46 @@
-import { createContext, useState, useEffect, useContext, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from "react";
+import { User } from "../gen/openapi/types.gen";
 
-// Définition des types
-interface AuthContextType {
-  user: any;
-  login: (email: string, password: string) => Promise<void>;
+
+
+type AuthContextType = {
+  user: User | null;
+  token: string | null;
+  login: (user: User, token: string) => void;
   logout: () => void;
-  isAuthenticated: boolean;
-}
+};
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const login = async (email: string, password: string) => {
-    try {
-      const response = await fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (!response.ok) throw new Error('Identifiants incorrects');
-      
-      const data = await response.json();
-      localStorage.setItem('user', JSON.stringify(data));
-      setUser(data);
-      setIsAuthenticated(true);
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+  const login = (user: User, token: string) => {
+    setUser(user);
+    setToken(token);
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
   };
 
   const logout = () => {
-    localStorage.removeItem('user');
     setUser(null);
-    setIsAuthenticated(false);
+    setToken(null);
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-// Hook personnalisé pour utiliser l'auth
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth doit être utilisé dans AuthProvider');
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
 };
