@@ -1,153 +1,200 @@
-import {Calendar as CalendarIcon, MapPin, Clock, Tag} from 'lucide-react';
-import {useState} from "react";
-
-type Event = {
-    id: number;
-    title: string;
-    date: string;
-    time: string;
-    location: string;
-    price: string;
-    category: string;
-    description: string;
-    image: string;
-};
-
-const events: Event[] = [
-    {
-        id: 1,
-        title: 'Festival de la Mer',
-        date: '2024-07-15',
-        time: '10:00 - 23:00',
-        location: 'Port de Brest',
-        price: 'Gratuit',
-        category: 'Festival',
-        description: 'Grand festival maritime avec concerts, expositions et animations.',
-        image: 'https://images.unsplash.com/photo-1533230387656-9748ba6c4984?auto=format&fit=crop&q=80'
-    },
-    {
-        id: 2,
-        title: 'Conférence Tech',
-        date: '2024-06-20',
-        time: '14:00 - 18:00',
-        location: 'UBO',
-        price: '5€',
-        category: 'Conférence',
-        description: 'Conférence sur les dernières innovations technologiques.',
-        image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80'
-    },
-    {
-        id: 3,
-        title: 'Concert Étudiant',
-        date: '2024-05-30',
-        time: '20:00 - 00:00',
-        location: 'La Carène',
-        price: '10€',
-        category: 'Concert',
-        description: 'Soirée musicale avec des groupes locaux.',
-        image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&q=80'
-    }
-];
+import { MapPin, Search } from 'lucide-react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { Event } from '../gen/openapi';
+import { listEvents } from '../gen/openapi';
+import { useSearchFilter } from "../hooks/useSearchFilter.ts";
 
 export function EventsPage() {
-    const [filters, setFilters] = useState({
-        category: '',
-        price: ''
-    });
+    const [events, setEvents] = useState<Event[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [filters, setFilters] = useState({ category: '', price: [0, 100] });
+    const [showPriceFilter, setShowPriceFilter] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const filteredEvents = events.filter(event => {
-        if (filters.category && event.category !== filters.category) return false;
-        if (filters.price === 'gratuit' && event.price !== 'Gratuit') return false;
-        if (filters.price === 'payant' && event.price === 'Gratuit') return false;
-        return true;
-    });
+    useEffect(() => {
+        async function fetchEvents() {
+            try {
+                setLoading(true);
+                const response = await listEvents();
+                if (response.data) {
+                    setEvents(response.data);
+                } else {
+                    setError('Response data is undefined');
+                }
+            } catch (error) {
+                setError('Échec du chargement des événements');
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchEvents();
+    }, []);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setShowPriceFilter(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [dropdownRef]);
+
+    const { filteredItems: searchedEvents, searchQuery, setSearchQuery } = useSearchFilter(events, ['title', 'description', 'location']);
+
+    const filteredEvents = useMemo(() => {
+        return searchedEvents.filter((event) => {
+            if (filters.category && event.category !== filters.category) return false;
+            if (event.price === undefined || event.price < filters.price[0] || event.price > filters.price[1]) return false;
+            return true;
+        });
+    }, [searchedEvents, filters]);
+
+    if (loading) {
+        return <div className="text-center text-gray-500 py-10">Chargement...</div>;
+    }
+
+    if (error) {
+        return <div className="text-center text-red-500 py-10">{error}</div>;
+    }
 
     return (
         <div className="py-8">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
                 <h1 className="text-3xl font-bold">Événements</h1>
 
-                {/* Filters */}
                 <div className="mt-4 md:mt-0 flex flex-wrap gap-4">
-                    <select
-                        value={filters.category}
-                        onChange={(e) => setFilters(f => ({...f, category: e.target.value}))}
-                        className="px-4 py-2 border rounded-lg"
-                    >
-                        <option value="">Toutes les catégories</option>
-                        <option value="Festival">Festival</option>
-                        <option value="Conférence">Conférence</option>
-                        <option value="Concert">Concert</option>
-                    </select>
+                    <div className="relative w-full md:w-auto">
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Rechercher un évenement..."
+                            className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full"
+                        />
+                        <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
+                    </div>
 
-                    <select
-                        value={filters.price}
-                        onChange={(e) => setFilters(f => ({...f, price: e.target.value}))}
-                        className="px-4 py-2 border rounded-lg"
-                    >
-                        <option value="">Tous les prix</option>
-                        <option value="gratuit">Gratuit</option>
-                        <option value="payant">Payant</option>
-                    </select>
+                    <div className="relative" ref={dropdownRef}>
+                        <div
+                            onClick={() => setShowPriceFilter(!showPriceFilter)}
+                            className="px-4 py-2 border rounded-lg cursor-pointer"
+                        >
+                            Filtrer le prix
+                        </div>
+                        {showPriceFilter && (
+                            <div className="absolute mt-2 right-0 p-4 bg-white border rounded-lg shadow-lg z-50 w-64">
+                                <label className="block mb-2">Prix: {filters.price[0]}€ - {filters.price[1]}€</label>
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="100"
+                                    value={filters.price[1]}
+                                    onChange={(e) => setFilters(f => ({ ...f, price: [0, parseInt(e.target.value)] }))}
+                                    className="w-full mb-2"
+                                />
+                                <div className="flex gap-2">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={filters.price[0]}
+                                        onChange={(e) => setFilters(f => ({ ...f, price: [parseInt(e.target.value), f.price[1]] }))}
+                                        className="w-full px-2 py-1 border rounded-lg"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={filters.price[1]}
+                                        onChange={(e) => setFilters(f => ({ ...f, price: [f.price[0], parseInt(e.target.value)] }))}
+                                        className="w-full px-2 py-1 border rounded-lg"
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            {/* Events Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredEvents.map((event) => (
-                    <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-                        <div className="relative h-48">
+                {filteredEvents.length > 0 ? (
+                    filteredEvents.map((event) => (
+                        <div key={event.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                             <img
-                                src={event.image}
+                                src={event.imageUrl || 'https://via.placeholder.com/300'}
                                 alt={event.title}
-                                className="w-full h-full object-cover"
+                                className="w-full h-48 object-cover"
                             />
-                            <div className="absolute top-4 right-4">
-                <span className="px-3 py-1 bg-white rounded-full text-sm font-medium">
-                  {event.price}
-                </span>
+                            <div className="p-6">
+                                <div className="flex justify-between items-start mb-2">
+                                    <h2 className="text-xl font-semibold">{event.title}</h2>
+                                    <span
+                                        className={`px-2 py-1 rounded text-sm ${
+                                            event.price && event.price > 0 ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                                        }`}
+                                    >
+                                        {event.price && event.price > 0 ? `${event.price}€` : 'Gratuit'}
+                                    </span>
+                                </div>
+                                <p className="text-gray-600 mb-4">{event.summary}</p>
+                                <div className="flex items-center text-gray-500 mb-4">
+                                    <MapPin className="w-4 h-4 mr-2" />
+                                    <span className="text-sm">{event.location || 'évènement inconnu'}</span>
+                                </div>
+                                <button
+                                    className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                                    onClick={() => setSelectedEvent(event)}
+                                >
+                                    En savoir plus
+                                </button>
                             </div>
                         </div>
+                    ))
+                ) : (
+                    <p className="text-center text-gray-500 col-span-full">Aucun évènement trouvé.</p>
+                )}
+            </div>
 
-                        <div className="p-6">
-                            <div className="flex items-center text-sm text-gray-500 mb-2">
-                                <Tag className="w-4 h-4 mr-1"/>
-                                {event.category}
-                            </div>
-
-                            <h2 className="text-xl font-semibold mb-4">{event.title}</h2>
-
-                            <div className="space-y-2 mb-4">
-                                <div className="flex items-center text-gray-600">
-                                    <CalendarIcon className="w-4 h-4 mr-2"/>
-                                    <span>{new Date(event.date).toLocaleDateString('fr-FR', {
-                                        day: 'numeric',
-                                        month: 'long',
-                                        year: 'numeric'
-                                    })}</span>
-                                </div>
-
-                                <div className="flex items-center text-gray-600">
-                                    <Clock className="w-4 h-4 mr-2"/>
-                                    <span>{event.time}</span>
-                                </div>
-
-                                <div className="flex items-center text-gray-600">
-                                    <MapPin className="w-4 h-4 mr-2"/>
-                                    <span>{event.location}</span>
-                                </div>
-                            </div>
-
-                            <p className="text-gray-600 mb-4">{event.description}</p>
-
+            {selectedEvent && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+                        <h2 className="text-2xl font-bold mb-4">{selectedEvent.title}</h2>
+                        <img
+                            src={selectedEvent.imageUrl || 'https://via.placeholder.com/300'}
+                            alt={selectedEvent.title}
+                            className="w-full h-48 object-cover mb-4"
+                        />
+                        <div className="flex justify-between items-start mb-2">
+                            <h2 className="text-xl font-semibold">{selectedEvent.title}</h2>
+                            <span
+                                className={`px-2 py-1 rounded text-sm ${
+                                    selectedEvent.price && selectedEvent.price > 0 ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                                }`}
+                            >
+                                        {selectedEvent.price && selectedEvent.price > 0 ? `${selectedEvent.price}€` : 'Gratuit'}
+                                    </span>
+                        </div>
+                        <p className="text-gray-600 mb-4">{selectedEvent.description}</p>
+                        <div className="flex items-center text-gray-500 mb-4">
+                            <MapPin className="w-4 h-4 mr-2" />
+                            <span className="text-sm">{selectedEvent.location || 'évènement inconnu'}</span>
+                        </div>
+                        <div className="flex justify-end">
                             <button
-                                className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                                S'inscrire
+                                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                                onClick={() => setSelectedEvent(null)}
+                            >
+                                Fermer
                             </button>
                         </div>
                     </div>
-                ))}
-            </div>
+                </div>
+            )}
         </div>
     );
 }
