@@ -92,6 +92,34 @@ export type HealthCheckResponses = {
 
 export type HealthCheckResponse = HealthCheckResponses[keyof HealthCheckResponses];
 
+export type AuthenticateUserData = {
+    body: {
+        email?: string;
+        password?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/auth';
+};
+
+export type AuthenticateUserErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+};
+
+export type AuthenticateUserResponses = {
+    /**
+     * User authenticated
+     */
+    200: {
+        token?: string;
+    };
+};
+
+export type AuthenticateUserResponse = AuthenticateUserResponses[keyof AuthenticateUserResponses];
+
 export type ListUsersData = {
     body?: never;
     path?: never;
