@@ -36,6 +36,7 @@ export type Place = {
 export type Job = {
     id?: number;
     title?: string;
+    summary?: string;
     description?: string;
     companyName?: string;
     location?: string;
