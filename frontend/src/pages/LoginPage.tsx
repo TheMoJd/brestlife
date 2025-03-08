@@ -25,9 +25,7 @@ export default function LoginPage() {
 
       if (response.data?.token && response.data?.user) {
         login(response.data?.user, response.data?.token);
-        console.log(response);
-
-        //navigate("/admin"); // Redirection après connexion
+        navigate("/admin"); // Redirection après connexion
       } else {
         setErrorMessage("Email ou mot de passe incorrect");
       }

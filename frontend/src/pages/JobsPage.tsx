@@ -7,7 +7,6 @@ import { useAuth } from '../contexts/AuthProvider';
 
 
 export function JobsPage() {
-  const { login } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -24,8 +23,6 @@ export function JobsPage() {
         } else {
           setError('Échec du chargement des offres d\'emploi.');
         }
-        console.log(login);
-
       } catch (err) {
         setError('Échec du chargement des offres d\'emploi.');
       } finally {

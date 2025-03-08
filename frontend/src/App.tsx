@@ -13,6 +13,8 @@ import { Footer } from './sections/Footer';
 import { NavBar } from './sections/NavBar';
 import LoginPage from './pages/LoginPage';
 import { AuthProvider } from './contexts/AuthProvider';
+import AdminPage from './pages/AdminPage';
+import PrivateRoute from './pages/PrivateRoute';
 
 function App() {
 
@@ -39,7 +41,10 @@ function App() {
               <Route path="/evenements" element={<EventsPage />} />
               <Route path="/bons-plans" element={<DealsPage />} />
               <Route path="/login" element={<LoginPage />} />
-
+              {/* Route protégée, accessible uniquement si on est connecté */}
+              <Route element={<PrivateRoute />}>
+                <Route path="/admin" element={<AdminPage />} />
+              </Route>
             </Routes>
           </div>
         </main>
