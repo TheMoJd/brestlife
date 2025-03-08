@@ -12,8 +12,8 @@ export type User = {
 
 export type Category = {
     id?: number;
-    subCategory?: string;
-    type?: 'PLACE' | 'JOB' | 'EVENT' | 'DEAL';
+    name?: string;
+    type?: 'PLACE' | 'JOB' | 'EVENT';
     createdAt?: string;
     createdBy?: User;
 };
@@ -21,7 +21,6 @@ export type Category = {
 export type Place = {
     id?: number;
     name?: string;
-    summary?: string;
     description?: string;
     category?: Category;
     address?: string;
@@ -52,7 +51,6 @@ export type Job = {
 export type Event = {
     id?: number;
     title?: string;
-    summary?: string;
     description?: string;
     category?: Category;
     date?: string;
@@ -94,6 +92,35 @@ export type HealthCheckResponses = {
 };
 
 export type HealthCheckResponse = HealthCheckResponses[keyof HealthCheckResponses];
+
+export type AuthenticateUserData = {
+    body: {
+        email?: string;
+        password?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/auth';
+};
+
+export type AuthenticateUserErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+};
+
+export type AuthenticateUserResponses = {
+    /**
+     * User authenticated
+     */
+    200: {
+        token?: string;
+        user?: User;
+    };
+};
+
+export type AuthenticateUserResponse = AuthenticateUserResponses[keyof AuthenticateUserResponses];
 
 export type ListUsersData = {
     body?: never;

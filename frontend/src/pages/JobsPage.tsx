@@ -3,6 +3,7 @@ import { Search, Building2, Calendar, MapPin } from 'lucide-react';
 import { listJobs } from '../gen/openapi';
 import { Job } from '../gen/openapi';
 import { useSearchFilter } from '../hooks/useSearchFilter';
+import { useAuth } from '../contexts/AuthProvider';
 
 
 export function JobsPage() {
