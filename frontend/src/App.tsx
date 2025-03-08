@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { Home, Compass, Briefcase, Calendar, Tag, Menu, X, Facebook, Twitter, Instagram, Mail, Phone, MapPin, User } from 'lucide-react';
-import { useState } from 'react';
+import { Compass, Briefcase, Calendar, Tag, Menu, X, Facebook, Twitter, Instagram, Mail, Phone, MapPin, User } from 'lucide-react';
 
 // Pages
 import HomePage from './pages/HomePage';
@@ -13,7 +12,7 @@ import { Footer } from './sections/Footer';
 import { NavBar } from './sections/NavBar';
 import LoginPage from './pages/LoginPage';
 import { AuthProvider } from './contexts/AuthProvider';
-import AdminPage from './pages/AdminPage';
+import AdminPage from './pages/admin/AdminPage';
 import PrivateRoute from './pages/PrivateRoute';
 
 function App() {
@@ -35,14 +34,8 @@ function App() {
         <main className="flex-grow pt-20 px-4 md:pt-8 pb-8">
           <div className="max-w-7xl mx-auto">
             <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/decouverte" element={<DiscoveryPage />} />
-              <Route path="/emplois" element={<JobsPage />} />
-              <Route path="/evenements" element={<EventsPage />} />
-              <Route path="/bons-plans" element={<DealsPage />} />
-              <Route path="/login" element={<LoginPage />} />
               {/* Route protégée, accessible uniquement si on est connecté */}
-              <Route element={<PrivateRoute />}>
+              <Route element={<PrivateRoute requiredRole='ADMIN'/>}>
                 <Route path="/admin" element={<AdminPage />} />
               </Route>
             </Routes>

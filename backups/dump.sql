@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.3 (Debian 17.3-1.pgdg120+1)
--- Dumped by pg_dump version 17.3 (Debian 17.3-1.pgdg120+1)
+-- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,6 +16,22 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: dev
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+ALTER SCHEMA public OWNER TO dev;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: dev
+--
+
+COMMENT ON SCHEMA public IS '';
+
 
 SET default_tablespace = '';
 
@@ -483,6 +499,13 @@ ALTER TABLE ONLY public.events
 
 ALTER TABLE ONLY public.deals
     ADD CONSTRAINT fkpnyh4swmor0cfhfjaefm5o9gh FOREIGN KEY (category_id) REFERENCES public.categories(id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dev
+--
+
+REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 
 
 --
