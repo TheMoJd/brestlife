@@ -5,7 +5,7 @@ import './index.css';
 import {client} from "./gen/openapi/client.gen.ts";
 
 client.setConfig({
-    baseUrl: import.meta.env.VITE_API_URL
+    baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
 })
 
 createRoot(document.getElementById('root')!).render(
