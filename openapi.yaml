@@ -20,6 +20,27 @@ paths:
               schema:
                 type: string
                 example: "OK"
+  /images:
+    post:
+      summary: Upload an image
+      operationId: uploadImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Image uploaded successfully
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
   /auth:
     post:
       summary: "Authenticate user"
