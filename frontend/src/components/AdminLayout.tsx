@@ -17,10 +17,10 @@ export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigationLinks = [
-    { to: "/admin/places", label: "Lieux", icon: <MapPin size={18} /> },
-    { to: "/admin/jobs", label: "Jobs", icon: <Briefcase size={18} /> },
-    { to: "/admin/events", label: "Événements", icon: <CalendarDays size={18} /> },
-    { to: "/admin/deals", label: "Deals", icon: <ShoppingBag size={18} /> },
+    { to: "/admin/decouverte", label: "Lieux", icon: <MapPin size={18} /> },
+    { to: "/admin/emplois", label: "Jobs", icon: <Briefcase size={18} /> },
+    { to: "/admin/evenements", label: "Événements", icon: <CalendarDays size={18} /> },
+    { to: "/admin/bons-plans", label: "Deals", icon: <ShoppingBag size={18} /> },
   ];
 
   return (

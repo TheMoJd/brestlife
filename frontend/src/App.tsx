@@ -26,6 +26,9 @@ import PrivateRoute from "./pages/PrivateRoute";
 import AdminLayout from "./components/AdminLayout";
 import AdminPage from "./pages/admin/AdminPage"; // page d'accueil admin, par ex
 import DiscoveryPageAdmin from "./pages/admin/DiscoveryPageAdmin";
+import JobsPageAdmin from "./pages/admin/JobsPageAdmin";
+import EventsPageAdmin from "./pages/admin/EventsPageAdmin";
+import DealsPageAdmin from "./pages/admin/DealsPageAdmin";
 
 function App() {
   const {isAdmin} = useAuth();
@@ -74,8 +77,10 @@ function App() {
                     <Route path="/admin" element={<AdminPage />} />
 
                     {/* Autres pages Admin */}
-                    <Route path="/admin/places" element={<DiscoveryPageAdmin />} />
-                    
+                    <Route path="/admin/decouverte" element={<DiscoveryPageAdmin />} />
+                    <Route path="/admin/emplois" element={<JobsPageAdmin />} />
+                    <Route path="/admin/evenements" element={<EventsPageAdmin />} />
+                    <Route path="/admin/bons-plans" element={<DealsPageAdmin />} />            
                   </Route>
                 </Route>
 
