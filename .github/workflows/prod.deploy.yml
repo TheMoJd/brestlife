@@ -75,5 +75,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            docker service update brestlife_prod_frontend
-            docker service update brestlife_prod_backend
+            docker service update brestlife_prod_frontend --image ghcr.io/themojd/brestlife-frontend:feature-deployment --with-registry-auth
+            docker service update brestlife_prod_backend --image ghcr.io/themojd/brestlife-backend:feature-deployment --with-registry-auth
