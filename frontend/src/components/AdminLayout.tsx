@@ -1,6 +1,6 @@
 // src/components/AdminLayout.tsx
 import { PropsWithChildren, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/AuthProvider";
 import {
   Menu,
@@ -12,12 +12,11 @@ import {
   ShoppingBag,
 } from "lucide-react"; // icônes plus modernes
 
-export default function AdminLayout({ children }: PropsWithChildren) {
+export default function AdminLayout() {
   const { logout, user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigationLinks = [
-    { to: "/admin/users", label: "Utilisateurs", icon: <UserIcon size={18} /> },
     { to: "/admin/places", label: "Lieux", icon: <MapPin size={18} /> },
     { to: "/admin/jobs", label: "Jobs", icon: <Briefcase size={18} /> },
     { to: "/admin/events", label: "Événements", icon: <CalendarDays size={18} /> },
@@ -111,7 +110,9 @@ export default function AdminLayout({ children }: PropsWithChildren) {
         </header>
 
         {/* PAGE CONTENT */}
-        <main className="flex-1 p-6 overflow-auto">{children}</main>
+        <main className="flex-1 p-6 overflow-auto">
+          <Outlet />
+        </main>
       </div>
     </div>
   );

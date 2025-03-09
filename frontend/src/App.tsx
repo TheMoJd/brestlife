@@ -25,6 +25,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthProvider";
 import PrivateRoute from "./pages/PrivateRoute";
 import AdminLayout from "./components/AdminLayout";
 import AdminPage from "./pages/admin/AdminPage"; // page d'accueil admin, par ex
+import DiscoveryPageAdmin from "./pages/admin/DiscoveryPageAdmin";
 
 function App() {
   const {isAdmin} = useAuth();
@@ -36,10 +37,9 @@ function App() {
     { path: "/emplois", name: "Offres emplois", icon: <Briefcase className="w-5 h-5" /> },
     { path: "/evenements", name: "Événements", icon: <Calendar className="w-5 h-5" /> },
     { path: "/bons-plans", name: "Bons plans", icon: <Tag className="w-5 h-5" /> },
-    ...(!isAdmin() ? [{ path: "/login", name: "Connexion", icon: <User className="w-5 h-5" /> }] : [{path: "/admin", name: "Mon espace Admin", icon: <User className="w-5 h-5" />}]), 
+    ...(!isAdmin() ? [{ path: "/login", name: "Connexion", icon: <User className="w-5 h-5" /> }] : [{path: "/admin", name: "Mon espace", icon: <User className="w-5 h-5" />}]), 
     
   ];
-  console.log(isAdmin());
   const footerLinks = [
     { path: "/", name: "Accueil" },
     { path: "/decouverte", name: "Découverte" },
@@ -74,10 +74,8 @@ function App() {
                     <Route path="/admin" element={<AdminPage />} />
 
                     {/* Autres pages Admin */}
-                    <Route path="/admin/places" element={<DiscoveryPage />} />
-                    <Route path="/admin/jobs" element={<JobsPage />} />
-                    <Route path="/admin/events" element={<EventsPage />} />
-                    <Route path="/admin/deals" element={<DealsPage />} />
+                    <Route path="/admin/places" element={<DiscoveryPageAdmin />} />
+                    
                   </Route>
                 </Route>
 
