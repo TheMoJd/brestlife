@@ -11,11 +11,12 @@ import DealsPage from './pages/DealsPage';
 import { Footer } from './sections/Footer';
 import { NavBar } from './sections/NavBar';
 import LoginPage from './pages/LoginPage';
-import { AuthProvider } from './contexts/AuthProvider';
+import { AuthProvider, useAuth } from './contexts/AuthProvider';
 import AdminPage from './pages/admin/AdminPage';
 import PrivateRoute from './pages/PrivateRoute';
 
 function App() {
+  const { isAdmin }= useAuth();
 
     const navItems = [
         {path: '/decouverte', name: 'Découverte', icon: <Compass className="w-5 h-5"/>},
@@ -27,23 +28,29 @@ function App() {
 
   return (
     <AuthProvider>
-    <Router>
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <NavBar navItems={navItems} />
-        {/* Main Content */}
-        <main className="flex-grow pt-20 px-4 md:pt-8 pb-8">
-          <div className="max-w-7xl mx-auto">
-            <Routes>
-              {/* Route protégée, accessible uniquement si on est connecté */}
-              <Route element={<PrivateRoute requiredRole='ADMIN'/>}>
-                <Route path="/admin" element={<AdminPage />} />
-              </Route>
-            </Routes>
-          </div>
-        </main>
-        <Footer navItems={navItems}/>
-      </div>
-    </Router>
+      <Router>
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+          {isAdmin() ? "3" : <NavBar navItems={navItems} />}
+          {/* Main Content */}
+          <main className="flex-grow pt-20 px-4 md:pt-8 pb-8">
+            <div className="max-w-7xl mx-auto">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/decouverte" element={<DiscoveryPage />} />
+                <Route path="/emplois" element={<JobsPage />} />
+                <Route path="/evenements" element={<EventsPage />} />
+                <Route path="/bons-plans" element={<DealsPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                {/* Route protégée, accessible uniquement si on est connecté */}
+                <Route element={<PrivateRoute requiredRole='ADMIN'/>}>
+                  <Route path="/admin" element={<AdminPage />} />
+                </Route>
+              </Routes>
+            </div>
+          </main>
+          <Footer navItems={navItems}/>
+        </div>
+      </Router>
     </AuthProvider>
 
   );
