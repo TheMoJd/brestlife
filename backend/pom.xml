@@ -46,6 +46,7 @@
         <openapi.generator.maven.plugin.version>7.11.0</openapi.generator.maven.plugin.version>
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <junit.version>5.11.4</junit.version>
+        <minio.version>8.5.17</minio.version>
     </properties>
 
     <dependencies>
@@ -158,6 +159,14 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson.nullable.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.minio/minio -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+        </dependency>
+
 
     </dependencies>
 
