@@ -7,6 +7,8 @@ RUN npm install --frozen-lockfile
 
 COPY frontend ./
 
+ENV VITE_API_URL="https://api.brestmeme.fun/api"
+
 RUN npm run build  # Génère le build de production
 
 FROM node:23.7.0-alpine3.21 AS runtime
@@ -14,7 +16,6 @@ FROM node:23.7.0-alpine3.21 AS runtime
 WORKDIR /app/frontend
 COPY --from=build /app/frontend/dist dist
 
-ENV VITE_API_URL="https://api.brestmeme.fun/api"
 RUN npm install -g serve
 
 EXPOSE 5173
