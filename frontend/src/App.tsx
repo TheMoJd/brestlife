@@ -18,6 +18,8 @@ import PrivateRoute from './pages/PrivateRoute';
 function App() {
   const { isAdmin }= useAuth();
 
+  console.log(isAdmin());
+  
     const navItems = [
         {path: '/decouverte', name: 'Découverte', icon: <Compass className="w-5 h-5"/>},
         {path: '/emplois', name: 'Offres emplois', icon: <Briefcase className="w-5 h-5"/>},
