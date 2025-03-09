@@ -93,6 +93,33 @@ export type HealthCheckResponses = {
 
 export type HealthCheckResponse = HealthCheckResponses[keyof HealthCheckResponses];
 
+export type UploadImageData = {
+    body: {
+        file?: Blob | File;
+    };
+    path?: never;
+    query?: never;
+    url: '/images';
+};
+
+export type UploadImageErrors = {
+    /**
+     * Invalid request
+     */
+    400: unknown;
+    /**
+     * Internal server error
+     */
+    500: unknown;
+};
+
+export type UploadImageResponses = {
+    /**
+     * Image uploaded successfully
+     */
+    201: unknown;
+};
+
 export type AuthenticateUserData = {
     body: {
         email?: string;
