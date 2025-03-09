@@ -9,7 +9,7 @@ COPY frontend ./
 
 ENV VITE_API_URL="https://api.brestmeme.fun/api"
 
-RUN npm run build  # Génère le build de production
+RUN npm run build
 
 FROM node:23.7.0-alpine3.21 AS runtime
 
