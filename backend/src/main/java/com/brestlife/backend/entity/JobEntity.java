@@ -20,6 +20,9 @@ public class JobEntity {
     private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
+    private String summary;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false, length = 150)

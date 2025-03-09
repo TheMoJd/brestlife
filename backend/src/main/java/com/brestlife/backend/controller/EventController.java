@@ -3,6 +3,7 @@ package com.brestlife.backend.controller;
 import com.brestlife.backend.entity.EventEntity;
 import com.brestlife.backend.mapper.EventMapper;
 import com.brestlife.backend.service.EventService;
+import com.brestlife.backend.service.MinioService;
 import com.brestlife.generate.api.EventsApi;
 import com.brestlife.generate.dto.Event;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class EventController implements EventsApi {
 
     private final EventService eventService;
+    private final MinioService minioService;
     private final EventMapper eventMapper = EventMapper.INSTANCE;
 
     @Autowired
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, MinioService minioService) {
         this.eventService = eventService;
+        this.minioService = minioService;
     }
 
     @Override
@@ -45,17 +48,22 @@ public class EventController implements EventsApi {
     @Override
     public ResponseEntity<Event> getEventById(Integer id) {
         Optional<EventEntity> eventEntity = eventService.getEventById(id);
-        return eventEntity.map(value -> ResponseEntity.ok(eventMapper.toDto(value)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return eventEntity.map(value -> {
+            Event eventDto = eventMapper.toDto(value);
+            eventDto.setImageUrl(minioService.getMinioPrefix() + "/" + eventDto.getImageUrl());
+            return ResponseEntity.ok(eventDto);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override
     public ResponseEntity<List<Event>> listEvents() {
         List<EventEntity> eventEntities = eventService.getAllEvents();
-        List<Event> events = eventEntities.stream()
+        List<Event> eventDtos = eventEntities.stream()
                 .map(eventMapper::toDto)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(events);
+
+        eventDtos.forEach(event -> event.setImageUrl(minioService.getMinioPrefix() + "/" + event.getImageUrl()));
+        return ResponseEntity.ok(eventDtos);
     }
 
     @Override

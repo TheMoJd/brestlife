@@ -2,6 +2,7 @@ package com.brestlife.backend.controller;
 
 import com.brestlife.backend.entity.PlaceEntity;
 import com.brestlife.backend.mapper.PlaceMapper;
+import com.brestlife.backend.service.MinioService;
 import com.brestlife.backend.service.PlaceService;
 import com.brestlife.generate.api.PlacesApi;
 import com.brestlife.generate.dto.Place;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class PlaceController implements PlacesApi {
 
     private final PlaceService placeService;
+    private final MinioService minioService;
     private final PlaceMapper placeMapper = PlaceMapper.INSTANCE;
 
     @Autowired
-    public PlaceController(PlaceService placeService) {
+    public PlaceController(PlaceService placeService, MinioService minioService) {
         this.placeService = placeService;
+        this.minioService = minioService;
     }
 
     @Override
@@ -44,17 +47,21 @@ public class PlaceController implements PlacesApi {
     @Override
     public ResponseEntity<Place> getPlaceById(Integer id) {
         Optional<PlaceEntity> placeEntity = placeService.getPlaceById(id);
-        return placeEntity.map(entity -> ResponseEntity.ok(placeMapper.toDto(entity)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return placeEntity.map(value -> {
+            Place placeDto = placeMapper.toDto(value);
+            placeDto.setImageUrl(minioService.getMinioPrefix() + "/" + placeDto.getImageUrl());
+            return ResponseEntity.ok(placeDto);
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override
     public ResponseEntity<List<Place>> listPlaces() {
         List<PlaceEntity> placeEntities = placeService.getAllPlaces();
-        List<Place> places = placeEntities.stream()
+        List<Place> placeDtos = placeEntities.stream()
                 .map(placeMapper::toDto)
+                .peek(placeDto -> placeDto.setImageUrl(minioService.getMinioPrefix() + "/" + placeDto.getImageUrl()))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(places);
+        return ResponseEntity.ok(placeDtos);
     }
 
     @Override

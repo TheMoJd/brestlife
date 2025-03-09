@@ -24,6 +24,60 @@ paths:
               schema:
                 type: string
                 example: "OK"
+  /images:
+    post:
+      summary: Upload an image
+      operationId: uploadImage
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Image uploaded successfully
+        "400":
+          description: Invalid request
+        "500":
+          description: Internal server error
+  /auth:
+    post:
+      summary: "Authenticate user"
+      operationId: "authenticateUser"
+      tags:
+        - auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        200:
+          description: "User authenticated"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                  user:
+                    $ref: "#/components/schemas/User"
+        401:
+          description: "Unauthorized"
   /users:
     get:
       summary: "List all users"
@@ -525,7 +579,7 @@ components:
         id:
           type: integer
           format: int32
-        subCategory:
+        name:
           type: string
         type:
           type: string
@@ -533,7 +587,6 @@ components:
             - PLACE
             - JOB
             - EVENT
-            - DEAL
         createdAt:
           type: string
           format: date-time
@@ -546,8 +599,6 @@ components:
           type: integer
           format: int32
         name:
-          type: string
-        summary:
           type: string
         description:
           type: string
@@ -579,6 +630,8 @@ components:
           format: int32
         title:
           type: string
+        summary:
+          type: string
         description:
           type: string
         companyName:
@@ -609,8 +662,6 @@ components:
           type: integer
           format: int32
         title:
-          type: string
-        summary:
           type: string
         description:
           type: string
