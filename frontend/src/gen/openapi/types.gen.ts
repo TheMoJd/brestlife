@@ -570,5 +570,5 @@ export type UpdateDealByIdResponses = {
 export type UpdateDealByIdResponse = UpdateDealByIdResponses[keyof UpdateDealByIdResponses];
 
 export type ClientOptions = {
-    baseUrl: `${string}://\${serverUrl}/api` | (string & {});
+    baseUrl: 'http://localhost:8080/api' | (string & {});
 };

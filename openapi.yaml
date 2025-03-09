@@ -3,12 +3,8 @@ info:
   title: API Brestlife
   version: 1.0.0
 servers:
-  - url: "${serverUrl}/api"
+  - url: http://localhost:8080/api
     description: SpringBoot REST API
-    variables:
-      serverUrl:
-        default: "http://localhost:8080"
-        description: URL du serveur (peut être remplacé par une variable d'environnement lors de l'exécution)
 paths:
   /health:
     get:
