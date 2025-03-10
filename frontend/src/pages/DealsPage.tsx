@@ -1,4 +1,4 @@
-import { Search, Tag, MapPin, ExternalLink } from 'lucide-react';
+import { Search, Tag, ExternalLink } from 'lucide-react';
 import { Deal, listDeals } from "../gen/openapi";
 import { useEffect, useState, useMemo, useRef } from "react";
 

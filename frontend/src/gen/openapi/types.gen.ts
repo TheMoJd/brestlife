@@ -12,8 +12,8 @@ export type User = {
 
 export type Category = {
     id?: number;
-    subcategory?: string;
-    type?: 'PLACE' | 'JOB' | 'EVENT';
+    subCategory?: string;
+    type?: 'PLACE' | 'JOB' | 'EVENT' | 'DEAL';
     createdAt?: string;
     createdBy?: User;
 };
@@ -22,6 +22,7 @@ export type Place = {
     id?: number;
     name?: string;
     description?: string;
+    summary?: string;
     category?: Category;
     address?: string;
     latitude?: number;
@@ -52,6 +53,7 @@ export type Event = {
     id?: number;
     title?: string;
     description?: string;
+    summary?: string;
     category?: Category;
     date?: string;
     location?: string;
