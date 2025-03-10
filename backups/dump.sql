@@ -17,6 +17,22 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: public; Type: SCHEMA; Schema: -; Owner: dev
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+ALTER SCHEMA public OWNER TO dev;
+
+--
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: dev
+--
+
+COMMENT ON SCHEMA public IS '';
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -253,6 +269,7 @@ COPY public.categories (id, created_at, sub_category, type, created_by) FROM std
 3	2025-02-11 13:45:00	Restaurant	PLACE	2
 4	2025-02-12 14:50:00	Technologie	JOB	3
 5	2025-02-13 15:20:00	Shopping	DEAL	3
+6	2025-03-07 16:43:52	Transport	DEAL	3
 \.
 
 
@@ -261,8 +278,15 @@ COPY public.categories (id, created_at, sub_category, type, created_by) FROM std
 --
 
 COPY public.deals (id, created_at, description, link, title, updated_at, category_id, created_by, company, date_end, new_price, old_price, reserve) FROM stdin;
-1	2025-02-13 14:55:48	Réduction de 20% sur tous les articles de sport.	https://sportshop.com	Offre Sport	2025-02-14 14:55:48	5	1	SportShop	2025-03-01 00:00:00	49.99	59.99	Étudiants
-2	2025-02-14 15:30:00	Promotion spéciale : 2 plats pour le prix d'un.	https://restaurant.com	Offre Restaurant	2025-02-15 15:30:00	3	2	Restaurant Gourmand	2025-02-28 00:00:00	15	30	Tous
+1	2025-02-10 09:00:00	Remise de 20% sur les billets d'entrée à Océanopolis pour les étudiants sur présentation de la carte étudiante.	https://www.oceanopolis.com/preparer-votre-visite/tarifs/	Offre Océanopolis Étudiants	2025-02-10 09:00:00	1	2	Océanopolis Brest	2025-06-30 23:59:59	17.5	22.9	Tous
+2	2025-02-12 14:30:00	Tarif réduit de 11,30€ pour les étudiants au Cinéma Multiplexe Liberté sur présentation d'un justificatif étudiant.	https://www.allocine.fr/salle/cinema-P0417/tarifs/	Offre Cinéma Multiplexe Liberté Étudiants	2025-02-12 14:30:00	1	2	Cinéma Multiplexe Liberté	2025-06-30 23:59:59	11.3	14.6	Tous
+3	2025-02-15 11:00:00	Tarif réduit de 5,50€ pour les étudiants au Cinéma Les Studios sur présentation de la carte étudiante.	https://www.cine-studios.fr/tarifs/	Offre Cinéma Les Studios Étudiants	2025-02-15 11:00:00	1	2	Cinéma Les Studios	2025-06-30 23:59:59	5.5	8.5	Tous
+5	2025-02-20 10:30:00	Abonnement mensuel à 15€ pour la piscine de Recouvrance pour les étudiants sur présentation de la carte étudiante.	https://www.brest.fr/piscines-tarifs	Offre Piscine Recouvrance Étudiants	2025-02-20 10:30:00	2	2	Ville de Brest	2025-06-30 23:59:59	15	18	Tous
+7	2025-02-25 15:30:00	Tarif réduit de 20% sur les locations de vélos chez Brest à Vélo pour les étudiants sur présentation de la carte étudiante.	https://www.brestavelo.brest.fr/tarifs	Offre Brest à Vélo Étudiants	2025-02-25 15:30:00	2	2	Brest à Vélo	2025-06-30 23:59:59	6.4	8	Tous
+8	2025-02-28 17:00:00	Entrée à 5€ pour la patinoire du Rïnkla Stadium pour les étudiants le vendredi soir sur présentation de la carte étudiante.	https://www.patinoire-brest.fr/tarifs	Offre Patinoire Rïnkla Étudiants	2025-02-28 17:00:00	2	2	Rïnkla Stadium Brest	2025-06-30 23:59:59	5	7.3	Tous
+9	2025-03-02 12:00:00	Remise de 15% sur les produits culturels à la librairie Dialogues pour les étudiants sur présentation de la carte étudiante.	https://www.librairiedialogues.fr/tarifs	Offre Librairie Dialogues Étudiants	2025-03-02 12:00:00	1	2	Librairie Dialogues Brest	2025-06-30 23:59:59	12.75	15	Tous
+10	2025-03-05 14:00:00	Abonnement annuel à 120€ pour le réseau de transports en commun Bibus pour les étudiants sur présentation de la carte étudiante.	https://www.bibus.fr/tarifs	Offre Bibus Étudiants	2025-03-05 14:00:00	6	2	Bibus Brest	2025-06-30 23:59:59	120	150	Tous
+4	2025-02-17 16:00:00	Carte de membre à 8€ donnant droit à des tarifs réduits au Quartz Théâtre pour les étudiants.	https://lequartz.notre-billetterie.com/abonnements/?abo=ab2425S	Offre Quartz Théâtre Étudiants	2025-02-17 16:00:00	1	2	Le Quartz Brest	2025-06-30 23:59:59	8	10	Tous
 \.
 
 
@@ -291,8 +315,16 @@ COPY public.jobs (id, company_name, contact_email, created_at, description, dura
 --
 
 COPY public.places (id, address, created_at, description, image_url, latitude, longitude, name, category_id, created_by, price, summary) FROM stdin;
-1	123 Rue de la Plage, Brest	2025-02-09 11:47:00	Profitez d'une magnifique plage de sable fin, parfaite pour la baignade, la détente et une multitude d'activités nautiques. Que vous soyez amateur de surf, de paddle, de jet-ski ou simplement en quête d’un moment de relaxation au soleil, cette plage offre un cadre idyllique avec une eau cristalline et des paysages à couper le souffle. Des services comme la location d’équipements, des restaurants en bord de mer et des zones ombragées rendent votre expérience encore plus agréable. Un véritable paradis pour les amoureux de la mer !	/img/plage.jpg	48.3833	-4.4833	Plage de Brest	3	1	0	Plage idéale pour la baignade et les sports nautiques.
-2	456 Rue du Centre, Brest	2025-02-10 12:30:00	Découvrez un centre commercial moderne et animé, regroupant une large variété de boutiques pour tous les goûts et tous les budgets. Des grandes enseignes de mode aux petites boutiques artisanales, en passant par des espaces de restauration et des lieux de divertissement, cet espace commerçant est idéal pour une journée de shopping et de détente. Profitez également d’événements réguliers, de promotions exclusives et d’une atmosphère conviviale pour une expérience inoubliable.	/img/centre_commercial.jpg	48.39	-4.47	Centre Commercial de Brest	3	2	0	Centre commercial avec de nombreuses boutiques.
+1	Château de Brest, Boulevard de la Marine, 29200 Brest	2025-03-10 09:00:00	Situé dans le château historique de Brest, ce musée retrace l'histoire de la Marine française à travers une riche collection d'artefacts, de maquettes et d'œuvres d'art.	/img/musee_marine.jpg	48.3825	-4.4944	Musée National de la Marine	1	1	10	Musée dédié à l'histoire maritime française.
+2	Port de Plaisance du Moulin Blanc, 29200 Brest	2025-03-10 09:05:00	Centre de découverte des océans, Océanopolis propose des expositions interactives et des aquariums présentant la faune et la flore marines des régions polaires, tropicales et bretonnes.	/img/oceanopolis.jpg	48.39	-4.435	Océanopolis	1	1	15	Centre de découverte des océans avec aquariums.
+3	25 Rue de Pontaniou, 29200 Brest	2025-03-10 09:10:00	Ancien site industriel réhabilité, les Ateliers des Capucins sont désormais un lieu culturel et de loisirs abritant une médiathèque, des espaces d'exposition, des boutiques et des restaurants.	/img/ateliers_capucins.jpg	48.3886	-4.4821	Les Ateliers des Capucins	1	2	0	Lieu culturel et de loisirs dans un ancien site industriel.
+4	Rue Saint-Malo, 29200 Brest	2025-03-10 09:15:00	Seule rue ayant survécu aux bombardements de la Seconde Guerre mondiale, la rue Saint-Malo offre un aperçu du vieux Brest avec ses maisons anciennes et son atmosphère pittoresque.	/img/rue_saint_malo.jpg	48.3875	-4.49	Rue Saint-Malo	1	2	0	Rue historique préservée avec maisons anciennes.
+5	Plouzané, 29280 Brest	2025-03-10 09:20:00	Ce phare emblématique offre une vue panoramique sur la mer d'Iroise et la rade de Brest. Il est accessible par un sentier côtier pittoresque.	/img/phare_petit_minou.jpg	48.3375	-4.6203	Phare du Petit Minou	1	3	0	Phare offrant une vue panoramique sur la mer.
+6	Rampe du Stang-Alar, 29200 Brest	2025-03-10 09:25:00	Ce jardin botanique présente une collection unique de plantes en voie de disparition, réparties sur 30 hectares de vallons et de serres tropicales.	/img/conservatoire_botanique.jpg	48.398	-4.456	Conservatoire Botanique National de Brest	1	1	5	Jardin botanique avec plantes rares et serres.
+7	Plage du Moulin Blanc, 29200 Brest	2025-03-10 09:30:00	Cette plage urbaine est idéale pour une promenade détente, offrant une vue sur l'anse du Moulin Blanc et des activités nautiques en été.	/img/plage_moulin_blanc.jpg	48.3925	-4.4194	Plage du Moulin Blanc	3	2	0	Plage urbaine avec activités nautiques.
+8	Cours Dajot, 29200 Brest	2025-03-10 09:35:00	Promenade pittoresque offrant une vue imprenable sur la rade de Brest, idéale pour une balade tranquille en admirant le paysage maritime.	/img/cours_dajot.jpg	48.3838	-4.4905	Cours Dajot	1	2	0	Promenade avec vue sur la rade de Brest.
+9	Station Jean Moulin, 29200 Brest	2025-03-10 09:40:00	Premier téléphérique urbain de France, il relie les deux rives de la Penfeld, offrant une vue unique sur la ville et le port militaire.	/img/telepherique_brest.jpg	48.3833	-4.49	Téléphérique de Brest	6	3	1.5	Premier téléphérique urbain de France avec vue.
+10	55 Quai Éric Tabarly, 29200 Brest	2025-03-10 09:45:00	Située en plein cœur de la ville, la Marina du Château accueille des bateaux de plaisance et offre une promenade agréable avec des restaurants et des bars à proximité.	/img/marina_chateau.jpg	48.384	-4.4946	Marina du Château	3	2	0	Port de plaisance avec restaurants et bars.
 \.
 
 
@@ -311,14 +343,14 @@ COPY public.users (id, name, email, password, created_at, role, updated_at) FROM
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 5, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
 
 
 --
 -- Name: deals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.deals_id_seq', 2, true);
+SELECT pg_catalog.setval('public.deals_id_seq', 10, true);
 
 
 --
@@ -339,7 +371,7 @@ SELECT pg_catalog.setval('public.jobs_id_seq', 2, false);
 -- Name: places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.places_id_seq', 2, false);
+SELECT pg_catalog.setval('public.places_id_seq', 1, false);
 
 
 --
@@ -483,6 +515,13 @@ ALTER TABLE ONLY public.events
 
 ALTER TABLE ONLY public.deals
     ADD CONSTRAINT fkpnyh4swmor0cfhfjaefm5o9gh FOREIGN KEY (category_id) REFERENCES public.categories(id);
+
+
+--
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: dev
+--
+
+REVOKE USAGE ON SCHEMA public FROM PUBLIC;
 
 
 --
