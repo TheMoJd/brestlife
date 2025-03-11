@@ -81,4 +81,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            docker stack deploy -c stacks/prod/brestlife.yml brestlife_prod -d --with-registry-auth
+            docker stack deploy -c stack/prod/brestlife.yml brestlife_prod -d --with-registry-auth
