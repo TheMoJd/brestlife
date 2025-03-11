@@ -208,8 +208,49 @@ export default function DealsPageAdmin() {
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>
-              {/* Ajoute d'autres champs (description, link, etc.) selon besoin */}
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <textarea
+                  {...register("description")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                  rows={3}
+                />
+              </div>
 
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Lien
+                </label>
+                <input
+                  type="text"
+                  {...register("link")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Société
+                </label>
+                <input
+                  type="text"
+                  {...register("company")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Réserve
+                </label>
+                <input
+                  type="text"
+                  {...register("reserve")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"

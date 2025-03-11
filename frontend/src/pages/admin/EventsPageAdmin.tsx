@@ -190,8 +190,39 @@ export default function EventsPageAdmin() {
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>
-              {/* Ajoute d'autres champs : description, prix, imageUrl, etc. */}
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <textarea
+                  {...register("description")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                  rows={3}
+                />
+              </div>
 
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Prix
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  {...register("price")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  URL de l'image
+                </label>
+                <input
+                  type="text"
+                  {...register("imageUrl")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"

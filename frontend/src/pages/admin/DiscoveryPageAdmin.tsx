@@ -205,8 +205,53 @@ export default function DiscoveryPageAdmin() {
                 />
               </div>
 
-              {/* Tu peux rajouter les champs "latitude", "longitude", etc. si nécessaire */}
 
+<div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Latitude
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  {...register("latitude")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Longitude
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  {...register("longitude")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  URL de l'image
+                </label>
+                <input
+                  type="text"
+                  {...register("imageUrl")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Prix
+                </label>
+                <input
+                  type="number"
+                  step="any"
+                  {...register("price")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"

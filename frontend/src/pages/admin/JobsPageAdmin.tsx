@@ -9,8 +9,10 @@ import {
 } from "../../gen/openapi";
 import { useForm } from "react-hook-form";
 import { Edit, Trash2, X } from "lucide-react";
+import { useAuth } from "../../contexts/AuthProvider";
 
 export default function JobsPageAdmin() {
+    const { token } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,7 +58,12 @@ export default function JobsPageAdmin() {
           body: data,
         });
       } else {
-        await createJob({ body: data });
+        await createJob({ 
+            body: data,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+         });
       }
       closeModal();
       fetchJobs();
@@ -190,8 +197,55 @@ export default function JobsPageAdmin() {
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>
-              {/* Ajoute d'autres champs : description, date début/fin, contactEmail, etc. */}
-
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <textarea
+                  {...register("description")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Durée
+                </label>
+                <input
+                  type="text"
+                  {...register("duration")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Date de début
+                </label>
+                <input
+                  type="date"
+                  {...register("startDate")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Date de fin
+                </label>
+                <input
+                  type="date"
+                  {...register("endDate")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Email de contact
+                </label>
+                <input
+                  type="email"
+                  {...register("contactEmail")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
               <div className="flex justify-end space-x-2">
                 <button
                   type="button"
