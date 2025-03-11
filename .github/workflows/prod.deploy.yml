@@ -72,6 +72,9 @@ jobs:
           secrets: |
             vite_api_url=${{ secrets.API_URL }}
             vite_google_maps_api_key=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+          build-args: |
+            BUILDKIT_PROGRESS=plain
+          provenance: false
 
       - name: Deploy the new images
         uses: appleboy/ssh-action@master
