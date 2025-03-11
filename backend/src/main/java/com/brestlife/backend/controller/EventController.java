@@ -8,6 +8,7 @@ import com.brestlife.generate.api.EventsApi;
 import com.brestlife.generate.dto.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class EventController implements EventsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Event> createEvent(Event event) {
         EventEntity eventEntity = eventMapper.toEntity(event);
         EventEntity savedEventEntity = eventService.saveEvent(eventEntity);
@@ -36,6 +38,7 @@ public class EventController implements EventsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteEventById(Integer id) {
         if (!eventService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -67,6 +70,7 @@ public class EventController implements EventsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Event> updateEventById(Integer id, Event event) {
         EventEntity eventEntity = eventMapper.toEntity(event);
         EventEntity updatedEventEntity = eventService.updateEventById(id, eventEntity);

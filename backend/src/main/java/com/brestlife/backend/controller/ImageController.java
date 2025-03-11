@@ -5,6 +5,7 @@ import com.brestlife.generate.api.ImagesApi;
 import io.minio.errors.MinioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ public class ImageController implements ImagesApi {
     private MinioService minioService;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> uploadImage(MultipartFile file) {
         try {
             minioService.uploadFile(file.getOriginalFilename(), file.getInputStream());

@@ -41,39 +41,7 @@ paths:
           description: Invalid request
         "500":
           description: Internal server error
-  /auth:
-    post:
-      summary: "Authenticate user"
-      operationId: "authenticateUser"
-      tags:
-        - auth
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-                  format: password
-      responses:
-        200:
-          description: "User authenticated"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  token:
-                    type: string
-                  user:
-                    $ref: "#/components/schemas/User"
-        401:
-          description: "Unauthorized"
+
   /users:
     get:
       summary: "List all users"

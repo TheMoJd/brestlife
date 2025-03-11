@@ -7,6 +7,7 @@ import com.brestlife.generate.api.DealsApi;
 import com.brestlife.generate.dto.Deal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class DealController implements DealsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Deal> createDeal(Deal deal) {
         DealEntity dealEntity = dealMapper.toEntity(deal);
         DealEntity savedDealEntity = dealService.saveDeal(dealEntity);
@@ -32,6 +34,7 @@ public class DealController implements DealsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteDealById(Integer id) {
         if (!dealService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -58,6 +61,7 @@ public class DealController implements DealsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Deal> updateDealById(Integer id, Deal deal) {
         DealEntity dealEntity = dealMapper.toEntity(deal);
         DealEntity updatedDealEntity = dealService.updateDealById(id, dealEntity);

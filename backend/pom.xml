@@ -46,6 +46,7 @@
         <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <junit.version>5.11.4</junit.version>
         <minio.version>8.5.17</minio.version>
+        <jjwt-api.version>0.12.6</jjwt-api.version>
     </properties>
 
     <dependencies>
@@ -158,6 +159,19 @@
             <artifactId>minio</artifactId>
             <version>${minio.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt-api.version}</version>
+        </dependency>
+
 
     </dependencies>
 

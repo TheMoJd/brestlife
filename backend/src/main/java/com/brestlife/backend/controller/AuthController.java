@@ -1,28 +1,34 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.service.AuthService;
-import com.brestlife.generate.api.AuthApi;
-import com.brestlife.generate.dto.AuthenticateUser200Response;
-import com.brestlife.generate.dto.AuthenticateUserRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import com.brestlife.backend.security.JwtService;
+import com.brestlife.backend.service.UserService;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
-public class AuthController implements AuthApi {
+@RequestMapping("/auth")
+public class AuthController {
 
-    private final AuthService authService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserService userService;
 
-    @Autowired
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserService userService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+        this.userService = userService;
     }
 
-    @Override
-    public ResponseEntity<AuthenticateUser200Response> authenticateUser(AuthenticateUserRequest authenticateUserRequest) {
-        return authService.authenticate(authenticateUserRequest)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(401).build());
+    @PostMapping("/login")
+    public Map<String, String> login(@RequestBody Map<String, String> credentials) {
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                credentials.get("email"), credentials.get("password")));
+        UserDetails user = userService.loadUserByUsername(credentials.get("email"));
+        String token = jwtService.generateToken(user);
+        return Map.of("token", token);
     }
-
 }
