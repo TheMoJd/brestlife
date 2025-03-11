@@ -18,7 +18,6 @@ const MAX_ZOOM = 15;
 const MAP_LOAD_DELAY = 100;
 
 const LIBRARIES = ['marker'] as const;
-const API_KEY = 'AIzaSyAV1BIKN0P0FgJGHdQyTBt_qkI2nECaWHA';
 
 // Custom styles for the map
 const MAP_STYLES = [
@@ -198,7 +197,7 @@ interface GoogleMapProps {
 
 const MyGoogleMap: React.FC<GoogleMapProps> = ({ places }) => {
     const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: API_KEY,
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         libraries: LIBRARIES,
     });
 
