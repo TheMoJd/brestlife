@@ -32,25 +32,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prepare metadata for backend
-        id: meta_backend
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-            type=ref,event=tag
-
-      - name: Build and push backend image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: backend.Dockerfile
-          push: true
-          tags: ${{ steps.meta_backend.outputs.tags }}
-          platforms: linux/amd64
-
       - name: Prepare metadata for frontend
         id: meta_frontend
         uses: docker/metadata-action@v5
@@ -72,9 +53,25 @@ jobs:
           secrets: |
             vite_api_url=${{ secrets.API_URL }}
             vite_google_maps_api_key=${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
-          build-args: |
-            BUILDKIT_PROGRESS=plain
-          provenance: false
+
+      - name: Prepare metadata for backend
+        id: meta_backend
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=ref,event=tag
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: backend.Dockerfile
+          push: true
+          tags: ${{ steps.meta_backend.outputs.tags }}
+          platforms: linux/amd64
 
       - name: Deploy the new images
         uses: appleboy/ssh-action@master

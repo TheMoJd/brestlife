@@ -1,10 +1,13 @@
 FROM node:23.7.0-alpine3.21 AS build
 
 WORKDIR /app/frontend
-COPY openapi.yaml /app
+COPY ./openapi.yaml /app
+COPY ./.dockerignore /app/frontend/.dockerignore
 
-COPY frontend ./
-RUN ls -la
+COPY ./frontend /app/frontend
+
+RUN ls -al /app/frontend
+
 RUN npm install --frozen-lockfile
 
 RUN --mount=type=secret,id=vite_api_url,env=VITE_API_URL \
