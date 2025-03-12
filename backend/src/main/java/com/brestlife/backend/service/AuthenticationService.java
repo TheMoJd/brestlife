@@ -1,11 +1,11 @@
 package com.brestlife.backend.service;
 
-import com.brestlife.backend.dto.AuthenticationRequest;
-import com.brestlife.backend.dto.AuthenticationResponse;
-import com.brestlife.backend.dto.RegisterRequest;
 import com.brestlife.backend.entity.UserEntity;
 import com.brestlife.backend.repository.UserRepository;
 import com.brestlife.backend.security.JwtService;
+import com.brestlife.generate.dto.AuthenticationRequest;
+import com.brestlife.generate.dto.AuthenticationResponse;
+import com.brestlife.generate.dto.RegisterRequest;
 import com.brestlife.generate.dto.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,16 +26,12 @@ public class AuthenticationService {
         user.setName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole() != null ? request.getRole() : User.RoleEnum.STUDENT);
-        
+        user.setRole(User.RoleEnum.STUDENT);
+
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
-        
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(user.getId())
-                .role(user.getRole().name())
-                .build();
+
+        return new AuthenticationResponse(jwtToken, user.getId(), user.getRole().name());
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -48,11 +44,7 @@ public class AuthenticationService {
         var user = repository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .userId(user.getId())
-                .role(user.getRole().name())
-                .build();
+
+        return new AuthenticationResponse(jwtToken, user.getId(), user.getRole().name());
     }
 }

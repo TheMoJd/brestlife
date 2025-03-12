@@ -6,6 +6,45 @@ servers:
   - url: http://localhost:8080/api
     description: SpringBoot REST API
 paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "200":
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+        "400":
+          description: Invalid request
+  /auth/login:
+    post:
+      summary: Authenticate a user
+      operationId: authenticateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticationRequest"
+      responses:
+        "200":
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+        "401":
+          description: Unauthorized
+
   /health:
     get:
       summary: "Check API health status"
@@ -785,6 +824,46 @@ components:
         updatedAt:
           type: string
           format: date-time
+    AuthenticationRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - email
+        - password
+    AuthenticationResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        userId:
+          type: integer
+        role:
+          type: string
+      required:
+        - token
+        - userId
+        - role
+    RegisterRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+      required:
+        - name
+        - email
+        - password
   securitySchemes:
     bearerAuth:
       type: http

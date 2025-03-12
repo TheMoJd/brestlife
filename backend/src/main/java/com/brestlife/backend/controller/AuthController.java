@@ -1,34 +1,31 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.dto.AuthenticationRequest;
-import com.brestlife.backend.dto.AuthenticationResponse;
-import com.brestlife.backend.dto.RegisterRequest;
 import com.brestlife.backend.service.AuthenticationService;
-import lombok.RequiredArgsConstructor;
+import com.brestlife.generate.api.AuthApi;
+import com.brestlife.generate.dto.AuthenticationRequest;
+import com.brestlife.generate.dto.AuthenticationResponse;
+import com.brestlife.generate.dto.RegisterRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
-@RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthApi {
 
     private final AuthenticationService service;
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(service.register(request));
+    @Autowired
+    public AuthController(AuthenticationService service) {
+        this.service = service;
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate(
-            @RequestBody AuthenticationRequest request
-    ) {
-        return ResponseEntity.ok(service.authenticate(request));
+    @Override
+    public ResponseEntity<AuthenticationResponse> authenticateUser(AuthenticationRequest authenticationRequest) {
+        return ResponseEntity.ok(service.authenticate(authenticationRequest));
+    }
+
+    @Override
+    public ResponseEntity<AuthenticationResponse> registerUser(RegisterRequest registerRequest) {
+        return ResponseEntity.ok(service.register(registerRequest));
     }
 }
