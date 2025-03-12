@@ -59,10 +59,10 @@ export default function LoginPage() {
               <input
                 {...register("body.email", {
                   required: "L'email est requis",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    message: "Adresse email invalide",
-                  },
+                  // pattern: {
+                  //   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  //   message: "Adresse email invalide",
+                  // },
                 })}
                 type="email"
                 className="block w-full pl-10 border border-gray-300 rounded-md"
@@ -81,10 +81,10 @@ export default function LoginPage() {
               <input
                 {...register("body.password", {
                   required: "Le mot de passe est requis",
-                  minLength: {
-                    value: 6,
-                    message: "Au moins 6 caractères",
-                  },
+                  // minLength: {
+                  //   value: 6,
+                  //   message: "Au moins 6 caractères",
+                  // },
                 })}
                 type="password"
                 className="block w-full pl-10 border border-gray-300 rounded-md"

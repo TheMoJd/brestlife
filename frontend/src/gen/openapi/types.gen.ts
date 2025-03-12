@@ -660,6 +660,90 @@ export type UpdateEventByIdResponses = {
 
 export type UpdateEventByIdResponse = UpdateEventByIdResponses[keyof UpdateEventByIdResponses];
 
+export type ListCategoriesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/categories';
+};
+
+export type ListCategoriesResponses = {
+    /**
+     * A list of categories.
+     */
+    200: Array<Category>;
+};
+
+export type ListCategoriesResponse = ListCategoriesResponses[keyof ListCategoriesResponses];
+
+export type CreateCategoryData = {
+    body: Category;
+    path?: never;
+    query?: never;
+    url: '/categories';
+};
+
+export type CreateCategoryResponses = {
+    /**
+     * Category created
+     */
+    200: Category;
+};
+
+export type CreateCategoryResponse = CreateCategoryResponses[keyof CreateCategoryResponses];
+
+export type DeleteCategoryByIdData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type DeleteCategoryByIdResponses = {
+    /**
+     * Category deleted
+     */
+    201: unknown;
+};
+
+export type GetCategoryByIdData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type GetCategoryByIdResponses = {
+    /**
+     * Category found
+     */
+    200: Category;
+};
+
+export type GetCategoryByIdResponse = GetCategoryByIdResponses[keyof GetCategoryByIdResponses];
+
+export type UpdateCategoryByIdData = {
+    body: Category;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type UpdateCategoryByIdResponses = {
+    /**
+     * Category updated
+     */
+    200: Category;
+};
+
+export type UpdateCategoryByIdResponse = UpdateCategoryByIdResponses[keyof UpdateCategoryByIdResponses];
+
 export type ListDealsData = {
     body?: never;
     path?: never;

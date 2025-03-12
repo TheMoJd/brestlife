@@ -4,8 +4,9 @@ import { User } from "../gen/openapi";
 type AuthContextType = {
   user: User | null;
   token: string | null;
-  login: (user: User, token: string) => void;
+  login: (user: User | null, token: string | null) => void;
   logout: () => void;
+  isAdmin: () => boolean;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -24,10 +25,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  const login = (user: User, token: string) => {
+  const login = (user: User | null, token: string | null) => {
     setUser(user);
     setToken(token);
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", token!);
     localStorage.setItem("user", JSON.stringify(user));
   };
 
@@ -38,8 +39,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("user");
   };
 
+  const isAdmin = () => {
+    return user?.role === "ADMIN";
+  };
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
