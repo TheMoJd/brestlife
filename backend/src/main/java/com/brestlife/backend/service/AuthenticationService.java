@@ -1,6 +1,7 @@
 package com.brestlife.backend.service;
 
 import com.brestlife.backend.entity.UserEntity;
+import com.brestlife.backend.mapper.UserMapper;
 import com.brestlife.backend.repository.UserRepository;
 import com.brestlife.backend.security.JwtService;
 import com.brestlife.generate.dto.AuthenticationRequest;
@@ -20,6 +21,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper = UserMapper.INSTANCE;
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = new UserEntity();
@@ -31,7 +33,7 @@ public class AuthenticationService {
         repository.save(user);
         var jwtToken = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(jwtToken, user.getId(), user.getRole().name());
+        return new AuthenticationResponse(jwtToken, userMapper.toDto(user));
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -45,6 +47,6 @@ public class AuthenticationService {
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
 
-        return new AuthenticationResponse(jwtToken, user.getId(), user.getRole().name());
+        return new AuthenticationResponse(jwtToken, userMapper.toDto(user));
     }
 }

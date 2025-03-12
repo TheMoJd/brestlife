@@ -86,8 +86,7 @@ export type AuthenticationRequest = {
 
 export type AuthenticationResponse = {
     token: string;
-    userId: number;
-    role: string;
+    user: User;
 };
 
 export type RegisterRequest = {

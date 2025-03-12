@@ -841,14 +841,11 @@ components:
       properties:
         token:
           type: string
-        userId:
-          type: integer
-        role:
-          type: string
+        user:
+          $ref: "#/components/schemas/User"
       required:
         - token
-        - userId
-        - role
+        - user
     RegisterRequest:
       type: object
       properties:
