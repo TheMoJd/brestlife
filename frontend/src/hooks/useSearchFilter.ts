@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import {useState, useMemo} from 'react';
 
 /**
  * Hook générique pour gérer la recherche et les filtres
@@ -7,17 +7,17 @@ import { useState, useMemo } from 'react';
  * @returns {filteredItems, searchQuery, setSearchQuery}
  */
 export function useSearchFilter<T>(items: T[], searchKeys: (keyof T)[]) {
-  const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredItems = useMemo(() => {
-    if (!searchQuery) return items;
-    
-    return items.filter((item) =>
-      searchKeys.some((key) =>
-        item[key]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
-  }, [items, searchQuery]);
+    const filteredItems = useMemo(() => {
+        if (!searchQuery) return items;
 
-  return { filteredItems, searchQuery, setSearchQuery };
+        return items.filter((item) =>
+            searchKeys.some((key) =>
+                item[key]?.toString().toLowerCase().includes(searchQuery.toLowerCase())
+            )
+        );
+    }, [items, searchQuery]);
+
+    return {filteredItems, searchQuery, setSearchQuery};
 }

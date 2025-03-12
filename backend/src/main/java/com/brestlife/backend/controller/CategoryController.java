@@ -5,6 +5,7 @@ import com.brestlife.generate.api.CategoriesApi;
 import com.brestlife.generate.dto.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CategoryController implements CategoriesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> createCategory(Category category) {
         Category createdCategory = categoryService.createCategory(category);
         return ResponseEntity.ok(createdCategory);
@@ -40,12 +42,14 @@ public class CategoryController implements CategoriesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> updateCategoryById(Integer id, Category category) {
         Category updatedCategory = categoryService.updateCategoryById(id, category);
         return ResponseEntity.ok(updatedCategory);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteCategoryById(Integer id) {
         categoryService.deleteCategoryById(id);
         return ResponseEntity.status(201).build();
