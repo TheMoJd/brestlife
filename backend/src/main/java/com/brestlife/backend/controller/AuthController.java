@@ -1,34 +1,34 @@
 package com.brestlife.backend.controller;
 
-import com.brestlife.backend.security.JwtService;
-import com.brestlife.backend.service.UserService;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import com.brestlife.backend.dto.AuthenticationRequest;
+import com.brestlife.backend.dto.AuthenticationResponse;
+import com.brestlife.backend.dto.RegisterRequest;
+import com.brestlife.backend.service.AuthenticationService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
-    private final UserService userService;
+    private final AuthenticationService service;
 
-    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService, UserService userService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtService = jwtService;
-        this.userService = userService;
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> register(
+            @RequestBody RegisterRequest request
+    ) {
+        return ResponseEntity.ok(service.register(request));
     }
 
-    @PostMapping("/login")
-    public Map<String, String> login(@RequestBody Map<String, String> credentials) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                credentials.get("email"), credentials.get("password")));
-        UserDetails user = userService.loadUserByUsername(credentials.get("email"));
-        String token = jwtService.generateToken(user);
-        return Map.of("token", token);
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @RequestBody AuthenticationRequest request
+    ) {
+        return ResponseEntity.ok(service.authenticate(request));
     }
 }
