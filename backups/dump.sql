@@ -269,6 +269,10 @@ COPY public.categories (id, created_at, sub_category, type, created_by) FROM std
 3	2025-02-11 13:45:00	Restaurant	PLACE	2
 4	2025-02-12 14:50:00	Technologie	JOB	3
 5	2025-02-13 15:20:00	Shopping	DEAL	3
+6	2025-03-11 17:14:43	CDI	JOB	1
+7	2025-03-11 17:15:02	CDD	JOB	1
+8	2025-03-11 17:15:21	Stage	JOB	1
+9	2025-03-11 17:15:41	Alternance	JOB	1
 \.
 
 
@@ -297,8 +301,7 @@ COPY public.events (id, created_at, date, description, image_url, location, pric
 --
 
 COPY public.jobs (id, company_name, contact_email, created_at, description, duration, end_date, location, start_date, title, category_id, created_by, summary) FROM stdin;
-1	TechInnov	contact@techinnov.com	2025-02-11 13:45:00	Passionné par le développement web, je suis un développeur full-stack avec une solide expérience en React et Node.js. Je conçois et développe des applications performantes et évolutives, en assurant une architecture robuste côté back-end et une interface utilisateur fluide et réactive. Fort d'une expérience dans divers projets, je maîtrise les bases de données, les API REST, ainsi que les bonnes pratiques en matière de sécurité et d'optimisation. Toujours en veille technologique, je suis prêt à relever de nouveaux défis et à contribuer au succès de vos projets numériques.	CDI	2025-12-31	Brest	2025-03-01	Développeur Full-Stack	4	3	Développeur full-stack avec expérience en React et Node.js.
-2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Nous recherchons un serveur dynamique et souriant pour assurer le service du soir dans un cadre convivial et chaleureux. Vos missions incluront l'accueil des clients, la prise de commandes, le service en salle ainsi que le conseil sur les plats et boissons. Une expérience préalable en restauration est un atout, mais la motivation et le sens du service sont essentiels. Rejoignez une équipe passionnée et contribuez à offrir une expérience mémorable à nos clients !	CDD	2025-06-30	Brest	2025-03-01	Serveur	3	2	Serveur pour service du soir en semaine.
+2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Nous recherchons un serveur dynamique et souriant pour assurer le service du soir dans un cadre convivial et chaleureux. Vos missions incluront l'accueil des clients, la prise de commandes, le service en salle ainsi que le conseil sur les plats et boissons. Une expérience préalable en restauration est un atout, mais la motivation et le sens du service sont essentiels. Rejoignez une équipe passionnée et contribuez à offrir une expérience mémorable à nos clients !	CDD	2025-06-30	Brest	2025-03-01	Serveur	7	2	Serveur pour service du soir en semaine.
 \.
 
 
@@ -308,7 +311,7 @@ COPY public.jobs (id, company_name, contact_email, created_at, description, dura
 
 COPY public.places (id, address, created_at, description, image_url, latitude, longitude, name, category_id, created_by, price, summary) FROM stdin;
 1	123 Rue de la Plage, Brest	2025-02-09 11:47:00	Profitez d'une magnifique plage de sable fin, parfaite pour la baignade, la détente et une multitude d'activités nautiques. Que vous soyez amateur de surf, de paddle, de jet-ski ou simplement en quête d’un moment de relaxation au soleil, cette plage offre un cadre idyllique avec une eau cristalline et des paysages à couper le souffle. Des services comme la location d’équipements, des restaurants en bord de mer et des zones ombragées rendent votre expérience encore plus agréable. Un véritable paradis pour les amoureux de la mer !	/img/plage.jpg	48.3833	-4.4833	Plage de Brest	3	1	0	Plage idéale pour la baignade et les sports nautiques.
-2	456 Rue du Centre, Brest	2025-02-10 12:30:00	Découvrez un centre commercial moderne et animé, regroupant une large variété de boutiques pour tous les goûts et tous les budgets. Des grandes enseignes de mode aux petites boutiques artisanales, en passant par des espaces de restauration et des lieux de divertissement, cet espace commerçant est idéal pour une journée de shopping et de détente. Profitez également d’événements réguliers, de promotions exclusives et d’une atmosphère conviviale pour une expérience inoubliable.	/img/centre_commercial.jpg	48.39	-4.47	Centre Commercial de Brest	3	2	0	Centre commercial avec de nombreuses boutiques.
+2	456 Rue du Centre, Brest	2025-02-10 12:30:00	Découvrez un centre commercial moderne et animé, regroupant une large variété de boutiques pour tous les goûts et tous les budgets. Des grandes enseignes de mode aux petites boutiques artisanales, en passant par des espaces de restauration et des lieux de divertissement, cet espace commerçant est idéal pour une journée de shopping et de détente. Profitez également d’événements réguliers, de promotions exclusives et d’une atmosphère conviviale pour une expérience inoubliable! 	/img/centre_commercial.jpg	48.39	-4.47	Centre Commercial de Brest	3	2	0	Centre commercial avec de nombreuses boutiques.
 \.
 
 
@@ -327,7 +330,7 @@ COPY public.users (id, name, email, password, created_at, role, updated_at) FROM
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 5, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 9, true);
 
 
 --
@@ -348,14 +351,14 @@ SELECT pg_catalog.setval('public.events_id_seq', 2, true);
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.jobs_id_seq', 2, false);
+SELECT pg_catalog.setval('public.jobs_id_seq', 6, true);
 
 
 --
 -- Name: places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.places_id_seq', 2, false);
+SELECT pg_catalog.setval('public.places_id_seq', 6, true);
 
 
 --

@@ -6,6 +6,7 @@ import {
   updateJobById,
   deleteJobById,
   Job,
+  Category,
 } from "../../gen/openapi";
 import { useForm } from "react-hook-form";
 import { Edit, Trash2, X } from "lucide-react";
@@ -18,13 +19,14 @@ export default function JobsPageAdmin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm<Job>();
-
+  //const categories = await categories();
   const fetchJobs = async () => {
     try {
       const response = await listJobs();
       if (response.data) {
         setJobs(response.data);
       }
+      console.log("Jobs:", jobs);
     } catch (err) {
       console.error("Erreur chargement jobs:", err);
     }
@@ -50,20 +52,36 @@ export default function JobsPageAdmin() {
     setIsModalOpen(false);
   };
 
+  // pas besoin de Category fans la taablke jobs donc 2 choix effacer la clé
+  // étrangère category_id de la table jobs ou mettre une valeur par défaut
+  const defaultCategory : Category = {
+    id: 4,
+    createdAt: "2025-02-12 14:50:00.000000",
+    name: "Technologie",
+    type: "JOB",
+    createdBy: { id: 3 }
+  };
+
+
   const onSubmit = async (data: Job) => {
     try {
+      const jobData = {
+        ...data,
+        category: defaultCategory
+      };
+  
       if (editingJob?.id) {
         await updateJobById({
           path: { id: editingJob.id },
-          body: data,
+          body: jobData,
         });
       } else {
         await createJob({ 
-            body: data,
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-         });
+          body: jobData,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
       }
       closeModal();
       fetchJobs();
@@ -107,6 +125,9 @@ export default function JobsPageAdmin() {
               <th className="px-4 py-3 text-sm font-semibold text-gray-700">
                 Localisation
               </th>
+              <th className="px-4 py-3 text-sm font-semibold text-gray-700">
+                Type de contrat
+              </th>
               <th className="px-4 py-3 text-sm font-semibold text-gray-700 text-right">
                 Actions
               </th>
@@ -122,6 +143,9 @@ export default function JobsPageAdmin() {
                 <td className="px-4 py-2">{job.title}</td>
                 <td className="px-4 py-2">{job.companyName}</td>
                 <td className="px-4 py-2">{job.location}</td>
+                <td className="px-4 py-2">{job.duration}</td>
+
+
                 <td className="px-4 py-2 text-right">
                   <button
                     className="inline-flex items-center px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded mr-2"
@@ -199,20 +223,31 @@ export default function JobsPageAdmin() {
               </div>
               <div className="mb-4">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Type de contrat
+                </label>
+                <div className="relative">
+                  <select
+                    {...register("duration")}
+                    className="block w-full border border-gray-300 rounded px-3 py-2 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="CDD">CDD</option>
+                    <option value="CDI">CDI</option>
+                    <option value="Stage">Stage</option>
+                    <option value="Alternance">Alternance</option>
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                      <path d="M7 10l5 5 5-5H7z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   Description
                 </label>
                 <textarea
                   {...register("description")}
-                  className="block w-full border border-gray-300 rounded px-3 py-2"
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Durée
-                </label>
-                <input
-                  type="text"
-                  {...register("duration")}
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>
