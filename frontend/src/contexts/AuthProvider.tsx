@@ -1,7 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { User } from "../gen/openapi/types.gen";
-
-
+import { User } from "../gen/openapi";
 
 type AuthContextType = {
   user: User | null;
