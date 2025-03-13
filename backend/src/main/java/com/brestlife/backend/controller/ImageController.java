@@ -34,9 +34,9 @@ public class ImageController implements ImagesApi {
         this.placeService = placeService;
     }
 
-    @PostMapping("/images/events/{eventId}")
+    @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Event> uploadEventImage(@PathVariable Integer eventId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Event> uploadEventImage(Integer eventId, MultipartFile file) {
         try {
             Optional<EventEntity> event = eventService.getEventById(eventId);
 
@@ -61,9 +61,9 @@ public class ImageController implements ImagesApi {
         }
     }
 
-    @PostMapping("/images/places/{placeId}")
+    @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Place> uploadPlaceImage(@PathVariable Integer placeId, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Place> uploadPlaceImage(Integer placeId, MultipartFile file) {
         try {
             Optional<PlaceEntity> place = placeService.getPlaceById(placeId);
 
