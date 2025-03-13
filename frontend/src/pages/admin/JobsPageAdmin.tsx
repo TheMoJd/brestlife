@@ -8,6 +8,8 @@ import {
   Job,
   Category,
   listCategories,
+  listCategoriesByType,
+  ListCategoriesByTypeData,
 } from "../../gen/openapi";
 import { useForm } from "react-hook-form";
 import { Edit, Trash2, X } from "lucide-react";
@@ -27,29 +29,30 @@ export default function JobsPageAdmin() {
       if (response.data) {
         setJobs(response.data);
       }
-      console.log("Jobs:", jobs);
+      console.log("Jobs:", response.data);
     } catch (err) {
       console.error("Erreur chargement jobs:", err);
     }
   };
 
-
-  const fetchCategories = async () => {
+  // Charger les catégories de type JOB
+  const fetchCategoriesOfJob = async () => {
     try {
-      const response = await listCategories();
+      const response = await listCategoriesByType({
+        path: { type: "JOB" }, 
+      });
       if (response.data) {
         setCategories(response.data);
       }
-      console.log("Categories:", categories);
+      console.log("Categories :", response.data);
     } catch (err) {
       console.error("Erreur chargement categories:", err);
     }
-  };
-
+  };  
   
   useEffect(() => {
     fetchJobs();
-    fetchCategories();
+    fetchCategoriesOfJob();
   }, []);
 
   const openCreateModal = () => {
@@ -68,32 +71,18 @@ export default function JobsPageAdmin() {
     setIsModalOpen(false);
   };
 
-  // pas besoin de Category fans la taablke jobs donc 2 choix effacer la clé
-  // étrangère category_id de la table jobs ou mettre une valeur par défaut
-  const defaultCategory : Category = {
-    id: 4,
-    createdAt: "2025-02-12 14:50:00.000000",
-    name: "Technologie",
-    type: "JOB",
-    createdBy: { id: 3 }
-  };
 
 
   const onSubmit = async (data: Job) => {
     try {
-      const jobData = {
-        ...data,
-        category: defaultCategory
-      };
-  
       if (editingJob?.id) {
         await updateJobById({
           path: { id: editingJob.id },
-          body: jobData,
+          body: data,
         });
       } else {
         await createJob({ 
-          body: jobData,
+          body: data,
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -163,7 +152,7 @@ export default function JobsPageAdmin() {
                 <td className="px-4 py-2">{job.companyName}</td>
                 <td className="px-4 py-2">{job.location}</td>
                 <td className="px-4 py-2">{job.duration}</td>
-                
+                <td className="px-4 py-2">{job.category?.subcategory}</td>
 
                 <td className="px-4 py-2 text-right">
                   <button
