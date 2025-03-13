@@ -3,15 +3,6 @@ import {createRoot} from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import {AuthProvider} from './contexts/AuthProvider.tsx';
-import {client} from "./gen/openapi/client.gen.ts";
-
-client.setConfig(
-    {
-        baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:8080/api'
-    }
-)
-
-console.log("env variable API : " + import.meta.env.VITE_API_URL);
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
