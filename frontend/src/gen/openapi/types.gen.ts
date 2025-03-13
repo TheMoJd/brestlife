@@ -157,40 +157,95 @@ export type HealthCheckResponses = {
 
 export type HealthCheckResponse = HealthCheckResponses[keyof HealthCheckResponses];
 
-export type UploadImageData = {
+export type UploadEventImageData = {
     body: {
+        /**
+         * L'image à télécharger.
+         */
         file?: Blob | File;
     };
-    path?: never;
+    path: {
+        /**
+         * L'ID de l'événement pour lequel l'image est téléchargée.
+         */
+        eventId: number;
+    };
     query?: never;
-    url: '/images';
+    url: '/images/events/{eventId}';
 };
 
-export type UploadImageErrors = {
+export type UploadEventImageErrors = {
     /**
-     * Invalid request
+     * Erreur lors du traitement du fichier ou de l'événement.
      */
     400: unknown;
     /**
-     * Unauthorized
+     * Non authentifié.
      */
     401: unknown;
     /**
-     * Forbidden
+     * Non autorisé (seul un administrateur peut uploader une image).
      */
     403: unknown;
     /**
-     * Internal server error
+     * Événement non trouvé.
      */
-    500: unknown;
+    404: unknown;
 };
 
-export type UploadImageResponses = {
+export type UploadEventImageResponses = {
     /**
-     * Image uploaded successfully
+     * Image téléchargée avec succès, retourne l'événement mis à jour.
      */
-    201: unknown;
+    200: Event;
 };
+
+export type UploadEventImageResponse = UploadEventImageResponses[keyof UploadEventImageResponses];
+
+export type UploadPlaceImageData = {
+    body: {
+        /**
+         * L'image à télécharger.
+         */
+        file?: Blob | File;
+    };
+    path: {
+        /**
+         * L'ID de la place pour lequel l'image est téléchargée.
+         */
+        placeId: number;
+    };
+    query?: never;
+    url: '/images/places/{placeId}';
+};
+
+export type UploadPlaceImageErrors = {
+    /**
+     * Erreur lors du traitement du fichier ou de l'événement.
+     */
+    400: unknown;
+    /**
+     * Non authentifié.
+     */
+    401: unknown;
+    /**
+     * Non autorisé (seul un administrateur peut uploader une image).
+     */
+    403: unknown;
+    /**
+     * Événement non trouvé.
+     */
+    404: unknown;
+};
+
+export type UploadPlaceImageResponses = {
+    /**
+     * Image téléchargée avec succès, retourne la place mise à jour.
+     */
+    200: Place;
+};
+
+export type UploadPlaceImageResponse = UploadPlaceImageResponses[keyof UploadPlaceImageResponses];
 
 export type ListUsersData = {
     body?: never;
