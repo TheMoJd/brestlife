@@ -336,9 +336,9 @@ COPY public.places (id, address, created_at, description, image_url, latitude, l
 --
 
 COPY public.users (id, name, email, password, created_at, role, updated_at) FROM stdin;
-1	Admin User	admin@example.com	adminpassword	2025-02-09 11:45:17	ADMIN	2025-02-09 11:45:17
-2	Student User	student@example.com	studentpassword	2025-02-10 12:00:00	STUDENT	2025-02-10 12:00:00
-3	Company User	company@example.com	companypassword	2025-02-11 13:00:00	COMPANY	2025-02-11 13:00:00
+2	Student User	student@example.com	$2a$10$24CGTLsVFaaSlrfdJZIes.Whl0wQgEKMsFVxNiFcraojbaLYCR4nK	2025-02-10 12:00:00	STUDENT	2025-02-10 12:00:00
+1	Admin User	admin@example.com	$2a$10$24CGTLsVFaaSlrfdJZIes.Whl0wQgEKMsFVxNiFcraojbaLYCR4nK	2025-02-09 11:45:17	ADMIN	2025-02-09 11:45:17
+3	Company User	company@example.com	$2a$10$24CGTLsVFaaSlrfdJZIes.Whl0wQgEKMsFVxNiFcraojbaLYCR4nK	2025-02-11 13:00:00	COMPANY	2025-02-11 13:00:00
 \.
 
 
@@ -381,7 +381,7 @@ SELECT pg_catalog.setval('public.places_id_seq', 1, false);
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
 
 
 --
