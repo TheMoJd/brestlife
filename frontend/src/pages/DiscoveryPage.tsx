@@ -3,6 +3,7 @@ import { Search, MapPin } from 'lucide-react';
 import { Place } from '../gen/openapi';
 import { listPlaces } from '../gen/openapi';
 import { useSearchFilter } from '../hooks/useSearchFilter';
+import MyGoogleMap from '../components/GoogleMap';
 
 export function DiscoveryPage() {
   const [places, setPlaces] = useState<Place[]>([]);
@@ -11,7 +12,6 @@ export function DiscoveryPage() {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [filters, setFilters] = useState({ price: '' });
 
-  // Récupération des lieux
   useEffect(() => {
     async function loadPlaces() {
       try {
@@ -19,6 +19,7 @@ export function DiscoveryPage() {
         const response = await listPlaces();
         if (response.data) {
           setPlaces(response.data);
+          setFilters({ price: '' });
         } else {
           setError('Échec du chargement des lieux.');
         }
@@ -32,10 +33,8 @@ export function DiscoveryPage() {
     loadPlaces();
   }, []);
 
-  // Utilisation du hook de recherche (recherche par nom)
   const { filteredItems: searchedPlaces, searchQuery, setSearchQuery } = useSearchFilter(places, ['name']);
 
-  // Filtrage par prix
   const filteredPlaces = useMemo(() => {
     return searchedPlaces.filter((place) => {
       if (filters.price === '') return true;
@@ -59,7 +58,6 @@ export function DiscoveryPage() {
         <h1 className="text-3xl font-bold">Découverte</h1>
 
         <div className="mt-4 md:mt-0 flex flex-wrap gap-4">
-          {/* Barre de recherche */}
           <div className="relative w-full md:w-auto">
             <input
               type="text"
@@ -71,7 +69,6 @@ export function DiscoveryPage() {
             <Search className="absolute left-3 top-2.5 w-5 h-5 text-gray-400" />
           </div>
 
-          {/* Filtrage par prix */}
           <select
             value={filters.price}
             onChange={(e) => setFilters(f => ({ ...f, price: e.target.value }))}
@@ -84,8 +81,17 @@ export function DiscoveryPage() {
         </div>
       </div>
 
-      {/* Affichage des lieux */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {places.length > 0 ? (
+          <MyGoogleMap
+              places={filteredPlaces.length > 0 ? filteredPlaces : places}
+              filterKey={filters.price || 'all'}
+              onSelectPlace={setSelectedPlace} // Ajout de la fonction pour gérer le clic sur un marqueur
+          />
+      ) : (
+          <div className="text-center text-gray-500 py-10">Aucun lieu trouvé.</div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {filteredPlaces.length > 0 ? (
           filteredPlaces.map((place) => (
             <div key={place.id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -111,8 +117,8 @@ export function DiscoveryPage() {
                   <span className="text-sm">{place.address || 'Lieu inconnu'}</span>
                 </div>
                 <button
-                    className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    onClick={() => setSelectedPlace(place)}
+                  className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  onClick={() => setSelectedPlace(place)}
                 >
                   En savoir plus
                 </button>
@@ -124,39 +130,39 @@ export function DiscoveryPage() {
         )}
       </div>
       {selectedPlace && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-              <h2 className="text-2xl font-bold mb-4">{selectedPlace.name}</h2>
-              <img
-                  src={selectedPlace.imageUrl || 'https://via.placeholder.com/300'}
-                  alt={selectedPlace.name}
-                  className="w-full h-48 object-cover mb-4"
-              />
-              <div className="flex justify-between items-start mb-2">
-                <h2 className="text-xl font-semibold">{selectedPlace.name}</h2>
-                <span
-                    className={`px-2 py-1 rounded text-sm ${
-                        selectedPlace.price && selectedPlace.price > 0 ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
-                    }`}
-                >
-                                        {selectedPlace.price && selectedPlace.price > 0 ? `${selectedPlace.price}€` : 'Gratuit'}
-                                    </span>
-              </div>
-              <p className="text-gray-600 mb-4">{selectedPlace.description}</p>
-              <div className="flex items-center text-gray-500 mb-4">
-                <MapPin className="w-4 h-4 mr-2" />
-                <span className="text-sm">{selectedPlace.address || 'évènement inconnu'}</span>
-              </div>
-              <div className="flex justify-end">
-                <button
-                    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
-                    onClick={() => setSelectedPlace(null)}
-                >
-                  Fermer
-                </button>
-              </div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+            <h2 className="text-2xl font-bold mb-4">{selectedPlace.name}</h2>
+            <img
+              src={selectedPlace.imageUrl || 'https://via.placeholder.com/300'}
+              alt={selectedPlace.name}
+              className="w-full h-48 object-cover mb-4"
+            />
+            <div className="flex justify-between items-start mb-2">
+              <h2 className="text-xl font-semibold">{selectedPlace.name}</h2>
+              <span
+                className={`px-2 py-1 rounded text-sm ${
+                  selectedPlace.price && selectedPlace.price > 0 ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
+                }`}
+              >
+                {selectedPlace.price && selectedPlace.price > 0 ? `${selectedPlace.price}€` : 'Gratuit'}
+              </span>
+            </div>
+            <p className="text-gray-600 mb-4">{selectedPlace.description}</p>
+            <div className="flex items-center text-gray-500 mb-4">
+              <MapPin className="w-4 h-4 mr-2" />
+              <span className="text-sm">{selectedPlace.address || 'évènement inconnu'}</span>
+            </div>
+            <div className="flex justify-end">
+              <button
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                onClick={() => setSelectedPlace(null)}
+              >
+                Fermer
+              </button>
             </div>
           </div>
+        </div>
       )}
     </div>
   );

@@ -23,7 +23,7 @@ export default function LoginPage() {
     try {
       const response = await authenticateUser( {body: data.body } );
 
-      if (response.data?.token && response.data?.user) {
+      if (response.data) {
         login(response.data?.user, response.data?.token);
         navigate("/admin"); // Redirection après connexion
       } else {

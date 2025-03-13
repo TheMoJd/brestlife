@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
--- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped from database version 17.3 (Debian 17.3-3.pgdg120+1)
+-- Dumped by pg_dump version 17.3 (Debian 17.3-3.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,22 +16,6 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
-
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: dev
---
-
--- *not* creating schema, since initdb creates it
-
-
-ALTER SCHEMA public OWNER TO dev;
-
---
--- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: dev
---
-
-COMMENT ON SCHEMA public IS '';
-
 
 --
 -- Name: public; Type: SCHEMA; Schema: -; Owner: dev
@@ -286,10 +270,6 @@ COPY public.categories (id, created_at, sub_category, type, created_by) FROM std
 4	2025-02-12 14:50:00	Technologie	JOB	3
 5	2025-02-13 15:20:00	Shopping	DEAL	3
 6	2025-03-07 16:43:52	Transport	DEAL	3
-6	2025-03-11 17:14:43	CDI	JOB	1
-7	2025-03-11 17:15:02	CDD	JOB	1
-8	2025-03-11 17:15:21	Stage	JOB	1
-9	2025-03-11 17:15:41	Alternance	JOB	1
 \.
 
 
@@ -315,11 +295,11 @@ COPY public.deals (id, created_at, description, link, title, updated_at, categor
 --
 
 COPY public.events (id, created_at, date, description, image_url, location, price, title, category_id, created_by, summary) FROM stdin;
-1	2025-02-09 11:46:10	2025-02-15 19:00:00	Venez découvrir un concert de jazz exceptionnel mettant en avant des artistes locaux talentueux. Ce concert unique se déroulera dans une ambiance chaleureuse et conviviale, où chaque artiste aura l'opportunité de montrer son talent à travers une série de compositions originales et des reprises classiques du jazz. Le concert commencera à 19h00 et sera suivi d'une session de questions-réponses avec les musiciens. Ne manquez pas cette soirée musicale inoubliable.	/img/concert.jpg	Salle de Concert de Brest	20	Concert de Jazz	1	1	Concert de jazz avec des artistes locaux.
-2	2025-02-10 12:00:00	2025-02-16 10:00:00	Rejoignez-nous pour une conférence captivante sur l'intelligence artificielle, où des experts du domaine partageront leurs connaissances sur les dernières avancées technologiques. Cette conférence abordera des sujets variés allant des algorithmes d'apprentissage automatique aux implications éthiques de l'IA dans la société. L'événement aura lieu dans l'auditorium principal de l'Université de Brest, avec une session de networking à la fin pour échanger avec les conférenciers et les autres participants. Ne manquez pas cette occasion unique de comprendre les enjeux actuels de l'IA.	/img/conference.jpg	Université de Brest	10	Conférence IA	1	3	Conférence sur l'intelligence artificielle.
-3	2025-02-11 14:00:00	2025-02-13 18:30:00	Pour sa cinquième édition, le festival prend à nouveau ses quartiers dans la piscine ! Profitez de la vidange annuelle pour assister à deux soirées de concerts au fond du grand bassin. Pépites électro-pop et house au programme dans un cadre inédit et atypique.	/img/festival_grand_bain.jpg	Piscine Foch, 25 Avenue Maréchal Foch, 29200 Brest	25	Festival Grand Bain	1	2	Festival de musiques électro-pop et house dans un cadre atypique.
-4	2025-03-01 09:00:00	2025-06-16 09:00:00	OCEANS 2025 Brest sera un forum majeur pour les scientifiques, ingénieurs et utilisateurs finaux du monde entier pour présenter les derniers résultats de recherche, idées, développements et applications dans tous les domaines des systèmes d'ingénierie océanique. Le programme sera construit autour du thème "Océans : l'infini est la limite", en mettant l'accent sur l'impact du changement climatique sur les océans et depuis les océans.	/img/oceans_2025.jpg	Le Quartz Congrès, 2-4 avenue Georges Clemenceau, 29210 Brest Cedex 1	50	OCEANS 2025 Brest	1	3	Forum international sur les systèmes d'ingénierie océanique.
-5	2025-03-15 10:00:00	2025-06-08 10:00:00	Le 8 juin 2025, le diocèse de Quimper et Léon vous invite à un événement exceptionnel au Parc des Expositions de la Penfeld à Brest pour célébrer la Pentecôte 2025. Dans un esprit de fête, de communion et d'unité, nous vivrons ensemble une journée riche en rencontres et en spiritualité. Ce rassemblement sera marqué par la promulgation des orientations pastorales de Monseigneur Dognin, un moment fort pour la vie de notre diocèse.	/img/pentecote_2025.jpg	Parc des Expositions de la Penfeld, 29820 Guilers	0	Pentecôte 2025	1	1	Grande fête diocésaine célébrant la Pentecôte.
+4	2025-03-01 09:00:00	2025-06-16 09:00:00	OCEANS 2025 Brest sera un forum majeur pour les scientifiques, ingénieurs et utilisateurs finaux du monde entier pour présenter les derniers résultats de recherche, idées, développements et applications dans tous les domaines des systèmes d'ingénierie océanique. Le programme sera construit autour du thème "Océans : l'infini est la limite", en mettant l'accent sur l'impact du changement climatique sur les océans et depuis les océans.	events/event4/ocean.jpg	Le Quartz Congrès, 2-4 avenue Georges Clemenceau, 29210 Brest Cedex 1	50	OCEANS 2025 Brest	1	3	Forum international sur les systèmes d'ingénierie océanique.
+1	2025-02-09 11:46:10	2025-02-15 19:00:00	Venez découvrir un concert de jazz exceptionnel mettant en avant des artistes locaux talentueux. Ce concert unique se déroulera dans une ambiance chaleureuse et conviviale, où chaque artiste aura l'opportunité de montrer son talent à travers une série de compositions originales et des reprises classiques du jazz. Le concert commencera à 19h00 et sera suivi d'une session de questions-réponses avec les musiciens. Ne manquez pas cette soirée musicale inoubliable.	events/event1/concert.jpg	Salle de Concert de Brest	20	Concert de Jazz	1	1	Concert de jazz avec des artistes locaux.
+5	2025-03-15 10:00:00	2025-06-08 10:00:00	Le 8 juin 2025, le diocèse de Quimper et Léon vous invite à un événement exceptionnel au Parc des Expositions de la Penfeld à Brest pour célébrer la Pentecôte 2025. Dans un esprit de fête, de communion et d'unité, nous vivrons ensemble une journée riche en rencontres et en spiritualité. Ce rassemblement sera marqué par la promulgation des orientations pastorales de Monseigneur Dognin, un moment fort pour la vie de notre diocèse.	events/event5/pentecote.jpg	Parc des Expositions de la Penfeld, 29820 Guilers	0	Pentecôte 2025	1	1	Grande fête diocésaine célébrant la Pentecôte.
+3	2025-02-11 14:00:00	2025-02-13 18:30:00	Pour sa cinquième édition, le festival prend à nouveau ses quartiers dans la piscine ! Profitez de la vidange annuelle pour assister à deux soirées de concerts au fond du grand bassin. Pépites électro-pop et house au programme dans un cadre inédit et atypique.	events/event3/grand-bain.jpg	Piscine Foch, 25 Avenue Maréchal Foch, 29200 Brest	25	Festival Grand Bain	1	2	Festival de musiques électro-pop et house dans un cadre atypique.
+2	2025-02-10 12:00:00	2025-02-16 10:00:00	Rejoignez-nous pour une conférence captivante sur l'intelligence artificielle, où des experts du domaine partageront leurs connaissances sur les dernières avancées technologiques. Cette conférence abordera des sujets variés allant des algorithmes d'apprentissage automatique aux implications éthiques de l'IA dans la société. L'événement aura lieu dans l'auditorium principal de l'Université de Brest, avec une session de networking à la fin pour échanger avec les conférenciers et les autres participants. Ne manquez pas cette occasion unique de comprendre les enjeux actuels de l'IA.	events/event2/conference.jpg	Université de Brest	10	Conférence IA	1	3	Conférence sur l'intelligence artificielle.
 \.
 
 
@@ -328,7 +308,8 @@ COPY public.events (id, created_at, date, description, image_url, location, pric
 --
 
 COPY public.jobs (id, company_name, contact_email, created_at, description, duration, end_date, location, start_date, title, category_id, created_by, summary) FROM stdin;
-2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Nous recherchons un serveur dynamique et souriant pour assurer le service du soir dans un cadre convivial et chaleureux. Vos missions incluront l'accueil des clients, la prise de commandes, le service en salle ainsi que le conseil sur les plats et boissons. Une expérience préalable en restauration est un atout, mais la motivation et le sens du service sont essentiels. Rejoignez une équipe passionnée et contribuez à offrir une expérience mémorable à nos clients !	CDD	2025-06-30	Brest	2025-03-01	Serveur	7	2	Serveur pour service du soir en semaine.
+1	TechInnov	contact@techinnov.com	2025-02-11 13:45:00	Passionné par le développement web, je suis un développeur full-stack avec une solide expérience en React et Node.js. Je conçois et développe des applications performantes et évolutives, en assurant une architecture robuste côté back-end et une interface utilisateur fluide et réactive. Fort d'une expérience dans divers projets, je maîtrise les bases de données, les API REST, ainsi que les bonnes pratiques en matière de sécurité et d'optimisation. Toujours en veille technologique, je suis prêt à relever de nouveaux défis et à contribuer au succès de vos projets numériques.	CDI	2025-12-31	Brest	2025-03-01	Développeur Full-Stack	4	3	Développeur full-stack avec expérience en React et Node.js.
+2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Nous recherchons un serveur dynamique et souriant pour assurer le service du soir dans un cadre convivial et chaleureux. Vos missions incluront l'accueil des clients, la prise de commandes, le service en salle ainsi que le conseil sur les plats et boissons. Une expérience préalable en restauration est un atout, mais la motivation et le sens du service sont essentiels. Rejoignez une équipe passionnée et contribuez à offrir une expérience mémorable à nos clients !	CDD	2025-06-30	Brest	2025-03-01	Serveur	3	2	Serveur pour service du soir en semaine.
 \.
 
 
@@ -337,16 +318,16 @@ COPY public.jobs (id, company_name, contact_email, created_at, description, dura
 --
 
 COPY public.places (id, address, created_at, description, image_url, latitude, longitude, name, category_id, created_by, price, summary) FROM stdin;
-3	25 Rue de Pontaniou, 29200 Brest	2025-03-10 09:10:00	Ancien site industriel réhabilité, les Ateliers des Capucins sont désormais un lieu culturel et de loisirs abritant une médiathèque, des espaces d'exposition, des boutiques et des restaurants.	/img/ateliers_capucins.jpg	48.389303	-4.498928	Les Ateliers des Capucins	1	2	0	Lieu culturel et de loisirs dans un ancien site industriel.
-8	Cours Dajot, 29200 Brest	2025-03-10 09:35:00	Promenade pittoresque offrant une vue imprenable sur la rade de Brest, idéale pour une balade tranquille en admirant le paysage maritime.	/img/cours_dajot.jpg	48.3833834	-4.4875402	Cours Dajot	1	2	0	Promenade avec vue sur la rade de Brest.
-2	Port de Plaisance du Moulin Blanc, 29200 Brest	2025-03-10 09:05:00	Centre de découverte des océans, Océanopolis propose des expositions interactives et des aquariums présentant la faune et la flore marines des régions polaires, tropicales et bretonnes.	/img/oceanopolis.jpg	48.390106	-4.435117	Océanopolis	1	1	15	Centre de découverte des océans avec aquariums.
-5	Plouzané, 29280 Brest	2025-03-10 09:20:00	Ce phare emblématique offre une vue panoramique sur la mer d'Iroise et la rade de Brest. Il est accessible par un sentier côtier pittoresque.	/img/phare_petit_minou.jpg	48.336643	-4.614316	Phare du Petit Minou	1	3	0	Phare offrant une vue panoramique sur la mer.
-4	Rue Saint-Malo, 29200 Brest	2025-03-10 09:15:00	Seule rue ayant survécu aux bombardements de la Seconde Guerre mondiale, la rue Saint-Malo offre un aperçu du vieux Brest avec ses maisons anciennes et son atmosphère pittoresque.	/img/rue_saint_malo.jpg	48.389517	-4.502178	Rue Saint-Malo	1	2	0	Rue historique préservée avec maisons anciennes.
-7	Plage du Moulin Blanc, 29200 Brest	2025-03-10 09:30:00	Cette plage urbaine est idéale pour une promenade détente, offrant une vue sur l'anse du Moulin Blanc et des activités nautiques en été.	/img/plage_moulin_blanc.jpg	48.397527	-4.429579	Plage du Moulin Blanc	3	2	0	Plage urbaine avec activités nautiques.
-6	Rampe du Stang-Alar, 29200 Brest	2025-03-10 09:25:00	Ce jardin botanique présente une collection unique de plantes en voie de disparition, réparties sur 30 hectares de vallons et de serres tropicales.	/img/conservatoire_botanique.jpg	48.40817	-4.449534	Conservatoire Botanique National de Brest	1	1	0	Jardin botanique avec plantes rares et serres.
-1	Château de Brest, Boulevard de la Marine, 29200 Brest	2025-03-10 09:00:00	Situé dans le château historique de Brest, ce musée retrace l'histoire de la Marine française à travers une riche collection d'artefacts, de maquettes et d'œuvres d'art.	/img/musee_marine.jpg	48.381167	-4.49236	Musée National de la Marine	1	1	10	Musée dédié à l'histoire maritime française.
-9	Station Jean Moulin, 29200 Brest	2025-03-10 09:40:00	Premier téléphérique urbain de France, il relie les deux rives de la Penfeld, offrant une vue unique sur la ville et le port militaire.	/img/telepherique_brest.jpg	48.386152	-4.493221	Téléphérique de Brest	6	3	1.5	Premier téléphérique urbain de France avec vue.
-10	55 Quai Éric Tabarly, 29200 Brest	2025-03-10 09:45:00	Située en plein cœur de la ville, la Marina du Château accueille des bateaux de plaisance et offre une promenade agréable avec des restaurants et des bars à proximité.	/img/marina_chateau.jpg	48.378779	-4.490052	Marina du Château	3	2	0	Port de plaisance avec restaurants et bars.
+10	55 Quai Éric Tabarly, 29200 Brest	2025-03-10 09:45:00	Située en plein cœur de la ville, la Marina du Château accueille des bateaux de plaisance et offre une promenade agréable avec des restaurants et des bars à proximité.	places/place10/marina_chateau.jpg	48.378779	-4.490052	Marina du Château	3	2	0	Port de plaisance avec restaurants et bars.
+9	Station Jean Moulin, 29200 Brest	2025-03-10 09:40:00	Premier téléphérique urbain de France, il relie les deux rives de la Penfeld, offrant une vue unique sur la ville et le port militaire.	places/place9/telepherique_brest.jpg	48.386152	-4.493221	Téléphérique de Brest	6	3	1.5	Premier téléphérique urbain de France avec vue.
+5	Plouzané, 29280 Brest	2025-03-10 09:20:00	Ce phare emblématique offre une vue panoramique sur la mer d'Iroise et la rade de Brest. Il est accessible par un sentier côtier pittoresque.	places/place5/phare_petit_minou.jpg	48.336643	-4.614316	Phare du Petit Minou	1	3	0	Phare offrant une vue panoramique sur la mer.
+3	25 Rue de Pontaniou, 29200 Brest	2025-03-10 09:10:00	Ancien site industriel réhabilité, les Ateliers des Capucins sont désormais un lieu culturel et de loisirs abritant une médiathèque, des espaces d'exposition, des boutiques et des restaurants.	places/place3/ateliers_capucins.jpg	48.389303	-4.498928	Les Ateliers des Capucins	1	2	0	Lieu culturel et de loisirs dans un ancien site industriel.
+2	Port de Plaisance du Moulin Blanc, 29200 Brest	2025-03-10 09:05:00	Centre de découverte des océans, Océanopolis propose des expositions interactives et des aquariums présentant la faune et la flore marines des régions polaires, tropicales et bretonnes.	places/place2/oceanopolis.jpg	48.390106	-4.435117	Océanopolis	1	1	15	Centre de découverte des océans avec aquariums.
+6	Rampe du Stang-Alar, 29200 Brest	2025-03-10 09:25:00	Ce jardin botanique présente une collection unique de plantes en voie de disparition, réparties sur 30 hectares de vallons et de serres tropicales.	places/place6/conservatoire_botanique.jpg	48.40817	-4.449534	Conservatoire Botanique National de Brest	1	1	0	Jardin botanique avec plantes rares et serres.
+8	Cours Dajot, 29200 Brest	2025-03-10 09:35:00	Promenade pittoresque offrant une vue imprenable sur la rade de Brest, idéale pour une balade tranquille en admirant le paysage maritime.	places/place8/cours_dajot.jpg	48.3833834	-4.4875402	Cours Dajot	1	2	0	Promenade avec vue sur la rade de Brest.
+4	Rue Saint-Malo, 29200 Brest	2025-03-10 09:15:00	Seule rue ayant survécu aux bombardements de la Seconde Guerre mondiale, la rue Saint-Malo offre un aperçu du vieux Brest avec ses maisons anciennes et son atmosphère pittoresque.	places/place4/rue_saint_malo.jpg	48.389517	-4.502178	Rue Saint-Malo	1	2	0	Rue historique préservée avec maisons anciennes.
+7	Plage du Moulin Blanc, 29200 Brest	2025-03-10 09:30:00	Cette plage urbaine est idéale pour une promenade détente, offrant une vue sur l'anse du Moulin Blanc et des activités nautiques en été.	places/place7/plage_moulin_blanc.jpg	48.397527	-4.429579	Plage du Moulin Blanc	3	2	0	Plage urbaine avec activités nautiques.
+1	Château de Brest, Boulevard de la Marine, 29200 Brest	2025-03-10 09:00:00	Situé dans le château historique de Brest, ce musée retrace l'histoire de la Marine française à travers une riche collection d'artefacts, de maquettes et d'œuvres d'art.	places/place1/musee_marine.jpg	48.381167	-4.49236	Musée National de la Marine	1	1	10	Musée dédié à l'histoire maritime française.
 \.
 
 
@@ -355,9 +336,9 @@ COPY public.places (id, address, created_at, description, image_url, latitude, l
 --
 
 COPY public.users (id, name, email, password, created_at, role, updated_at) FROM stdin;
-1	Admin User	admin@example.com	adminpassword	2025-02-09 11:45:17	ADMIN	2025-02-09 11:45:17
-2	Student User	student@example.com	studentpassword	2025-02-10 12:00:00	STUDENT	2025-02-10 12:00:00
-3	Company User	company@example.com	companypassword	2025-02-11 13:00:00	COMPANY	2025-02-11 13:00:00
+2	Student User	student@example.com	$2a$10$24CGTLsVFaaSlrfdJZIes.Whl0wQgEKMsFVxNiFcraojbaLYCR4nK	2025-02-10 12:00:00	STUDENT	2025-02-10 12:00:00
+1	Admin User	admin@example.com	$2a$10$24CGTLsVFaaSlrfdJZIes.Whl0wQgEKMsFVxNiFcraojbaLYCR4nK	2025-02-09 11:45:17	ADMIN	2025-02-09 11:45:17
+3	Company User	company@example.com	$2a$10$24CGTLsVFaaSlrfdJZIes.Whl0wQgEKMsFVxNiFcraojbaLYCR4nK	2025-02-11 13:00:00	COMPANY	2025-02-11 13:00:00
 \.
 
 
@@ -365,7 +346,7 @@ COPY public.users (id, name, email, password, created_at, role, updated_at) FROM
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 9, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
 
 
 --
@@ -386,21 +367,21 @@ SELECT pg_catalog.setval('public.events_id_seq', 1, false);
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.jobs_id_seq', 6, true);
+SELECT pg_catalog.setval('public.jobs_id_seq', 2, false);
 
 
 --
 -- Name: places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.places_id_seq', 6, true);
+SELECT pg_catalog.setval('public.places_id_seq', 1, false);
 
 
 --
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+SELECT pg_catalog.setval('public.users_id_seq', 4, true);
 
 
 --
