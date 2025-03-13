@@ -5,7 +5,7 @@ export const createClientConfig: CreateClientConfig = (config) => {
 
     return {
         ...config,
-        baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+        baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:8080/hey-api',
         headers: {
             ...(token ? { Authorization: `Bearer ${token}` } : {})
         }
