@@ -8,9 +8,8 @@ COPY ./frontend /app/frontend
 RUN npm install --frozen-lockfile
 
 RUN --mount=type=secret,id=vite_api_url,env=VITE_API_URL \
-    --mount=type=secret,id=vite_google_maps_api_key,env=VITE_GOOGLE_MAPS_API_KEY
-
-RUN npm run build
+    --mount=type=secret,id=vite_google_maps_api_key,env=VITE_GOOGLE_MAPS_API_KEY \
+    npm run build
 
 FROM node:23.7.0-alpine3.21 AS runtime
 
