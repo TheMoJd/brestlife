@@ -85,6 +85,7 @@ export function DiscoveryPage() {
           <MyGoogleMap
               places={filteredPlaces.length > 0 ? filteredPlaces : places}
               filterKey={filters.price || 'all'}
+              onSelectPlace={setSelectedPlace} // Ajout de la fonction pour gérer le clic sur un marqueur
           />
       ) : (
           <div className="text-center text-gray-500 py-10">Aucun lieu trouvé.</div>
