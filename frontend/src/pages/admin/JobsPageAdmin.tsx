@@ -13,13 +13,13 @@ import { Edit, Trash2, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthProvider";
 
 export default function JobsPageAdmin() {
-    const { token } = useAuth();
+  const { token } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm<Job>();
-  //const categories = await categories();
+  //const categories = await categories(); 
   const fetchJobs = async () => {
     try {
       const response = await listJobs();
