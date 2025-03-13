@@ -861,6 +861,24 @@ export type UpdateCategoryByIdResponses = {
 
 export type UpdateCategoryByIdResponse = UpdateCategoryByIdResponses[keyof UpdateCategoryByIdResponses];
 
+export type ListCategoriesByTypeData = {
+    body?: never;
+    path: {
+        type: 'PLACE' | 'JOB' | 'EVENT';
+    };
+    query?: never;
+    url: '/categories/type/{type}';
+};
+
+export type ListCategoriesByTypeResponses = {
+    /**
+     * A list of categories with the given type.
+     */
+    200: Array<Category>;
+};
+
+export type ListCategoriesByTypeResponse = ListCategoriesByTypeResponses[keyof ListCategoriesByTypeResponses];
+
 export type ClientOptions = {
     baseUrl: 'http://localhost:8080/api' | (string & {});
 };

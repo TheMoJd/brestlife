@@ -742,6 +742,31 @@ paths:
       responses:
         201:
           description: "Category deleted"
+  /categories/type/{type}:
+    get:
+      summary: "List categories by a given type"
+      operationId: "listCategoriesByType"
+      tags:
+        - categories
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - PLACE
+              - JOB
+              - EVENT
+      responses:
+        200:
+          description: "A list of categories with the given type."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
 components:
   schemas:
     User:

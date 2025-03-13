@@ -7,33 +7,52 @@ import {
   deleteJobById,
   Job,
   Category,
+  listCategories,
+  listCategoriesByType,
+  ListCategoriesByTypeData,
 } from "../../gen/openapi";
 import { useForm } from "react-hook-form";
 import { Edit, Trash2, X } from "lucide-react";
 import { useAuth } from "../../contexts/AuthProvider";
 
 export default function JobsPageAdmin() {
-    const { token } = useAuth();
+  const { token } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm<Job>();
-  //const categories = await categories();
   const fetchJobs = async () => {
     try {
       const response = await listJobs();
       if (response.data) {
         setJobs(response.data);
       }
-      console.log("Jobs:", jobs);
+      console.log("Jobs:", response.data);
     } catch (err) {
       console.error("Erreur chargement jobs:", err);
     }
   };
 
+  // Charger les catégories de type JOB
+  const fetchCategoriesOfJob = async () => {
+    try {
+      const response = await listCategoriesByType({
+        path: { type: "JOB" }, 
+      });
+      if (response.data) {
+        setCategories(response.data);
+      }
+      console.log("Categories :", response.data);
+    } catch (err) {
+      console.error("Erreur chargement categories:", err);
+    }
+  };  
+  
   useEffect(() => {
     fetchJobs();
+    fetchCategoriesOfJob();
   }, []);
 
   const openCreateModal = () => {
@@ -52,32 +71,18 @@ export default function JobsPageAdmin() {
     setIsModalOpen(false);
   };
 
-  // pas besoin de Category fans la taablke jobs donc 2 choix effacer la clé
-  // étrangère category_id de la table jobs ou mettre une valeur par défaut
-  const defaultCategory : Category = {
-    id: 4,
-    createdAt: "2025-02-12 14:50:00.000000",
-    name: "Technologie",
-    type: "JOB",
-    createdBy: { id: 3 }
-  };
 
 
   const onSubmit = async (data: Job) => {
     try {
-      const jobData = {
-        ...data,
-        category: defaultCategory
-      };
-  
       if (editingJob?.id) {
         await updateJobById({
           path: { id: editingJob.id },
-          body: jobData,
+          body: data,
         });
       } else {
         await createJob({ 
-          body: jobData,
+          body: data,
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -128,6 +133,9 @@ export default function JobsPageAdmin() {
               <th className="px-4 py-3 text-sm font-semibold text-gray-700">
                 Type de contrat
               </th>
+              <th className="px-4 py-3 text-sm font-semibold text-gray-700">
+                Categorie
+              </th>
               <th className="px-4 py-3 text-sm font-semibold text-gray-700 text-right">
                 Actions
               </th>
@@ -144,7 +152,7 @@ export default function JobsPageAdmin() {
                 <td className="px-4 py-2">{job.companyName}</td>
                 <td className="px-4 py-2">{job.location}</td>
                 <td className="px-4 py-2">{job.duration}</td>
-
+                <td className="px-4 py-2">{job.category?.subCategory}</td>
 
                 <td className="px-4 py-2 text-right">
                   <button
@@ -242,12 +250,33 @@ export default function JobsPageAdmin() {
                   </div>
                 </div>
               </div>
+              {/* Sélecteur de catégorie */}
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">Catégorie</label>
+                <select {...register("category.id")} className="block w-full border border-gray-300 rounded px-3 py-2">
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.subCategory}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="mb-4">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Description
                 </label>
                 <textarea
                   {...register("description")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Résumé
+                </label>
+                <input
+                  type="text"
+                  {...register("summary")}
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>

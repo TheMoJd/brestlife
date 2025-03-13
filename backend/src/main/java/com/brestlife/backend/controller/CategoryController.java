@@ -54,4 +54,17 @@ public class CategoryController implements CategoriesApi {
         categoryService.deleteCategoryById(id);
         return ResponseEntity.status(201).build();
     }
+
+    @Override
+    public ResponseEntity<List<Category>> listCategoriesByType(String type) {
+        Category.TypeEnum typeEnum;
+        try {
+            typeEnum = Category.TypeEnum.fromValue(type);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+        List<Category> categories = categoryService.listCategoriesByType(typeEnum);
+        return ResponseEntity.ok(categories);
+    }
+
 }
