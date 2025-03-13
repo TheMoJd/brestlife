@@ -152,7 +152,7 @@ export default function JobsPageAdmin() {
                 <td className="px-4 py-2">{job.companyName}</td>
                 <td className="px-4 py-2">{job.location}</td>
                 <td className="px-4 py-2">{job.duration}</td>
-                <td className="px-4 py-2">{job.category?.subcategory}</td>
+                <td className="px-4 py-2">{job.category?.subCategory}</td>
 
                 <td className="px-4 py-2 text-right">
                   <button
@@ -250,12 +250,33 @@ export default function JobsPageAdmin() {
                   </div>
                 </div>
               </div>
+              {/* Sélecteur de catégorie */}
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">Catégorie</label>
+                <select {...register("category.id")} className="block w-full border border-gray-300 rounded px-3 py-2">
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.subCategory}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="mb-4">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Description
                 </label>
                 <textarea
                   {...register("description")}
+                  className="block w-full border border-gray-300 rounded px-3 py-2"
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Résumé
+                </label>
+                <input
+                  type="text"
+                  {...register("summary")}
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
               </div>
