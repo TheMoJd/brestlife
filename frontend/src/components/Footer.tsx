@@ -6,7 +6,7 @@ interface FooterProps {
 }
 
 
-export function Footer({ navItems } : FooterProps) {
+export default function Footer({ navItems } : FooterProps) {
     return (
         <>
             {/* Footer */}

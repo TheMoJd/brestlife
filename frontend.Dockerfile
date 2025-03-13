@@ -1,12 +1,9 @@
 FROM node:23.7.0-alpine3.21 AS build
 
 WORKDIR /app/frontend
+
 COPY ./openapi.yaml /app
-COPY ./.dockerignore /app/frontend/.dockerignore
-
 COPY ./frontend /app/frontend
-
-RUN ls -al /app/frontend
 
 RUN npm install --frozen-lockfile
 

@@ -7,7 +7,7 @@ interface NavBarProps {
     navItems: { path: string; name: string; icon: JSX.Element }[];
 }
 
-export function NavBar({ navItems }: NavBarProps) {
+export default function NavBar({ navItems }: NavBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (

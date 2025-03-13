@@ -8,6 +8,7 @@ import com.brestlife.generate.api.PlacesApi;
 import com.brestlife.generate.dto.Place;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class PlaceController implements PlacesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Place> createPlace(Place place) {
         PlaceEntity placeEntity = placeMapper.toEntity(place);
         PlaceEntity savedPlaceEntity = placeService.savePlace(placeEntity);
@@ -35,6 +37,7 @@ public class PlaceController implements PlacesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePlaceById(Integer id) {
         if (!placeService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -65,6 +68,7 @@ public class PlaceController implements PlacesApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Place> updatePlaceById(Integer id, Place place) {
         PlaceEntity placeEntity = placeMapper.toEntity(place);
         PlaceEntity updatedPlaceEntity = placeService.updatePlaceById(id, placeEntity);
