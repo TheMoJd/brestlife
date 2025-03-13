@@ -7,6 +7,7 @@ import com.brestlife.generate.api.JobsApi;
 import com.brestlife.generate.dto.Job;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class JobController implements JobsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Job> createJob(Job job) {
         JobEntity jobEntity = jobMapper.toEntity(job);
         JobEntity savedJobEntity = jobService.saveJob(jobEntity);
@@ -32,6 +34,7 @@ public class JobController implements JobsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteJobById(Integer id) {
         if (!jobService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -57,6 +60,7 @@ public class JobController implements JobsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Job> updateJobById(Integer id, Job job) {
         JobEntity jobEntity = jobMapper.toEntity(job);
         JobEntity updatedJobEntity = jobService.updateJobById(id, jobEntity);

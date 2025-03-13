@@ -79,6 +79,68 @@ export type Deal = {
     updatedAt?: string;
 };
 
+export type AuthenticationRequest = {
+    email: string;
+    password: string;
+};
+
+export type AuthenticationResponse = {
+    token: string;
+    user: User;
+};
+
+export type RegisterRequest = {
+    name: string;
+    email: string;
+    password: string;
+};
+
+export type RegisterUserData = {
+    body: RegisterRequest;
+    path?: never;
+    query?: never;
+    url: '/auth/register';
+};
+
+export type RegisterUserErrors = {
+    /**
+     * Invalid request
+     */
+    400: unknown;
+};
+
+export type RegisterUserResponses = {
+    /**
+     * User registered successfully
+     */
+    200: AuthenticationResponse;
+};
+
+export type RegisterUserResponse = RegisterUserResponses[keyof RegisterUserResponses];
+
+export type AuthenticateUserData = {
+    body: AuthenticationRequest;
+    path?: never;
+    query?: never;
+    url: '/auth/login';
+};
+
+export type AuthenticateUserErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+};
+
+export type AuthenticateUserResponses = {
+    /**
+     * Authentication successful
+     */
+    200: AuthenticationResponse;
+};
+
+export type AuthenticateUserResponse = AuthenticateUserResponses[keyof AuthenticateUserResponses];
+
 export type HealthCheckData = {
     body?: never;
     path?: never;
@@ -95,34 +157,40 @@ export type HealthCheckResponses = {
 
 export type HealthCheckResponse = HealthCheckResponses[keyof HealthCheckResponses];
 
-export type AuthenticateUserData = {
+export type UploadImageData = {
     body: {
-        email?: string;
-        password?: string;
+        file?: Blob | File;
     };
     path?: never;
     query?: never;
-    url: '/auth';
+    url: '/images';
 };
 
-export type AuthenticateUserErrors = {
+export type UploadImageErrors = {
+    /**
+     * Invalid request
+     */
+    400: unknown;
     /**
      * Unauthorized
      */
     401: unknown;
-};
-
-export type AuthenticateUserResponses = {
     /**
-     * User authenticated
+     * Forbidden
      */
-    200: {
-        token?: string;
-        user?: User;
-    };
+    403: unknown;
+    /**
+     * Internal server error
+     */
+    500: unknown;
 };
 
-export type AuthenticateUserResponse = AuthenticateUserResponses[keyof AuthenticateUserResponses];
+export type UploadImageResponses = {
+    /**
+     * Image uploaded successfully
+     */
+    201: unknown;
+};
 
 export type ListUsersData = {
     body?: never;
@@ -147,6 +215,17 @@ export type CreateUserData = {
     url: '/users';
 };
 
+export type CreateUserErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type CreateUserResponses = {
     /**
      * User created
@@ -163,6 +242,17 @@ export type DeleteUserByIdData = {
     };
     query?: never;
     url: '/users/{id}';
+};
+
+export type DeleteUserByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
 };
 
 export type DeleteUserByIdResponses = {
@@ -199,6 +289,17 @@ export type UpdateUserByIdData = {
     url: '/users/{id}';
 };
 
+export type UpdateUserByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type UpdateUserByIdResponses = {
     /**
      * User updated
@@ -231,6 +332,17 @@ export type CreatePlaceData = {
     url: '/places';
 };
 
+export type CreatePlaceErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type CreatePlaceResponses = {
     /**
      * Place created
@@ -247,6 +359,17 @@ export type DeletePlaceByIdData = {
     };
     query?: never;
     url: '/places/{id}';
+};
+
+export type DeletePlaceByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
 };
 
 export type DeletePlaceByIdResponses = {
@@ -283,6 +406,17 @@ export type UpdatePlaceByIdData = {
     url: '/places/{id}';
 };
 
+export type UpdatePlaceByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type UpdatePlaceByIdResponses = {
     /**
      * Place updated
@@ -315,6 +449,17 @@ export type CreateJobData = {
     url: '/jobs';
 };
 
+export type CreateJobErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type CreateJobResponses = {
     /**
      * Job created
@@ -331,6 +476,17 @@ export type DeleteJobByIdData = {
     };
     query?: never;
     url: '/jobs/{id}';
+};
+
+export type DeleteJobByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
 };
 
 export type DeleteJobByIdResponses = {
@@ -367,6 +523,17 @@ export type UpdateJobByIdData = {
     url: '/jobs/{id}';
 };
 
+export type UpdateJobByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type UpdateJobByIdResponses = {
     /**
      * Job updated
@@ -399,6 +566,17 @@ export type CreateEventData = {
     url: '/events';
 };
 
+export type CreateEventErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type CreateEventResponses = {
     /**
      * Event created
@@ -415,6 +593,17 @@ export type DeleteEventByIdData = {
     };
     query?: never;
     url: '/events/{id}';
+};
+
+export type DeleteEventByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
 };
 
 export type DeleteEventByIdResponses = {
@@ -451,6 +640,17 @@ export type UpdateEventByIdData = {
     url: '/events/{id}';
 };
 
+export type UpdateEventByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type UpdateEventByIdResponses = {
     /**
      * Event updated
@@ -483,6 +683,17 @@ export type CreateDealData = {
     url: '/deals';
 };
 
+export type CreateDealErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type CreateDealResponses = {
     /**
      * Deal created
@@ -499,6 +710,17 @@ export type DeleteDealByIdData = {
     };
     query?: never;
     url: '/deals/{id}';
+};
+
+export type DeleteDealByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
 };
 
 export type DeleteDealByIdResponses = {
@@ -535,6 +757,17 @@ export type UpdateDealByIdData = {
     url: '/deals/{id}';
 };
 
+export type UpdateDealByIdErrors = {
+    /**
+     * Unauthorized
+     */
+    401: unknown;
+    /**
+     * Forbidden
+     */
+    403: unknown;
+};
+
 export type UpdateDealByIdResponses = {
     /**
      * Deal updated
@@ -543,6 +776,90 @@ export type UpdateDealByIdResponses = {
 };
 
 export type UpdateDealByIdResponse = UpdateDealByIdResponses[keyof UpdateDealByIdResponses];
+
+export type ListCategoriesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/categories';
+};
+
+export type ListCategoriesResponses = {
+    /**
+     * A list of categories.
+     */
+    200: Array<Category>;
+};
+
+export type ListCategoriesResponse = ListCategoriesResponses[keyof ListCategoriesResponses];
+
+export type CreateCategoryData = {
+    body: Category;
+    path?: never;
+    query?: never;
+    url: '/categories';
+};
+
+export type CreateCategoryResponses = {
+    /**
+     * Category created
+     */
+    200: Category;
+};
+
+export type CreateCategoryResponse = CreateCategoryResponses[keyof CreateCategoryResponses];
+
+export type DeleteCategoryByIdData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type DeleteCategoryByIdResponses = {
+    /**
+     * Category deleted
+     */
+    201: unknown;
+};
+
+export type GetCategoryByIdData = {
+    body?: never;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type GetCategoryByIdResponses = {
+    /**
+     * Category found
+     */
+    200: Category;
+};
+
+export type GetCategoryByIdResponse = GetCategoryByIdResponses[keyof GetCategoryByIdResponses];
+
+export type UpdateCategoryByIdData = {
+    body: Category;
+    path: {
+        id: number;
+    };
+    query?: never;
+    url: '/categories/{id}';
+};
+
+export type UpdateCategoryByIdResponses = {
+    /**
+     * Category updated
+     */
+    200: Category;
+};
+
+export type UpdateCategoryByIdResponse = UpdateCategoryByIdResponses[keyof UpdateCategoryByIdResponses];
 
 export type ClientOptions = {
     baseUrl: 'http://localhost:8080/api' | (string & {});

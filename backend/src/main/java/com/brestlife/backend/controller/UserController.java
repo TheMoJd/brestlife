@@ -7,6 +7,7 @@ import com.brestlife.generate.api.UsersApi;
 import com.brestlife.generate.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> createUser(User user) {
         UserEntity userEntity = userMapper.toEntity(user);
 
@@ -37,6 +39,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> listUsers() {
         List<UserEntity> userEntities = userService.getAllUsers();
         List<User> users = userEntities.stream()
@@ -46,6 +49,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUserById(Integer id) {
         if (!userService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -56,6 +60,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> getUserById(Integer id) {
         return userService.getUserById(id)
                 .map(userEntity -> ResponseEntity.ok(userMapper.toDto(userEntity)))
@@ -63,6 +68,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUserById(Integer id, User user) {
         if (!userService.existsById(id)) {
             return ResponseEntity.notFound().build();
