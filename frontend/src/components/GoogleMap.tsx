@@ -2,7 +2,11 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import { Place } from '../gen/openapi';
 
-// Constants
+interface GoogleMapProps {
+    places: Place[];
+    onSelectPlace: (place: Place) => void;
+}
+
 const CONTAINER_STYLE = {
     width: '100%',
     height: '400px',
@@ -13,13 +17,6 @@ const DEFAULT_CENTER = {
     lng: -4.486,
 };
 
-const DEFAULT_ZOOM = 12;
-const MAX_ZOOM = 15;
-const MAP_LOAD_DELAY = 100;
-
-const LIBRARIES = ['marker'] as const;
-
-// Custom styles for the map
 const MAP_STYLES = [
     {
         "elementType": "geometry",
@@ -190,12 +187,13 @@ const MAP_STYLES = [
     }
 ];
 
-interface GoogleMapProps {
-    places: Place[];
-    filterKey?: string; // Made optional since it's not used in the component
-}
+const DEFAULT_ZOOM = 12;
+const MAX_ZOOM = 15;
+const MAP_LOAD_DELAY = 100;
 
-const MyGoogleMap: React.FC<GoogleMapProps> = ({ places }) => {
+const LIBRARIES = ['marker'] as const;
+
+const MyGoogleMap: React.FC<GoogleMapProps> = ({ places, onSelectPlace }) => {
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         libraries: LIBRARIES,
@@ -205,68 +203,46 @@ const MyGoogleMap: React.FC<GoogleMapProps> = ({ places }) => {
     const markersRef = useRef<google.maps.Marker[]>([]);
     const [mapReady, setMapReady] = useState(false);
 
-    // Get valid places with coordinates
-    const validPlaces = places.filter(place =>
-        place.latitude !== undefined &&
-        place.longitude !== undefined
-    );
+    const validPlaces = places.filter(place => place.latitude !== undefined && place.longitude !== undefined);
 
-    // Clear existing markers
     const clearMarkers = useCallback(() => {
-        if (markersRef.current.length > 0) {
-            markersRef.current.forEach(marker => marker.setMap(null));
-            markersRef.current = [];
-        }
+        markersRef.current.forEach(marker => marker.setMap(null));
+        markersRef.current = [];
     }, []);
 
-    // Create markers
     const createMarkers = useCallback(() => {
         if (!mapRef.current || !validPlaces.length) return;
 
         clearMarkers();
 
         markersRef.current = validPlaces.map(place => {
-            return new google.maps.Marker({
-                position: {
-                    lat: Number(place.latitude),
-                    lng: Number(place.longitude)
-                },
+            const marker = new google.maps.Marker({
+                position: { lat: Number(place.latitude), lng: Number(place.longitude) },
                 map: mapRef.current,
-                title: place.name
+                title: place.name,
             });
-        });
-    }, [validPlaces, clearMarkers]);
 
-    // Adjust map bounds to show all markers
+            marker.addListener('click', () => onSelectPlace(place));
+
+            return marker;
+        });
+    }, [validPlaces, clearMarkers, onSelectPlace]);
+
     const adjustMapBounds = useCallback(() => {
         if (!mapRef.current || !validPlaces.length) return;
 
         try {
             const bounds = new google.maps.LatLngBounds();
-
-            validPlaces.forEach(place => {
-                bounds.extend({
-                    lat: Number(place.latitude),
-                    lng: Number(place.longitude)
-                });
-            });
-
+            validPlaces.forEach(place => bounds.extend({ lat: Number(place.latitude), lng: Number(place.longitude) }));
             mapRef.current.fitBounds(bounds);
 
-            // Limit maximum zoom level
-            const listener = google.maps.event.addListenerOnce(mapRef.current, 'idle', () => {
+            google.maps.event.addListenerOnce(mapRef.current, 'idle', () => {
                 if (mapRef.current && mapRef.current.getZoom()! > MAX_ZOOM) {
                     mapRef.current.setZoom(MAX_ZOOM);
                 }
             });
-
-            return () => {
-                google.maps.event.removeListener(listener);
-            };
         } catch (error) {
             console.error("Error adjusting map bounds:", error);
-
-            // Fallback to default center
             if (mapRef.current) {
                 mapRef.current.setCenter(DEFAULT_CENTER);
                 mapRef.current.setZoom(DEFAULT_ZOOM);
@@ -274,23 +250,18 @@ const MyGoogleMap: React.FC<GoogleMapProps> = ({ places }) => {
         }
     }, [validPlaces]);
 
-    // Handle map initialization
     const handleMapLoad = useCallback((map: google.maps.Map) => {
         mapRef.current = map;
         setTimeout(() => setMapReady(true), MAP_LOAD_DELAY);
     }, []);
 
-    // Update map when places change or map becomes ready
     useEffect(() => {
         if (isLoaded && mapReady) {
             createMarkers();
             adjustMapBounds();
         }
 
-        // Clean up markers when component unmounts
-        return () => {
-            clearMarkers();
-        };
+        return () => clearMarkers();
     }, [isLoaded, mapReady, createMarkers, adjustMapBounds, clearMarkers]);
 
     if (!isLoaded) {
@@ -303,7 +274,7 @@ const MyGoogleMap: React.FC<GoogleMapProps> = ({ places }) => {
             center={DEFAULT_CENTER}
             zoom={DEFAULT_ZOOM}
             onLoad={handleMapLoad}
-            options={{ styles: MAP_STYLES }} // Apply custom styles
+            options={{ styles: MAP_STYLES }}
         />
     );
 };
