@@ -59,12 +59,19 @@ paths:
               schema:
                 type: string
                 example: "OK"
-  /images:
+  /images/events/{eventId}:
     post:
-      summary: Upload an image
-      operationId: uploadImage
+      summary: Upload une image pour un événement
+      operationId: uploadEventImage
       security:
         - bearerAuth: [ ]
+      parameters:
+        - name: eventId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: L'ID de l'événement pour lequel l'image est téléchargée.
       requestBody:
         required: true
         content:
@@ -75,17 +82,63 @@ paths:
                 file:
                   type: string
                   format: binary
+                  description: L'image à télécharger.
       responses:
-        "201":
-          description: Image uploaded successfully
+        "200":
+          description: Image téléchargée avec succès, retourne l'événement mis à jour.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
         "400":
-          description: Invalid request
-        "500":
-          description: Internal server error
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
+          description: Erreur lors du traitement du fichier ou de l'événement.
+        "404":
+          description: Événement non trouvé.
+        "401":
+          description: Non authentifié.
+        "403":
+          description: Non autorisé (seul un administrateur peut uploader une image).
+
+  /images/places/{placeId}:
+    post:
+      summary: Upload une image pour une place
+      operationId: uploadPlaceImage
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: placeId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: L'ID de la place pour lequel l'image est téléchargée.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: L'image à télécharger.
+      responses:
+        "200":
+          description: Image téléchargée avec succès, retourne la place mise à jour.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Place"
+        "400":
+          description: Erreur lors du traitement du fichier ou de l'événement.
+        "404":
+          description: Événement non trouvé.
+        "401":
+          description: Non authentifié.
+        "403":
+          description: Non autorisé (seul un administrateur peut uploader une image).
+
   /users:
     get:
       summary: "List all users"
@@ -742,6 +795,31 @@ paths:
       responses:
         201:
           description: "Category deleted"
+  /categories/type/{type}:
+    get:
+      summary: "List categories by a given type"
+      operationId: "listCategoriesByType"
+      tags:
+        - categories
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - PLACE
+              - JOB
+              - EVENT
+      responses:
+        200:
+          description: "A list of categories with the given type."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
 components:
   schemas:
     User:
