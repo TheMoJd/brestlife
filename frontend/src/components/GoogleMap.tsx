@@ -175,7 +175,7 @@ const MAP_STYLES = [
         "elementType": "geometry",
         "stylers": [
             {
-                "color": "#c9c9c9"
+                "color": "#cdddff"
             }
         ]
     },
