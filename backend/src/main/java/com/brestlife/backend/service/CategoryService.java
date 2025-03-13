@@ -56,4 +56,14 @@ public class CategoryService {
         }
         categoryRepository.deleteById(id);
     }
+
+    public List<Category> listCategoriesByType(Category.TypeEnum type) {
+        List<CategoryEntity> categoryEntities = categoryRepository.findByType(type);
+        System.out.println(categoryEntities.stream()
+                .map(categoryMapper::toDto)
+                .collect(Collectors.toList()));
+        return categoryEntities.stream()
+                .map(categoryMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

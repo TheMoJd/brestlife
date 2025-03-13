@@ -105,6 +105,9 @@ export function JobsPage() {
                 <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
                   {job.duration}
                 </span>
+                <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                  {job.category?.subCategory}
+                </span>
               </div>
             </div>
             
