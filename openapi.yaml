@@ -547,7 +547,6 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Category"
-
   /deals:
     get:
       summary: "List all deals"
@@ -673,7 +672,7 @@ components:
         id:
           type: integer
           format: int32
-        name:
+        subcategory:
           type: string
         type:
           type: string

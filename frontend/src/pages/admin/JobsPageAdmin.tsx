@@ -7,6 +7,7 @@ import {
   deleteJobById,
   Job,
   Category,
+  listCategories,
 } from "../../gen/openapi";
 import { useForm } from "react-hook-form";
 import { Edit, Trash2, X } from "lucide-react";
@@ -15,11 +16,11 @@ import { useAuth } from "../../contexts/AuthProvider";
 export default function JobsPageAdmin() {
   const { token } = useAuth();
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [editingJob, setEditingJob] = useState<Job | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm<Job>();
-  //const categories = await categories(); 
   const fetchJobs = async () => {
     try {
       const response = await listJobs();
@@ -32,8 +33,23 @@ export default function JobsPageAdmin() {
     }
   };
 
+
+  const fetchCategories = async () => {
+    try {
+      const response = await listCategories();
+      if (response.data) {
+        setCategories(response.data);
+      }
+      console.log("Categories:", categories);
+    } catch (err) {
+      console.error("Erreur chargement categories:", err);
+    }
+  };
+
+  
   useEffect(() => {
     fetchJobs();
+    fetchCategories();
   }, []);
 
   const openCreateModal = () => {
@@ -128,6 +144,9 @@ export default function JobsPageAdmin() {
               <th className="px-4 py-3 text-sm font-semibold text-gray-700">
                 Type de contrat
               </th>
+              <th className="px-4 py-3 text-sm font-semibold text-gray-700">
+                Categorie
+              </th>
               <th className="px-4 py-3 text-sm font-semibold text-gray-700 text-right">
                 Actions
               </th>
@@ -144,7 +163,7 @@ export default function JobsPageAdmin() {
                 <td className="px-4 py-2">{job.companyName}</td>
                 <td className="px-4 py-2">{job.location}</td>
                 <td className="px-4 py-2">{job.duration}</td>
-
+                
 
                 <td className="px-4 py-2 text-right">
                   <button
