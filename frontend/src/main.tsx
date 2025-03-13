@@ -11,6 +11,8 @@ client.setConfig(
     }
 )
 
+console.log("env variable API : " + import.meta.env.VITE_API_URL);
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <AuthProvider>
