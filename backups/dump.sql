@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 17.2 (Debian 17.2-1.pgdg120+1)
--- Dumped by pg_dump version 17.2 (Debian 17.2-1.pgdg120+1)
+-- Dumped from database version 17.3 (Debian 17.3-3.pgdg120+1)
+-- Dumped by pg_dump version 17.3 (Debian 17.3-3.pgdg120+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -269,10 +269,7 @@ COPY public.categories (id, created_at, sub_category, type, created_by) FROM std
 3	2025-02-11 13:45:00	Restaurant	PLACE	2
 4	2025-02-12 14:50:00	Technologie	JOB	3
 5	2025-02-13 15:20:00	Shopping	DEAL	3
-6	2025-03-11 17:14:43	CDI	JOB	1
-7	2025-03-11 17:15:02	CDD	JOB	1
-8	2025-03-11 17:15:21	Stage	JOB	1
-9	2025-03-11 17:15:41	Alternance	JOB	1
+6	2025-03-07 16:43:52	Transport	DEAL	3
 \.
 
 
@@ -281,8 +278,15 @@ COPY public.categories (id, created_at, sub_category, type, created_by) FROM std
 --
 
 COPY public.deals (id, created_at, description, link, title, updated_at, category_id, created_by, company, date_end, new_price, old_price, reserve) FROM stdin;
-1	2025-02-13 14:55:48	Réduction de 20% sur tous les articles de sport.	https://sportshop.com	Offre Sport	2025-02-14 14:55:48	5	1	SportShop	2025-03-01 00:00:00	49.99	59.99	Étudiants
-2	2025-02-14 15:30:00	Promotion spéciale : 2 plats pour le prix d'un.	https://restaurant.com	Offre Restaurant	2025-02-15 15:30:00	3	2	Restaurant Gourmand	2025-02-28 00:00:00	15	30	Tous
+1	2025-02-10 09:00:00	Remise de 20% sur les billets d'entrée à Océanopolis pour les étudiants sur présentation de la carte étudiante.	https://www.oceanopolis.com/preparer-votre-visite/tarifs/	Offre Océanopolis Étudiants	2025-02-10 09:00:00	1	2	Océanopolis Brest	2025-06-30 23:59:59	17.5	22.9	Tous
+2	2025-02-12 14:30:00	Tarif réduit de 11,30€ pour les étudiants au Cinéma Multiplexe Liberté sur présentation d'un justificatif étudiant.	https://www.allocine.fr/salle/cinema-P0417/tarifs/	Offre Cinéma Multiplexe Liberté Étudiants	2025-02-12 14:30:00	1	2	Cinéma Multiplexe Liberté	2025-06-30 23:59:59	11.3	14.6	Tous
+3	2025-02-15 11:00:00	Tarif réduit de 5,50€ pour les étudiants au Cinéma Les Studios sur présentation de la carte étudiante.	https://www.cine-studios.fr/tarifs/	Offre Cinéma Les Studios Étudiants	2025-02-15 11:00:00	1	2	Cinéma Les Studios	2025-06-30 23:59:59	5.5	8.5	Tous
+5	2025-02-20 10:30:00	Abonnement mensuel à 15€ pour la piscine de Recouvrance pour les étudiants sur présentation de la carte étudiante.	https://www.brest.fr/piscines-tarifs	Offre Piscine Recouvrance Étudiants	2025-02-20 10:30:00	2	2	Ville de Brest	2025-06-30 23:59:59	15	18	Tous
+7	2025-02-25 15:30:00	Tarif réduit de 20% sur les locations de vélos chez Brest à Vélo pour les étudiants sur présentation de la carte étudiante.	https://www.brestavelo.brest.fr/tarifs	Offre Brest à Vélo Étudiants	2025-02-25 15:30:00	2	2	Brest à Vélo	2025-06-30 23:59:59	6.4	8	Tous
+8	2025-02-28 17:00:00	Entrée à 5€ pour la patinoire du Rïnkla Stadium pour les étudiants le vendredi soir sur présentation de la carte étudiante.	https://www.patinoire-brest.fr/tarifs	Offre Patinoire Rïnkla Étudiants	2025-02-28 17:00:00	2	2	Rïnkla Stadium Brest	2025-06-30 23:59:59	5	7.3	Tous
+9	2025-03-02 12:00:00	Remise de 15% sur les produits culturels à la librairie Dialogues pour les étudiants sur présentation de la carte étudiante.	https://www.librairiedialogues.fr/tarifs	Offre Librairie Dialogues Étudiants	2025-03-02 12:00:00	1	2	Librairie Dialogues Brest	2025-06-30 23:59:59	12.75	15	Tous
+10	2025-03-05 14:00:00	Abonnement annuel à 120€ pour le réseau de transports en commun Bibus pour les étudiants sur présentation de la carte étudiante.	https://www.bibus.fr/tarifs	Offre Bibus Étudiants	2025-03-05 14:00:00	6	2	Bibus Brest	2025-06-30 23:59:59	120	150	Tous
+4	2025-02-17 16:00:00	Carte de membre à 8€ donnant droit à des tarifs réduits au Quartz Théâtre pour les étudiants.	https://lequartz.notre-billetterie.com/abonnements/?abo=ab2425S	Offre Quartz Théâtre Étudiants	2025-02-17 16:00:00	1	2	Le Quartz Brest	2025-06-30 23:59:59	8	10	Tous
 \.
 
 
@@ -291,8 +295,11 @@ COPY public.deals (id, created_at, description, link, title, updated_at, categor
 --
 
 COPY public.events (id, created_at, date, description, image_url, location, price, title, category_id, created_by, summary) FROM stdin;
-1	2025-02-09 11:46:10	2025-02-15 19:00:00	Venez découvrir un concert de jazz exceptionnel mettant en avant des artistes locaux talentueux. Ce concert unique se déroulera dans une ambiance chaleureuse et conviviale, où chaque artiste aura l'opportunité de montrer son talent à travers une série de compositions originales et des reprises classiques du jazz. Le concert commencera à 19h00 et sera suivi d'une session de questions-réponses avec les musiciens. Ne manquez pas cette soirée musicale inoubliable.	/img/concert.jpg	Salle de Concert de Brest	20	Concert de Jazz	1	1	Concert de jazz avec des artistes locaux.
-2	2025-02-10 12:00:00	2025-02-16 10:00:00	Rejoignez-nous pour une conférence captivante sur l'intelligence artificielle, où des experts du domaine partageront leurs connaissances sur les dernières avancées technologiques. Cette conférence abordera des sujets variés allant des algorithmes d'apprentissage automatique aux implications éthiques de l'IA dans la société. L'événement aura lieu dans l'auditorium principal de l'Université de Brest, avec une session de networking à la fin pour échanger avec les conférenciers et les autres participants. Ne manquez pas cette occasion unique de comprendre les enjeux actuels de l'IA.	/img/conference.jpg	Université de Brest	10	Conférence IA	1	3	Conférence sur l'intelligence artificielle.
+4	2025-03-01 09:00:00	2025-06-16 09:00:00	OCEANS 2025 Brest sera un forum majeur pour les scientifiques, ingénieurs et utilisateurs finaux du monde entier pour présenter les derniers résultats de recherche, idées, développements et applications dans tous les domaines des systèmes d'ingénierie océanique. Le programme sera construit autour du thème "Océans : l'infini est la limite", en mettant l'accent sur l'impact du changement climatique sur les océans et depuis les océans.	events/event4/ocean.jpg	Le Quartz Congrès, 2-4 avenue Georges Clemenceau, 29210 Brest Cedex 1	50	OCEANS 2025 Brest	1	3	Forum international sur les systèmes d'ingénierie océanique.
+1	2025-02-09 11:46:10	2025-02-15 19:00:00	Venez découvrir un concert de jazz exceptionnel mettant en avant des artistes locaux talentueux. Ce concert unique se déroulera dans une ambiance chaleureuse et conviviale, où chaque artiste aura l'opportunité de montrer son talent à travers une série de compositions originales et des reprises classiques du jazz. Le concert commencera à 19h00 et sera suivi d'une session de questions-réponses avec les musiciens. Ne manquez pas cette soirée musicale inoubliable.	events/event1/concert.jpg	Salle de Concert de Brest	20	Concert de Jazz	1	1	Concert de jazz avec des artistes locaux.
+5	2025-03-15 10:00:00	2025-06-08 10:00:00	Le 8 juin 2025, le diocèse de Quimper et Léon vous invite à un événement exceptionnel au Parc des Expositions de la Penfeld à Brest pour célébrer la Pentecôte 2025. Dans un esprit de fête, de communion et d'unité, nous vivrons ensemble une journée riche en rencontres et en spiritualité. Ce rassemblement sera marqué par la promulgation des orientations pastorales de Monseigneur Dognin, un moment fort pour la vie de notre diocèse.	events/event5/pentecote.jpg	Parc des Expositions de la Penfeld, 29820 Guilers	0	Pentecôte 2025	1	1	Grande fête diocésaine célébrant la Pentecôte.
+3	2025-02-11 14:00:00	2025-02-13 18:30:00	Pour sa cinquième édition, le festival prend à nouveau ses quartiers dans la piscine ! Profitez de la vidange annuelle pour assister à deux soirées de concerts au fond du grand bassin. Pépites électro-pop et house au programme dans un cadre inédit et atypique.	events/event3/grand-bain.jpg	Piscine Foch, 25 Avenue Maréchal Foch, 29200 Brest	25	Festival Grand Bain	1	2	Festival de musiques électro-pop et house dans un cadre atypique.
+2	2025-02-10 12:00:00	2025-02-16 10:00:00	Rejoignez-nous pour une conférence captivante sur l'intelligence artificielle, où des experts du domaine partageront leurs connaissances sur les dernières avancées technologiques. Cette conférence abordera des sujets variés allant des algorithmes d'apprentissage automatique aux implications éthiques de l'IA dans la société. L'événement aura lieu dans l'auditorium principal de l'Université de Brest, avec une session de networking à la fin pour échanger avec les conférenciers et les autres participants. Ne manquez pas cette occasion unique de comprendre les enjeux actuels de l'IA.	events/event2/conference.jpg	Université de Brest	10	Conférence IA	1	3	Conférence sur l'intelligence artificielle.
 \.
 
 
@@ -301,7 +308,8 @@ COPY public.events (id, created_at, date, description, image_url, location, pric
 --
 
 COPY public.jobs (id, company_name, contact_email, created_at, description, duration, end_date, location, start_date, title, category_id, created_by, summary) FROM stdin;
-2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Nous recherchons un serveur dynamique et souriant pour assurer le service du soir dans un cadre convivial et chaleureux. Vos missions incluront l'accueil des clients, la prise de commandes, le service en salle ainsi que le conseil sur les plats et boissons. Une expérience préalable en restauration est un atout, mais la motivation et le sens du service sont essentiels. Rejoignez une équipe passionnée et contribuez à offrir une expérience mémorable à nos clients !	CDD	2025-06-30	Brest	2025-03-01	Serveur	7	2	Serveur pour service du soir en semaine.
+1	TechInnov	contact@techinnov.com	2025-02-11 13:45:00	Passionné par le développement web, je suis un développeur full-stack avec une solide expérience en React et Node.js. Je conçois et développe des applications performantes et évolutives, en assurant une architecture robuste côté back-end et une interface utilisateur fluide et réactive. Fort d'une expérience dans divers projets, je maîtrise les bases de données, les API REST, ainsi que les bonnes pratiques en matière de sécurité et d'optimisation. Toujours en veille technologique, je suis prêt à relever de nouveaux défis et à contribuer au succès de vos projets numériques.	CDI	2025-12-31	Brest	2025-03-01	Développeur Full-Stack	4	3	Développeur full-stack avec expérience en React et Node.js.
+2	Restaurant Gourmand	rh@restaurant.com	2025-02-12 14:50:00	Nous recherchons un serveur dynamique et souriant pour assurer le service du soir dans un cadre convivial et chaleureux. Vos missions incluront l'accueil des clients, la prise de commandes, le service en salle ainsi que le conseil sur les plats et boissons. Une expérience préalable en restauration est un atout, mais la motivation et le sens du service sont essentiels. Rejoignez une équipe passionnée et contribuez à offrir une expérience mémorable à nos clients !	CDD	2025-06-30	Brest	2025-03-01	Serveur	3	2	Serveur pour service du soir en semaine.
 \.
 
 
@@ -310,8 +318,16 @@ COPY public.jobs (id, company_name, contact_email, created_at, description, dura
 --
 
 COPY public.places (id, address, created_at, description, image_url, latitude, longitude, name, category_id, created_by, price, summary) FROM stdin;
-1	123 Rue de la Plage, Brest	2025-02-09 11:47:00	Profitez d'une magnifique plage de sable fin, parfaite pour la baignade, la détente et une multitude d'activités nautiques. Que vous soyez amateur de surf, de paddle, de jet-ski ou simplement en quête d’un moment de relaxation au soleil, cette plage offre un cadre idyllique avec une eau cristalline et des paysages à couper le souffle. Des services comme la location d’équipements, des restaurants en bord de mer et des zones ombragées rendent votre expérience encore plus agréable. Un véritable paradis pour les amoureux de la mer !	/img/plage.jpg	48.3833	-4.4833	Plage de Brest	3	1	0	Plage idéale pour la baignade et les sports nautiques.
-2	456 Rue du Centre, Brest	2025-02-10 12:30:00	Découvrez un centre commercial moderne et animé, regroupant une large variété de boutiques pour tous les goûts et tous les budgets. Des grandes enseignes de mode aux petites boutiques artisanales, en passant par des espaces de restauration et des lieux de divertissement, cet espace commerçant est idéal pour une journée de shopping et de détente. Profitez également d’événements réguliers, de promotions exclusives et d’une atmosphère conviviale pour une expérience inoubliable! 	/img/centre_commercial.jpg	48.39	-4.47	Centre Commercial de Brest	3	2	0	Centre commercial avec de nombreuses boutiques.
+10	55 Quai Éric Tabarly, 29200 Brest	2025-03-10 09:45:00	Située en plein cœur de la ville, la Marina du Château accueille des bateaux de plaisance et offre une promenade agréable avec des restaurants et des bars à proximité.	places/place10/marina_chateau.jpg	48.378779	-4.490052	Marina du Château	3	2	0	Port de plaisance avec restaurants et bars.
+9	Station Jean Moulin, 29200 Brest	2025-03-10 09:40:00	Premier téléphérique urbain de France, il relie les deux rives de la Penfeld, offrant une vue unique sur la ville et le port militaire.	places/place9/telepherique_brest.jpg	48.386152	-4.493221	Téléphérique de Brest	6	3	1.5	Premier téléphérique urbain de France avec vue.
+5	Plouzané, 29280 Brest	2025-03-10 09:20:00	Ce phare emblématique offre une vue panoramique sur la mer d'Iroise et la rade de Brest. Il est accessible par un sentier côtier pittoresque.	places/place5/phare_petit_minou.jpg	48.336643	-4.614316	Phare du Petit Minou	1	3	0	Phare offrant une vue panoramique sur la mer.
+3	25 Rue de Pontaniou, 29200 Brest	2025-03-10 09:10:00	Ancien site industriel réhabilité, les Ateliers des Capucins sont désormais un lieu culturel et de loisirs abritant une médiathèque, des espaces d'exposition, des boutiques et des restaurants.	places/place3/ateliers_capucins.jpg	48.389303	-4.498928	Les Ateliers des Capucins	1	2	0	Lieu culturel et de loisirs dans un ancien site industriel.
+2	Port de Plaisance du Moulin Blanc, 29200 Brest	2025-03-10 09:05:00	Centre de découverte des océans, Océanopolis propose des expositions interactives et des aquariums présentant la faune et la flore marines des régions polaires, tropicales et bretonnes.	places/place2/oceanopolis.jpg	48.390106	-4.435117	Océanopolis	1	1	15	Centre de découverte des océans avec aquariums.
+6	Rampe du Stang-Alar, 29200 Brest	2025-03-10 09:25:00	Ce jardin botanique présente une collection unique de plantes en voie de disparition, réparties sur 30 hectares de vallons et de serres tropicales.	places/place6/conservatoire_botanique.jpg	48.40817	-4.449534	Conservatoire Botanique National de Brest	1	1	0	Jardin botanique avec plantes rares et serres.
+8	Cours Dajot, 29200 Brest	2025-03-10 09:35:00	Promenade pittoresque offrant une vue imprenable sur la rade de Brest, idéale pour une balade tranquille en admirant le paysage maritime.	places/place8/cours_dajot.jpg	48.3833834	-4.4875402	Cours Dajot	1	2	0	Promenade avec vue sur la rade de Brest.
+4	Rue Saint-Malo, 29200 Brest	2025-03-10 09:15:00	Seule rue ayant survécu aux bombardements de la Seconde Guerre mondiale, la rue Saint-Malo offre un aperçu du vieux Brest avec ses maisons anciennes et son atmosphère pittoresque.	places/place4/rue_saint_malo.jpg	48.389517	-4.502178	Rue Saint-Malo	1	2	0	Rue historique préservée avec maisons anciennes.
+7	Plage du Moulin Blanc, 29200 Brest	2025-03-10 09:30:00	Cette plage urbaine est idéale pour une promenade détente, offrant une vue sur l'anse du Moulin Blanc et des activités nautiques en été.	places/place7/plage_moulin_blanc.jpg	48.397527	-4.429579	Plage du Moulin Blanc	3	2	0	Plage urbaine avec activités nautiques.
+1	Château de Brest, Boulevard de la Marine, 29200 Brest	2025-03-10 09:00:00	Situé dans le château historique de Brest, ce musée retrace l'histoire de la Marine française à travers une riche collection d'artefacts, de maquettes et d'œuvres d'art.	places/place1/musee_marine.jpg	48.381167	-4.49236	Musée National de la Marine	1	1	10	Musée dédié à l'histoire maritime française.
 \.
 
 
@@ -330,35 +346,35 @@ COPY public.users (id, name, email, password, created_at, role, updated_at) FROM
 -- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.categories_id_seq', 9, true);
+SELECT pg_catalog.setval('public.categories_id_seq', 6, true);
 
 
 --
 -- Name: deals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.deals_id_seq', 2, true);
+SELECT pg_catalog.setval('public.deals_id_seq', 10, true);
 
 
 --
 -- Name: events_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.events_id_seq', 2, true);
+SELECT pg_catalog.setval('public.events_id_seq', 1, false);
 
 
 --
 -- Name: jobs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.jobs_id_seq', 6, true);
+SELECT pg_catalog.setval('public.jobs_id_seq', 2, false);
 
 
 --
 -- Name: places_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev
 --
 
-SELECT pg_catalog.setval('public.places_id_seq', 6, true);
+SELECT pg_catalog.setval('public.places_id_seq', 1, false);
 
 
 --
