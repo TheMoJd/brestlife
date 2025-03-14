@@ -3,6 +3,7 @@ package com.brestlife.backend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -30,7 +31,7 @@ public class DealEntity {
     private Double newPrice;
 
     @Column
-    private LocalDateTime dateEnd;
+    private LocalDate dateEnd;
 
     @Column
     private String company;

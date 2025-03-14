@@ -980,7 +980,7 @@ components:
           format: double
         date_end:
           type: string
-          format: date-time
+          format: date
         company:
           type: string
         reserve:
