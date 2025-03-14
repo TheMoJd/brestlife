@@ -154,12 +154,8 @@ flowchart LR
 ## 4.2. **Exigences techniques**
 
 - **Frameworks conseillés** :
-    - Frontend : Next.js
+    - Frontend : React, Vite, TS, Tailwind CSS
     - Backend : Java SpringBoot
     - **Base de données** :  PostgreSQL
 - **API tierces** :
-    - **Cartographie:** OpenStreetMap.
-- **Sécurité & RGPD** :
-    - Mise en conformité RGPD (mentions légales, politique de confidentialité, consentement cookies).
-    - Sécuriser les données personnelles des utilisateurs (mots de passe hashés, protection contre injections SQL,
-      etc.).
+    - **Cartographie:** GoogleMapsApi.
