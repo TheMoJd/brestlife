@@ -159,8 +159,8 @@ export default function DealsPageAdmin() {
             className="absolute inset-0 bg-black bg-opacity-50"
             onClick={closeModal}
           />
-          <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10">
-            <button
+            <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10 max-h-[90vh] overflow-y-auto">
+              <button
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
               onClick={closeModal}
             >
