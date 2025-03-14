@@ -9,6 +9,7 @@ import {
 } from "../../gen/openapi";
 import { useForm } from "react-hook-form";
 import { Edit, Trash2, X } from "lucide-react";
+import {useAuth} from "../../contexts/AuthProvider.tsx";
 
 export default function DealsPageAdmin() {
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -16,6 +17,8 @@ export default function DealsPageAdmin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm<Deal>();
+
+  const currentUser = useAuth().user;
 
   const fetchDeals = async () => {
     try {
@@ -56,6 +59,7 @@ export default function DealsPageAdmin() {
           body: data,
         });
       } else {
+        data.createdBy = currentUser;
         await createDeal({ body: data });
       }
       closeModal();
@@ -203,7 +207,7 @@ export default function DealsPageAdmin() {
                   Date fin
                 </label>
                 <input
-                  type="date"
+                  type="datetime-local"
                   {...register("date_end")}
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
