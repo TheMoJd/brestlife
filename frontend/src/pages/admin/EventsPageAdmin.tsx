@@ -219,7 +219,7 @@ export default function EventsPageAdmin() {
                                     Date
                                 </label>
                                 <input
-                                    type="date"
+                                    type="datetime-local"
                                     {...register("date")}
                                     className="block w-full border border-gray-300 rounded px-3 py-2"
                                 />
