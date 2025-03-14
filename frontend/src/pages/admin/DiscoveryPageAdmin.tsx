@@ -6,10 +6,11 @@ import {
     updatePlaceById,
     deletePlaceById,
     uploadPlaceImage,
-    Place,
+    Place, listCategoriesByType, Category,
 } from "../../gen/openapi";
 import {useForm} from "react-hook-form";
 import {Edit, Trash2, X, Upload} from "lucide-react";
+import {useAuth} from "../../contexts/AuthProvider.tsx";
 
 export default function DiscoveryPageAdmin() {
     const [places, setPlaces] = useState<Place[]>([]);
@@ -18,8 +19,11 @@ export default function DiscoveryPageAdmin() {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [categories, setCategories] = useState<Category[]>([]);
 
     const {register, handleSubmit, reset, setValue} = useForm<Place>();
+
+    const currentUser = useAuth().user;
 
     // Charger la liste des "places"
     const fetchPlaces = async () => {
@@ -34,8 +38,24 @@ export default function DiscoveryPageAdmin() {
         }
     };
 
+    // Charger les catégories de type JOB
+    const fetchCategoriesOfPlaces = async () => {
+        try {
+            const response = await listCategoriesByType({
+                path: {type: "PLACE"},
+            });
+            if (response.data) {
+                setCategories(response.data);
+            }
+            console.log("Categories :", response.data);
+        } catch (err) {
+            console.error("Erreur chargement categories:", err);
+        }
+    };
+
     useEffect(() => {
         fetchPlaces();
+        fetchCategoriesOfPlaces();
     }, []);
 
     // Ouvrir modale pour créer un lieu
@@ -89,6 +109,8 @@ export default function DiscoveryPageAdmin() {
                 placeId = editingPlace.id;
             } else {
                 // Création
+                data.createdBy = currentUser ?? undefined;
+                console.log(data)
                 const response = await createPlace({body: data});
 
                 if (response && response.data) {
@@ -154,6 +176,9 @@ export default function DiscoveryPageAdmin() {
                         </th>
                         <th className="px-4 py-3 text-sm font-semibold text-gray-700">
                             Adresse
+                        </th>
+                        <th className="px-4 py-3 text-sm font-semibold text-gray-700">
+                            Categorie
                         </th>
                         <th className="px-4 py-3 text-sm font-semibold text-gray-700">
                             Image
@@ -256,6 +281,19 @@ export default function DiscoveryPageAdmin() {
                                     {...register("address")}
                                     className="block w-full border border-gray-300 rounded px-3 py-2"
                                 />
+                            </div>
+
+                            {/* Sélecteur de catégorie */}
+                            <div className="mb-4">
+                                <label className="block mb-1 text-sm font-medium text-gray-700">Catégorie</label>
+                                <select {...register("category.id")}
+                                        className="block w-full border border-gray-300 rounded px-3 py-2">
+                                    {categories.map((cat) => (
+                                        <option key={cat.id} value={cat.id}>
+                                            {cat.subCategory}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             <div className="mb-4">
