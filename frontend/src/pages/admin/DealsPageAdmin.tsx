@@ -207,7 +207,7 @@ export default function DealsPageAdmin() {
                   Date fin
                 </label>
                 <input
-                  type="datetime-local"
+                  type="date"
                   {...register("date_end")}
                   className="block w-full border border-gray-300 rounded px-3 py-2"
                 />
