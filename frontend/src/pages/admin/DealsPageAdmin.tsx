@@ -9,6 +9,7 @@ import {
 } from "../../gen/openapi";
 import { useForm } from "react-hook-form";
 import { Edit, Trash2, X } from "lucide-react";
+import {useAuth} from "../../contexts/AuthProvider.tsx";
 
 export default function DealsPageAdmin() {
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -16,6 +17,8 @@ export default function DealsPageAdmin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { register, handleSubmit, reset } = useForm<Deal>();
+
+  const currentUser = useAuth().user;
 
   const fetchDeals = async () => {
     try {
@@ -56,6 +59,7 @@ export default function DealsPageAdmin() {
           body: data,
         });
       } else {
+        data.createdBy = currentUser;
         await createDeal({ body: data });
       }
       closeModal();
@@ -155,8 +159,8 @@ export default function DealsPageAdmin() {
             className="absolute inset-0 bg-black bg-opacity-50"
             onClick={closeModal}
           />
-          <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10">
-            <button
+            <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10 max-h-[90vh] overflow-y-auto">
+              <button
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
               onClick={closeModal}
             >

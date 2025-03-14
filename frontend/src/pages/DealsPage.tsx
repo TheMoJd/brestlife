@@ -1,6 +1,7 @@
 import { Search, Tag, ExternalLink } from 'lucide-react';
 import { Deal, listDeals } from "../gen/openapi";
 import { useEffect, useState, useMemo, useRef } from "react";
+import { useSearchFilter } from '../hooks/useSearchFilter';
 
 export function DealsPage() {
     const [deals, setDeals] = useState<Deal[]>([]);
@@ -63,14 +64,16 @@ export function DealsPage() {
         }
     };
 
+    const { filteredItems: searchedDeals, searchQuery, setSearchQuery } = useSearchFilter(deals, ['title']);
+
     const filteredDeals = useMemo(() => {
-        return deals.filter(deal => {
+        return searchedDeals.filter(deal => {
             if (selectedCategories.length > 0 && deal.category?.subCategory) {
                 return selectedCategories.includes(deal.category.subCategory);
             }
             return true;
         });
-    }, [deals, selectedCategories]);
+    }, [searchedDeals, selectedCategories]);
 
     if (loading) {
         return <div className="text-center text-gray-500 py-10">Chargement...</div>;
@@ -89,6 +92,8 @@ export function DealsPage() {
                     <div className="relative">
                         <input
                             type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Rechercher un bon plan..."
                             className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         />
