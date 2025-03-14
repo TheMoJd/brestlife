@@ -199,6 +199,9 @@ export default function DiscoveryPageAdmin() {
                             <td className="px-4 py-2">{place.description}</td>
                             <td className="px-4 py-2">{place.address}</td>
                             <td className="px-4 py-2">
+                {place.category?.subCategory || "Non spécifiée"}
+            </td>
+                            <td className="px-4 py-2">
                                 {place.imageUrl && (
                                     <img src={place.imageUrl} alt={place.name} className="h-10 w-auto object-cover"/>
                                 )}
@@ -239,7 +242,7 @@ export default function DiscoveryPageAdmin() {
                         onClick={closeModal}
                     />
                     {/* Modal Content */}
-                    <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10">
+                    <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10 max-h-[90vh] overflow-y-auto">
                         <button
                             className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
                             onClick={closeModal}

@@ -190,7 +190,7 @@ export default function JobsPageAdmin() {
                         className="absolute inset-0 bg-black bg-opacity-50"
                         onClick={closeModal}
                     />
-                    <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10">
+                    <div className="relative bg-white p-6 rounded shadow-lg w-full max-w-xl z-10 max-h-[90vh] overflow-y-auto">
                         <button
                             className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
                             onClick={closeModal}
@@ -279,8 +279,7 @@ export default function JobsPageAdmin() {
                                 <label className="block mb-1 text-sm font-medium text-gray-700">
                                     Résumé
                                 </label>
-                                <input
-                                    type="text"
+                                <textarea
                                     {...register("summary")}
                                     className="block w-full border border-gray-300 rounded px-3 py-2"
                                 />
