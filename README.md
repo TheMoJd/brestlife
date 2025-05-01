@@ -118,7 +118,7 @@ flowchart LR
     Java`"]
     back -->|3306| db[("`BDD
     PostgreSQL`")]
-    back -->|3021| OpenStreetMap
+    back -->|3021| GoogleMapsApi
 ```
 
 ---
