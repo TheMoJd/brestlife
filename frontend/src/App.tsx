@@ -40,7 +40,7 @@ function App() {
     { path: "/emplois", name: "Offres emplois", icon: <Briefcase className="w-5 h-5" /> },
     { path: "/evenements", name: "Événements", icon: <Calendar className="w-5 h-5" /> },
     { path: "/bons-plans", name: "Bons plans", icon: <Tag className="w-5 h-5" /> },
-    ...(!isAdmin() ? [{ path: "/login", name: "Connexion", icon: <User className="w-5 h-5" /> }] : [{path: "/admin", name: "Mon espace", icon: <User className="w-5 h-5" />}]), 
+    ...(isAdmin() ? [{path: "/admin", name: "Mon espace", icon: <User className="w-5 h-5" />}] : []),
     
   ];
   const footerLinks = [
